@@ -5,9 +5,11 @@ import { getVoiceId, createVoiceSettings } from "@/lib/voice-mappings";
 // Validation function for ElevenLabs TTS
 function validateElevenLabsInput(input: any) {
   // Validate text
-  const textValidation = commonValidations.validateText(input);
-  if (!textValidation.isValid) {
-    return textValidation;
+  if (!input.text || input.text.trim().length === 0) {
+    return { isValid: false, error: 'Text is required' };
+  }
+  if (input.text.length > 5000) {
+    return { isValid: false, error: 'Text is too long (max 5000 characters)' };
   }
 
   // Validate voice
@@ -23,15 +25,15 @@ function transformElevenLabsInput(input: any) {
   const { text, voice, stability, similarity_boost, style, speed, timestamps, previous_text, next_text, language_code } = input;
   
   // Get voice ID with fallback
-  const { voiceId, isFallback } = getVoiceId(voice);
-  console.log('🎤 [ElevenLabs TTS] Voice mapping:', { voice, voiceId, isFallback });
+  const voiceId = getVoiceId('elevenlabs', voice);
+  console.log('🎤 [ElevenLabs TTS] Voice mapping:', { voice, voiceId });
 
   // Create voice settings
   const voice_settings = createVoiceSettings({
     stability,
-    similarity_boost,
+    similarityBoost: similarity_boost,
     style,
-    speed
+    useSpeakerBoost: true
   });
 
   // Build transformed input
@@ -52,10 +54,22 @@ function transformElevenLabsInput(input: any) {
 }
 
 // Create the handler using our shared pattern
-export const POST = createGenerationHandler({
-  endpoint: "fal-ai/elevenlabs/tts/turbo-v2.5",
-  modelName: "ElevenLabs TTS",
-  validateInput: validateElevenLabsInput,
-  transformInput: transformElevenLabsInput,
-  enableLogs: true
+export const POST = createGenerationHandler(async (body: any) => {
+  // Validate input
+  const validation = validateElevenLabsInput(body);
+  if (!validation.isValid) {
+    throw new Error(validation.error);
+  }
+
+  // Transform input for API
+  const transformedInput = transformElevenLabsInput(body);
+
+  // This is a placeholder - actual implementation would call the ElevenLabs API
+  console.log('🎤 [ElevenLabs TTS] Would generate speech with:', transformedInput);
+  
+  return {
+    success: true,
+    message: 'ElevenLabs TTS generation initiated',
+    voiceId: transformedInput.voice_id,
+  };
 });

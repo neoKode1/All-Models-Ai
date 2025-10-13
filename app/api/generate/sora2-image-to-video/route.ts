@@ -31,12 +31,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate image content
-    const imageValidation = validateImageForSora2(image_url);
-    if (!imageValidation.isValid) {
+    const imageValidation = await validateImageForSora2(image_url);
+    if (!imageValidation.passed) {
       return NextResponse.json(
         { 
           error: 'Image validation failed',
-          issues: imageValidation.issues,
+          reason: imageValidation.reason,
+          suggestions: imageValidation.suggestions,
           guidance: getSora2ContentGuidance()
         },
         { status: 400 }

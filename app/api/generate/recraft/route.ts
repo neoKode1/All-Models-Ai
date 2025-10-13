@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         style_id,
       },
       logs: true,
-      onQueueUpdate: (update: QueueUpdate) => {
+      onQueueUpdate: (update: any) => {
         if (update.status === "IN_PROGRESS") {
           console.log("Generation progress:", update.logs);
         }

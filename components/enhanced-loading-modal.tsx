@@ -21,7 +21,13 @@ export const EnhancedLoadingModal: React.FC<EnhancedLoadingModalProps> = ({
 
   useEffect(() => {
     if (isOpen && model) {
-      const newEstimator = createLoadingEstimator(model);
+      // Determine model type from model string
+      const modelType: 'image' | 'video' | 'audio' | 'chat' = 
+        model.includes('video') || model.includes('veo') || model.includes('kling') || model.includes('sora') ? 'video' :
+        model.includes('audio') || model.includes('tts') || model.includes('music') ? 'audio' :
+        model.includes('chat') || model.includes('claude') ? 'chat' : 'image';
+      
+      const newEstimator = createLoadingEstimator(modelType);
       setEstimator(newEstimator);
       setProgress(0);
       setStatusMessage('Initializing generation...');
@@ -145,7 +151,7 @@ export const EnhancedLoadingModal: React.FC<EnhancedLoadingModalProps> = ({
             </div>
             {modelInfo && (
               <div className="text-xs text-gray-400 mt-1">
-                Average time: {Math.round(modelInfo.averageExecutionTime)}s
+                Average time: {Math.round(modelInfo.estimatedDuration)}s
               </div>
             )}
           </div>

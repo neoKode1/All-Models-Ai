@@ -156,26 +156,12 @@ Please provide a thoughtful, conversational response that demonstrates your expe
     }
 
     try {
-      // Import the genre detection function dynamically to avoid circular dependencies
-      const { analyzePromptForDirectorStyle } = await import('./film-director-data');
-      
-      // Analyze the prompt for genre and director style
-      const directorAnalysis = analyzePromptForDirectorStyle(prompt);
-      console.log('🎬 [ClaudeAPI] Genre analysis:', directorAnalysis);
-      
       const defaultSystemPrompt = `You are an expert film director and cinematographer with decades of experience in Hollywood. Your specialty is enhancing prompts for AI content generation to achieve cinematic, professional-grade results.
 
 **Your Task:**
 Enhance the user's prompt for ${contentType} generation by applying your director's knowledge and expertise.
 
-**Genre Analysis:**
-- Detected Genre: ${this.getGenreFromDirector(directorAnalysis.suggestedDirector)}
-- Suggested Director: ${directorAnalysis.suggestedDirector}
-- Style Description: ${directorAnalysis.styleDescription}
-- Key Techniques: ${directorAnalysis.techniques.join(', ')}
-- Lighting Approach: ${directorAnalysis.lighting.join(', ')}
-
-**Genre-Specific Enhancement Guidelines:**
+**Enhancement Guidelines:**
 
 **For Horror/Thriller Content:**
 - High contrast lighting with deep shadows
@@ -243,19 +229,16 @@ Enhance the user's prompt for ${contentType} generation by applying your directo
 
       const finalSystemPrompt = systemPrompt || defaultSystemPrompt;
 
-             const message = `Enhance this prompt for ${contentType} generation: "${prompt}"
-
-Genre Analysis: ${directorAnalysis.styleDescription}
-Key Techniques: ${directorAnalysis.techniques.join(', ')}
-Lighting: ${directorAnalysis.lighting.join(', ')}
+      const message = `Enhance this prompt for ${contentType} generation: "${prompt}"
 
 Apply your director's knowledge to create a cinematic, professional-grade prompt that will produce high-quality ${contentType} content. 
 
 **Important:** 
-- Use the specific director's techniques and lighting approach listed above
-- Apply the director's signature style to the subject matter
-- Focus on the detected genre and apply appropriate cinematic techniques
-- Make the enhancement specific to the director's known work and style`;
+- Return ONLY the enhanced prompt, no explanations
+- Add cinematic techniques and lighting approaches
+- Apply professional filmmaking principles
+- Keep it concise but comprehensive
+- Preserve the original intent`;
 
       const response = await this.client.messages.create({
         model: 'claude-3-5-sonnet-20241022',
@@ -283,30 +266,6 @@ Apply your director's knowledge to create a cinematic, professional-grade prompt
       console.error('❌ [ClaudeAPI] Error enhancing prompt:', error);
       return prompt; // Return original prompt on error
     }
-  }
-
-  private getGenreFromDirector(directorKey: string): string {
-    const genreMap: Record<string, string> = {
-      'denis_villeneuve': 'Sci-Fi/Drama',
-      'christopher_nolan': 'Thriller/Action',
-      'david_fincher': 'Thriller/Drama',
-      'martin_scorsese': 'Drama/Crime',
-      'steven_spielberg': 'Adventure/Drama',
-      'ridley_scott': 'Sci-Fi/Thriller',
-      'guillermo_del_toro': 'Fantasy/Horror',
-      'david_cronenberg': 'Horror/Thriller',
-      'clint_eastwood': 'Drama/Western',
-      'hayao_miyazaki': 'Fantasy/Animation',
-      'akira_kurosawa': 'Drama/Action',
-      'alfred_hitchcock': 'Thriller/Horror',
-      'stanley_kubrick': 'Sci-Fi/Drama',
-      'quentin_tarantino': 'Action/Crime',
-      'wes_anderson': 'Comedy/Drama',
-      'coen_brothers': 'Crime/Drama',
-      'paul_thomas_anderson': 'Drama'
-    };
-    
-    return genreMap[directorKey] || 'Drama';
   }
 
   private generateFallbackResponse(userInput: string): string {

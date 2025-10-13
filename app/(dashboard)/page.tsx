@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Image, Video, Music, Zap } from 'lucide-react';
-import { Terminal } from './terminal';
+import { SimpleVideoGallery } from '@/components/simple-video-gallery';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -33,7 +33,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
-              <Terminal />
+              <SimpleVideoGallery />
             </div>
           </div>
         </div>

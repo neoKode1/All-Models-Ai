@@ -66,9 +66,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           } else {
             // For larger images, use compression
             console.log('🗜️ [FAL Image Proxy] Image is large, applying compression');
-            const compressionOptions = getOptimalCompressionOptions(originalSize);
-            const compressionResult = await compressImageFromUrl(body.image_url, compressionOptions);
-            input.image_url = bufferToDataUri(compressionResult.compressedBuffer, compressionResult.mimeType);
+            const compressedDataUri = await compressImageFromUrl(body.image_url, 1024);
+            input.image_url = compressedDataUri;
             console.log('🖼️ [FAL Image Proxy] Compressed data URI length:', input.image_url.length);
           }
           
@@ -150,11 +149,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               } else {
                 // For larger images, use compression
                 console.log('🗜️ [FAL Image Proxy] Image in array is large, applying compression');
-                const compressionOptions = getOptimalCompressionOptions(originalSize);
-                const compressionResult = await compressImageFromUrl(url, compressionOptions);
-                const dataUri = bufferToDataUri(compressionResult.compressedBuffer, compressionResult.mimeType);
-                console.log('🖼️ [FAL Image Proxy] Compressed data URI length:', dataUri.length);
-                return dataUri;
+                const compressedDataUri = await compressImageFromUrl(url, 1024);
+                console.log('🖼️ [FAL Image Proxy] Compressed data URI length:', compressedDataUri.length);
+                return compressedDataUri;
               }
             } catch (error) {
               console.error('❌ [FAL Image Proxy] Failed to convert HTTP URL in image_urls array to base64:', error);
@@ -412,8 +409,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             } else {
               // For larger images, use compression
               console.log('🗜️ [FAL Image Proxy] Image for Nano Banana is large, applying compression');
-              const compressionOptions = getOptimalCompressionOptions(originalSize);
-              imageUrl = await compressImageFromUrl(imageUrl, compressionOptions);
+              imageUrl = await compressImageFromUrl(imageUrl, 1024);
             }
             
             console.log('🖼️ [FAL Image Proxy] Successfully converted single image_url to base64 for Nano Banana');

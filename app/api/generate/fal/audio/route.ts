@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
         ...(video_url && { video_url })
       };
 
-      const result = await falClient.subscribe(FAL_ENDPOINTS["mmaudio-v2"], {
+      const result = await falClient.subscribe("fal-ai/mmaudio-v2", {
         input,
         logs: true
       });

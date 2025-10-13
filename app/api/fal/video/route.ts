@@ -491,8 +491,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         requestId: result.requestId,
         hasData: !!result.data,
         dataKeys: result.data ? Object.keys(result.data) : [],
-        videoUrl: result.data?.video,
-        status: result.status
+        videoUrl: result.data?.video
       });
 
       // Return standardized response

@@ -55,9 +55,8 @@ async function processImageWithCompression(imageData: string): Promise<string> {
     // Handle base64 data URIs
     if (imageData.startsWith('data:')) {
       console.log('📊 [Generate API] Processing base64 data URI');
-      const compressionOptions = getOptimalCompressionOptions(0); // Will be determined from actual size
-      const result = await compressBase64DataUri(imageData, compressionOptions);
-      return bufferToDataUri(result.compressedBuffer, result.mimeType);
+      const compressedDataUri = await compressBase64DataUri(imageData, 1024);
+      return compressedDataUri;
     }
     
     // Handle HTTP URLs
@@ -85,9 +84,8 @@ async function processImageWithCompression(imageData: string): Promise<string> {
       
       // For larger images, use compression
       console.log('🗜️ [Generate API] Image is large, applying compression');
-      const compressionOptions = getOptimalCompressionOptions(originalSize);
-      const result = await compressImageFromUrl(imageData, compressionOptions);
-      return bufferToDataUri(result.compressedBuffer, result.mimeType);
+      const compressedDataUri = await compressImageFromUrl(imageData, 1024);
+      return compressedDataUri;
     }
     
     // Return as-is if not a recognized format
@@ -116,8 +114,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     let sessionId: string | undefined;
     
     if (user && !authError) {
-      userId = user.id;
-      console.log(`👤 [Generate API] [${requestId}] Authenticated user: ${user.email}`);
+      userId = (user as any).id;
+      console.log(`👤 [Generate API] [${requestId}] Authenticated user: ${(user as any).email}`);
     } else {
       // Generate session ID for anonymous users
       sessionId = requestId; // Use requestId as sessionId for anonymous users
@@ -191,11 +189,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Optimize the prompt to avoid content policy violations
-    const optimizationResult = optimizePrompt(originalPrompt);
+    const isVideo = model.includes('video') || model.includes('veo') || model.includes('kling');
+    const optimizationResult = optimizePrompt(originalPrompt, isVideo ? 'video' : 'image', model);
     const prompt = optimizationResult.optimizedPrompt;
     
-    if (optimizationResult.wasOptimized) {
-      console.log(`🔧 [Generate API] [${requestId}] Prompt optimized:`, formatOptimizationResult(optimizationResult));
+    if (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0) {
+      console.log(`🔧 [Generate API] [${requestId}] Prompt optimization:`, formatOptimizationResult(optimizationResult));
       console.log(`🔧 [Generate API] [${requestId}] Original: "${originalPrompt}"`);
       console.log(`🔧 [Generate API] [${requestId}] Optimized: "${prompt}"`);
     } else {
@@ -203,12 +202,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Check if the prompt is likely to be rejected
-    const rejectionCheck = isPromptLikelyRejected(prompt);
-    if (rejectionCheck.isLikelyRejected) {
-      console.log(`⚠️ [Generate API] [${requestId}] Prompt may still be rejected:`, {
-        confidence: rejectionCheck.confidence,
-        reasons: rejectionCheck.reasons
-      });
+    if (isPromptLikelyRejected(prompt)) {
+      console.log(`⚠️ [Generate API] [${requestId}] Warning: Prompt may contain restricted content`);
     }
 
     // Determine if this is a video or image generation request
@@ -959,9 +954,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         status: 'completed',
         model: model,
         prompt: prompt,
-        originalPrompt: optimizationResult.wasOptimized ? originalPrompt : undefined,
-        promptOptimized: optimizationResult.wasOptimized,
-        optimizationChanges: optimizationResult.wasOptimized ? optimizationResult.changes : undefined,
+        originalPrompt: (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0) ? originalPrompt : undefined,
+        promptOptimized: (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0),
+        optimizationSuggestions: optimizationResult.suggestions.length > 0 ? optimizationResult.suggestions : undefined,
         duration: duration,
         timestamp: new Date().toISOString()
       });
@@ -1097,7 +1092,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           console.log(`✅ [Generate API] [${requestId}] Total duration: ${fallbackDuration}ms`);
           
           // Save fallback generation to database
-          const fallbackOutputUrl = fallbackResult.data?.video?.url || fallbackResult.data?.images?.[0]?.url || null;
+          const fallbackOutputUrl = (fallbackResult as any).data?.video?.url || (fallbackResult as any).data?.images?.[0]?.url || null;
           await saveGenerationToDatabase(
             requestId,
             prompt,
@@ -1112,14 +1107,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           
         return NextResponse.json({
             success: true,
-            data: fallbackResult.data,
-            requestId: fallbackResult.requestId,
+            data: (fallbackResult as any).data,
+            requestId: (fallbackResult as any).requestId,
             status: 'completed',
             model: 'fal-ai/bytedance/seedream/v4/edit',
           prompt: prompt,
-          originalPrompt: optimizationResult.wasOptimized ? originalPrompt : undefined,
-          promptOptimized: optimizationResult.wasOptimized,
-          optimizationChanges: optimizationResult.wasOptimized ? optimizationResult.changes : undefined,
+          originalPrompt: (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0) ? originalPrompt : undefined,
+          promptOptimized: (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0),
+          optimizationSuggestions: optimizationResult.suggestions.length > 0 ? optimizationResult.suggestions : undefined,
             duration: fallbackDuration,
             fallbackUsed: 'fal-ai/bytedance/seedream/v4/edit',
             timestamp: new Date().toISOString()
@@ -1130,8 +1125,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           // Try Flux Pro as a second fallback
           try {
             const fluxInput: Record<string, any> = {
-              prompt: input.prompt,
-              logs: true,
+              prompt: prompt,
             };
 
             if (body.image_url) {
@@ -1150,7 +1144,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             }
             
             const fluxResult = await fal.subscribe('fal-ai/flux-pro/v1.1-ultra', {
-              input: fluxInput,
+              input: fluxInput as any,
               logs: true,
               onQueueUpdate: (update: any) => {
                 console.log(`📊 [Generate API] [${requestId}] Flux Pro queue update:`, update.status);
@@ -1178,9 +1172,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               status: 'completed',
               model: 'fal-ai/flux-pro/v1.1-ultra',
               prompt: prompt,
-              originalPrompt: optimizationResult.wasOptimized ? originalPrompt : undefined,
-              promptOptimized: optimizationResult.wasOptimized,
-              optimizationChanges: optimizationResult.wasOptimized ? optimizationResult.changes : undefined,
+              originalPrompt: (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0) ? originalPrompt : undefined,
+              promptOptimized: (optimizationResult.warnings.length > 0 || optimizationResult.suggestions.length > 0),
+              optimizationSuggestions: optimizationResult.suggestions.length > 0 ? optimizationResult.suggestions : undefined,
               duration: Date.now() - startTime,
               fallbackUsed: 'fal-ai/flux-pro/v1.1-ultra',
               originalModel: model,

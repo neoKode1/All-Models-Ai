@@ -235,8 +235,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json({
         success: true,
         data: result,
-        requestId: result.requestId || result.id,
-        status: result.status || 'queued'
+        requestId: result.requestId || 'unknown',
+        status: 'completed'
       });
     } else {
       const result = await fal.run(model, sanitizedInput);
