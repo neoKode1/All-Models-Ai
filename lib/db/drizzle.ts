@@ -5,9 +5,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('POSTGRES_URL environment variable is not set');
-}
-
-export const client = postgres(process.env.POSTGRES_URL);
-export const db = drizzle(client, { schema });
+// Only initialize database connection if POSTGRES_URL is available
+// This prevents build errors when environment variables are not set
+export const client = process.env.POSTGRES_URL ? postgres(process.env.POSTGRES_URL) : null;
+export const db = client ? drizzle(client, { schema }) : null;

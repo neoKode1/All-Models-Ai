@@ -40,6 +40,10 @@ async function createStripeProducts() {
 }
 
 async function seed() {
+  if (!db) {
+    throw new Error('Database not available');
+  }
+
   const email = 'test@test.com';
   const password = 'admin123';
   const passwordHash = await hashPassword(password);

@@ -41,7 +41,9 @@ async function logActivity(
     action: type,
     ipAddress: ipAddress || ''
   };
-  await db.insert(activityLogs).values(newActivity);
+  if (db) {
+    await db.insert(activityLogs).values(newActivity);
+  }
 }
 
 const signInSchema = z.object({
@@ -50,6 +52,10 @@ const signInSchema = z.object({
 });
 
 export const signIn = validatedAction(signInSchema, async (data, formData) => {
+  if (!db) {
+    return { error: 'Database not available. Please try again later.' };
+  }
+
   const { email, password } = data;
 
   const userWithTeam = await db
@@ -107,6 +113,10 @@ const signUpSchema = z.object({
 });
 
 export const signUp = validatedAction(signUpSchema, async (data, formData) => {
+  if (!db) {
+    return { error: 'Database not available. Please try again later.', email: data.email, password: data.password };
+  }
+
   const { email, password, inviteId } = data;
 
   const existingUser = await db
@@ -130,6 +140,14 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     passwordHash,
     role: 'owner' // Default role, will be overridden if there's an invitation
   };
+
+  if (!db) {
+    return {
+      error: 'Database not available. Please try again later.',
+      email,
+      password
+    };
+  }
 
   const [createdUser] = await db.insert(users).values(newUser).returning();
 
@@ -237,6 +255,10 @@ const updatePasswordSchema = z.object({
 export const updatePassword = validatedActionWithUser(
   updatePasswordSchema,
   async (data, _, user) => {
+    if (!db) {
+      return { error: 'Database not available. Please try again later.' };
+    }
+
     const { currentPassword, newPassword, confirmPassword } = data;
 
     const isPasswordValid = await comparePasswords(
@@ -295,6 +317,10 @@ const deleteAccountSchema = z.object({
 export const deleteAccount = validatedActionWithUser(
   deleteAccountSchema,
   async (data, _, user) => {
+    if (!db) {
+      return { error: 'Database not available. Please try again later.' };
+    }
+
     const { password } = data;
 
     const isPasswordValid = await comparePasswords(password, user.passwordHash);
@@ -346,6 +372,10 @@ const updateAccountSchema = z.object({
 export const updateAccount = validatedActionWithUser(
   updateAccountSchema,
   async (data, _, user) => {
+    if (!db) {
+      return { error: 'Database not available. Please try again later.' };
+    }
+
     const { name, email } = data;
     const userWithTeam = await getUserWithTeam(user.id);
 
@@ -365,6 +395,10 @@ const removeTeamMemberSchema = z.object({
 export const removeTeamMember = validatedActionWithUser(
   removeTeamMemberSchema,
   async (data, _, user) => {
+    if (!db) {
+      return { error: 'Database not available. Please try again later.' };
+    }
+
     const { memberId } = data;
     const userWithTeam = await getUserWithTeam(user.id);
 
@@ -399,6 +433,10 @@ const inviteTeamMemberSchema = z.object({
 export const inviteTeamMember = validatedActionWithUser(
   inviteTeamMemberSchema,
   async (data, _, user) => {
+    if (!db) {
+      return { error: 'Database not available. Please try again later.' };
+    }
+
     const { email, role } = data;
     const userWithTeam = await getUserWithTeam(user.id);
 
