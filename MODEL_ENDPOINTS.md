@@ -134,6 +134,27 @@
 - **Special**: Simpler schema, optimized for speed
 - **Status**: 🆕 High priority - add to dropdown
 
+**LTX Video 0.9.8 13B** (`fal-ai/ltxv-13b-098-distilled/image-to-video`):
+- **Category**: Image-to-Video (Long videos, LoRA support)
+- **Input**: 
+  - `prompt` (required)
+  - `image_url` (required for I2V)
+  - `loras` (list of LoRA weights) - optional
+  - `num_frames` (default: 121) - supports long videos
+  - `frame_rate` (default: 24)
+  - `resolution` (480p/720p, default: 720p)
+  - `aspect_ratio` (9:16/1:1/16:9/auto, default: auto)
+  - `enable_detail_pass` (boolean) - 2x cost but enhanced details
+  - `first_pass_num_inference_steps` (default: 8)
+  - `second_pass_num_inference_steps` (default: 8)
+  - `temporal_adain_factor` (0.0-1.0, default: 0.5) - color consistency
+  - `expand_prompt` (boolean)
+  - `reverse_video` (boolean)
+- **Output**: `video` (File), `prompt` (string), `seed` (integer)
+- **Use Case**: Long-form video generation with detail refinement
+- **Special**: Detail pass option, temporal color normalization, LoRA support
+- **Status**: ✅ Already configured
+
 ---
 
 ## 🎭 Video-to-Video Models
