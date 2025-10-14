@@ -129,7 +129,8 @@ export async function getTeamForUser() {
     return null;
   }
 
-  const result = await db.query.teamMembers.findFirst({
+  // TypeScript needs explicit assertion that db is not null here
+  const result = await db!.query.teamMembers.findFirst({
     where: eq(teamMembers.userId, user.id),
     with: {
       team: {
