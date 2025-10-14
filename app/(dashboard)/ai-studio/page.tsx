@@ -328,9 +328,9 @@ function AIStudioContent() {
   }
 
   return (
-    <div className="h-screen flex bg-white">
+    <div className="h-screen flex bg-white dark:bg-black">
       {/* Left Column - Chat Interface */}
-      <div className="w-80 border-r border-gray-200 flex flex-col">
+      <div className="w-80 border-r border-gray-200 dark:border-gray-800 flex flex-col">
         <SimpleChatInterface 
           onContentGenerated={handleGenerate}
           onGenerationStarted={() => console.log('Generation started')}
@@ -346,23 +346,23 @@ function AIStudioContent() {
             {generatedContent.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-900 rounded-lg flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No content yet</h3>
-                  <p className="text-gray-500">Start a conversation to generate content</p>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No content yet</h3>
+                  <p className="text-gray-500 dark:text-gray-400">Start a conversation to generate content</p>
                 </div>
               </div>
             ) : (
               generatedContent.map((content, index) => (
-                <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-medium text-gray-900 truncate">
+                    <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
                       {content.prompt}
                     </h3>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       {new Date(content.timestamp).toLocaleTimeString()}
                     </span>
                   </div>
@@ -455,16 +455,16 @@ function AIStudioContent() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-gray-500 text-sm">No media content generated</div>
+                    <div className="text-gray-500 dark:text-gray-400 text-sm">No media content generated</div>
                   )}
                   
                   <div className="mt-3 flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Model: {content.model}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Model: {content.model}</span>
                     <div className="flex space-x-2">
-                      <button className="text-gray-400 hover:text-gray-600 text-sm">
+                      <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm">
                         Share
                       </button>
-                      <button className="text-gray-400 hover:text-gray-600 text-sm">
+                      <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm">
                         Delete
                       </button>
                     </div>
@@ -477,17 +477,17 @@ function AIStudioContent() {
       </div>
 
       {/* Right Column - Gallery */}
-      <div className={`relative border-l border-gray-200 flex flex-col transition-all duration-300 ease-in-out ${
+      <div className={`relative border-l border-gray-200 dark:border-gray-800 flex flex-col transition-all duration-300 ease-in-out ${
         isGalleryCollapsed ? 'w-12' : 'w-64'
       }`}>
         {/* Collapse/Expand Button */}
         <button
           onClick={() => setIsGalleryCollapsed(!isGalleryCollapsed)}
-          className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white border border-gray-200 rounded-l-lg px-2 py-4 shadow-sm hover:shadow-md transition-shadow"
+          className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-l-lg px-2 py-4 shadow-sm hover:shadow-md transition-shadow"
           title={isGalleryCollapsed ? 'Expand Gallery' : 'Collapse Gallery'}
         >
           <svg 
-            className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${
+            className={`w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform duration-200 ${
               isGalleryCollapsed ? 'rotate-180' : ''
             }`} 
             fill="none" 
@@ -500,8 +500,8 @@ function AIStudioContent() {
         
         {!isGalleryCollapsed && (
           <>
-            <div className="p-4 border-b border-gray-200">
-              <h2 className="text-sm font-medium text-gray-900">Gallery</h2>
+            <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+              <h2 className="text-sm font-medium text-gray-900 dark:text-white">Gallery</h2>
             </div>
             <div className="flex-1 overflow-y-auto">
               <GalleryView 
@@ -527,7 +527,7 @@ function AIStudioContent() {
         {/* Gallery Tab when collapsed */}
         {isGalleryCollapsed && (
           <div className="flex-1 flex items-center justify-center">
-            <div className="transform -rotate-90 text-xs font-medium text-gray-500 whitespace-nowrap">
+            <div className="transform -rotate-90 text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
               Gallery
             </div>
           </div>

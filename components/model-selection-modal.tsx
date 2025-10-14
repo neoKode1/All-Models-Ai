@@ -30,9 +30,9 @@ const CATEGORIES: CategoryInfo[] = [
     id: 'text-to-image',
     label: 'Text to Image',
     emoji: '📸',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-50',
-    borderColor: 'border-blue-300',
+    color: 'text-blue-700 dark:text-blue-400',
+    bgColor: 'bg-blue-50 dark:bg-blue-950',
+    borderColor: 'border-blue-300 dark:border-blue-600',
     description: 'Generate images from text descriptions',
     count: 16
   },
@@ -40,9 +40,9 @@ const CATEGORIES: CategoryInfo[] = [
     id: 'text-to-video',
     label: 'Text to Video',
     emoji: '🎬',
-    color: 'text-purple-700',
-    bgColor: 'bg-purple-50',
-    borderColor: 'border-purple-300',
+    color: 'text-purple-700 dark:text-purple-400',
+    bgColor: 'bg-purple-50 dark:bg-purple-950',
+    borderColor: 'border-purple-300 dark:border-purple-600',
     description: 'Create videos from text prompts',
     count: 8
   },
@@ -50,9 +50,9 @@ const CATEGORIES: CategoryInfo[] = [
     id: 'image-to-video',
     label: 'Image to Video',
     emoji: '🖼️',
-    color: 'text-green-700',
-    bgColor: 'bg-green-50',
-    borderColor: 'border-green-300',
+    color: 'text-green-700 dark:text-green-400',
+    bgColor: 'bg-green-50 dark:bg-green-950',
+    borderColor: 'border-green-300 dark:border-green-600',
     description: 'Animate images into videos',
     count: 20
   },
@@ -60,9 +60,9 @@ const CATEGORIES: CategoryInfo[] = [
     id: 'video-to-video',
     label: 'Video to Video',
     emoji: '🎭',
-    color: 'text-yellow-700',
-    bgColor: 'bg-yellow-50',
-    borderColor: 'border-yellow-300',
+    color: 'text-yellow-700 dark:text-yellow-400',
+    bgColor: 'bg-yellow-50 dark:bg-yellow-950',
+    borderColor: 'border-yellow-300 dark:border-yellow-600',
     description: 'Transform and edit videos',
     count: 6
   },
@@ -70,9 +70,9 @@ const CATEGORIES: CategoryInfo[] = [
     id: 'audio',
     label: 'Audio / Music',
     emoji: '🔊',
-    color: 'text-red-700',
-    bgColor: 'bg-red-50',
-    borderColor: 'border-red-300',
+    color: 'text-red-700 dark:text-red-400',
+    bgColor: 'bg-red-50 dark:bg-red-950',
+    borderColor: 'border-red-300 dark:border-red-600',
     description: 'Generate audio and music',
     count: 2
   },
@@ -80,9 +80,9 @@ const CATEGORIES: CategoryInfo[] = [
     id: '3d',
     label: '3D Models',
     emoji: '🧊',
-    color: 'text-indigo-700',
-    bgColor: 'bg-indigo-50',
-    borderColor: 'border-indigo-300',
+    color: 'text-indigo-700 dark:text-indigo-400',
+    bgColor: 'bg-indigo-50 dark:bg-indigo-950',
+    borderColor: 'border-indigo-300 dark:border-indigo-600',
     description: 'Create 3D assets',
     count: 1
   }
@@ -140,17 +140,17 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
           <DialogHeader>
             <div className="flex items-center justify-between">
               <div>
-                <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-6 w-6 text-purple-500" />
+                <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
+                  <Sparkles className="h-6 w-6 text-purple-500 dark:text-purple-400" />
                   Select Model Category
                 </DialogTitle>
-                <DialogDescription className="mt-2">
+                <DialogDescription className="mt-2 text-gray-600 dark:text-gray-400">
                   Choose a category to see available AI models
                 </DialogDescription>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -172,7 +172,7 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
                     <h3 className={`text-lg font-bold ${category.color}`}>
                       {category.label}
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       {category.description}
                     </p>
                     <Badge className={`${category.bgColor} ${category.color} border ${category.borderColor}`}>
@@ -192,17 +192,17 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
           <DialogHeader>
             <div className="flex items-center justify-between">
               <div>
-                <DialogTitle className="text-xl font-bold flex items-center gap-2">
+                <DialogTitle className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
                   {CATEGORIES.find(c => c.id === selectedCategory)?.emoji}
                   {CATEGORIES.find(c => c.id === selectedCategory)?.label}
                 </DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-gray-600 dark:text-gray-400">
                   Select a model to use for generation
                 </DialogDescription>
               </div>
               <button
                 onClick={handleBackToCategories}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -212,7 +212,7 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
           <div className="mt-4">
             <button
               onClick={handleBackToCategories}
-              className="text-sm text-purple-600 hover:text-purple-700 mb-4 flex items-center gap-1"
+              className="text-sm text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 mb-4 flex items-center gap-1"
             >
               ← Back to Categories
             </button>
@@ -223,8 +223,8 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
                   key={model.value}
                   className={`cursor-pointer hover:shadow-md transition-all duration-200 ${
                     currentModel === model.value
-                      ? 'border-2 border-purple-500 bg-purple-50'
-                      : 'border border-gray-200 hover:border-gray-300'
+                      ? 'border-2 border-purple-500 bg-purple-50 dark:bg-purple-950 dark:border-purple-400'
+                      : 'border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   } ${model.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                   onClick={() => !model.disabled && handleModelSelect(model.value)}
                 >
@@ -238,7 +238,7 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span className={`font-medium text-sm ${
-                            currentModel === model.value ? 'text-purple-700' : 'text-gray-900'
+                            currentModel === model.value ? 'text-purple-700 dark:text-purple-400' : 'text-gray-900 dark:text-white'
                           }`}>
                             {model.label}
                           </span>
@@ -249,10 +249,10 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
                           )}
                         </div>
                         {model.disabled && (
-                          <span className="text-xs text-gray-400">Disabled</span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500">Disabled</span>
                         )}
                         {currentModel === model.value && (
-                          <span className="text-xs text-purple-600">✓ Selected</span>
+                          <span className="text-xs text-purple-600 dark:text-purple-400">✓ Selected</span>
                         )}
                       </div>
                     </div>

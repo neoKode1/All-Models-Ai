@@ -137,6 +137,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/wan/v2.2-a14b/image-to-video/lora', label: 'Wan 2.2 I2V (LoRA)', icon: '/alibaba-color.svg', isNew: true },
       { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true },
       { value: 'fal-ai/kling-video/v1/pro/ai-avatar', label: 'Kling AI Avatar Pro', icon: '/kling-color.svg' },
+      { value: 'fal-ai/sync-lipsync/v2', label: 'Sync Lipsync v2', icon: '/sync.svg', isNew: true },
+      { value: 'veed/lipsync', label: 'VEED Lipsync', icon: '/veed.svg', isNew: true },
       { value: 'fal-ai/wan-pro/image-to-video', label: 'Wan Pro (I2V) - Disabled', icon: '/alibaba-color.svg', disabled: true },
     ],
     'video-to-video': [
@@ -1293,130 +1295,38 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white dark:bg-black">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">All Models AI</h2>
-            <p className="text-sm text-gray-500">Describe your idea to generate content</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">All Models AI</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Describe your idea to generate content</p>
           </div>
           <div className="flex items-center gap-2">
             {/* Model Preferences Dropdown */}
             <div className="flex items-center gap-2">
-              <Monitor className="w-4 h-4 text-gray-500" />
-              <Select value={preferredVideoModel} onValueChange={handleModelSelectionChange}>
-                <SelectTrigger className="w-40 h-8 text-xs">
-                  <SelectValue placeholder="Model" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="fal-ai/nano-banana/edit">
-                    <div className="flex items-center gap-2">
-                      <img src="/gemini-color.svg" alt="Nano Banana" className="w-4 h-4" />
-                      <span>Nano Banana Edit (Image)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/bytedance/seedream/v4/edit">
-                    <div className="flex items-center gap-2">
-                      <img src="/bytedance-color.svg" alt="Seedream" className="w-4 h-4" />
-                      <span>Seedream 4.0 Edit (Image)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/flux-pro/v1.1-ultra">
-                    <div className="flex items-center gap-2">
-                      <img src="/flux.svg" alt="Flux" className="w-4 h-4" />
-                      <span>Flux Pro (Image)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/sora-2/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/openai.svg" alt="Sora 2" className="w-4 h-4" />
-                      <span>Sora 2 (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/sora-2/image-to-video/pro">
-                    <div className="flex items-center gap-2">
-                      <img src="/openai.svg" alt="Sora 2 Pro" className="w-4 h-4" />
-                      <span>Sora 2 Pro (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/veo3/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/Gen4.png" alt="Veo" className="w-4 h-4" />
-                      <span>Veo 3 (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/kling-video/v2.1/master/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/kling-color.svg" alt="Kling" className="w-4 h-4" />
-                      <span>Kling v2.1 Master (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/kling-video/v2.5-turbo/pro/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/kling-color.svg" alt="Kling" className="w-4 h-4" />
-                      <span>Kling V2.5 Turbo Pro (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/minimax/hailuo-02/standard/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/minimax-color.svg" alt="Minimax" className="w-4 h-4" />
-                      <span>Minimax Hailuo 02 (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/hunyuan-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/bytedance-color.svg" alt="Hunyuan" className="w-4 h-4" />
-                      <span>Hunyuan Video (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/wan-pro/image-to-video" disabled className="text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <img src="/alibaba-color.svg" alt="Wan Pro" className="w-4 h-4 opacity-50" />
-                      <span>Wan Pro (I2V) - Disabled</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/wan/v2.2-a14b/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/alibaba-color.svg" alt="Wan v2.2-A14B" className="w-4 h-4" />
-                      <span>Wan v2.2-A14B (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/ovi/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/Gen4.png" alt="Ovi" className="w-4 h-4" />
-                      <span>Ovi (Image-to-Video with Audio)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/luma-dream-machine/ray-2/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/dreammachine.svg" alt="Luma Ray 2" className="w-4 h-4" />
-                      <span>Luma Ray 2 (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/wan-25-preview/image-to-video">
-                    <div className="flex items-center gap-2">
-                      <img src="/alibaba-color.svg" alt="Wan 2.5 Preview" className="w-4 h-4" />
-                      <span>Wan 2.5 Preview (I2V)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="fal-ai/kling-video/v1/pro/ai-avatar">
-                    <div className="flex items-center gap-2">
-                      <img src="/kling-color.svg" alt="Kling Avatar" className="w-4 h-4" />
-                      <span>Kling AI Avatar Pro</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="endframe/minimax-hailuo-02">
-                    <div className="flex items-center gap-2">
-                      <img src="/minimax-color.svg" alt="EndFrame" className="w-4 h-4" />
-                      <span>EndFrame (Minimax)</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <Monitor className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowModelSelector(true)}
+                className="w-40 h-8 text-xs justify-between"
+              >
+                <span className="truncate">
+                  {(() => {
+                    const currentModel = modelsByCategory[Object.keys(modelsByCategory).find(category => 
+                      modelsByCategory[category].find(model => model.value === preferredVideoModel)
+                    ) || 'text-to-image']?.find(model => model.value === preferredVideoModel);
+                    if (currentModel) return currentModel.label;
+                    return 'Select Model';
+                  })()}
+                </span>
+                <Sparkles className="h-3 w-3 text-purple-500" />
+              </Button>
               {/* Duration indicator for video models */}
               {isVideoModel(preferredVideoModel) && (
-                <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                   {duration}s
                 </div>
               )}
@@ -1424,7 +1334,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
             {messages.length > 0 && (
               <button
                 onClick={clearChatHistory}
-                className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded hover:bg-gray-100 transition-colors"
+                className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 title="Clear chat history"
               >
                 Clear
@@ -1505,8 +1415,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
 
       {/* Suggestions */}
       {showSuggestions && messages.length === 0 && (
-        <div className="p-4 border-t border-gray-200">
-          <p className="text-sm font-medium text-gray-700 mb-2">Suggestions:</p>
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Suggestions:</p>
           <div className="space-y-2">
             {[
               "Create a cinematic shot with dramatic lighting",
@@ -1518,7 +1428,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
               <button
                 key={index}
                 onClick={() => setUserInput(suggestion)}
-                className="block w-full text-left text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 p-2 rounded transition-colors"
+                className="block w-full text-left text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded transition-colors"
               >
                 {suggestion}
               </button>
@@ -1528,11 +1438,11 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       )}
 
       {/* Input Area */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         {/* Uploaded Images Preview */}
         {uploadedImages.length > 0 && (
           <div className="mb-4">
-            <p className="text-sm font-medium text-gray-700 mb-2">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Uploaded Images ({uploadedImages.length}):
             </p>
             <div className="flex flex-wrap gap-2">
@@ -1615,8 +1525,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
               disabled={isProcessingImages || isProcessingAudio}
               className={`flex-shrink-0 p-3 border rounded-lg transition-all duration-200 group ${
                 isProcessingImages || isProcessingAudio
-                  ? 'text-gray-400 border-gray-200 bg-gray-50 cursor-not-allowed' 
-                  : 'text-gray-500 hover:text-blue-600 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                  ? 'text-gray-400 border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-600 cursor-not-allowed' 
+                  : 'text-gray-500 hover:text-blue-600 border-gray-200 hover:border-blue-300 hover:bg-blue-50 dark:text-gray-400 dark:border-gray-600 dark:hover:text-blue-400 dark:hover:border-blue-500 dark:hover:bg-gray-800'
               }`}
               title={isProcessingImages || isProcessingAudio ? "Processing files..." : "Upload images and audio"}
             >
@@ -1644,10 +1554,10 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
               >
                 {/* Drop Zone Visual Overlay */}
                 {isDragOver && (
-                  <div className="absolute inset-0 bg-blue-50 bg-opacity-90 rounded-lg flex items-center justify-center z-10 border-2 border-blue-400">
+                  <div className="absolute inset-0 bg-blue-50 dark:bg-blue-950 bg-opacity-90 rounded-lg flex items-center justify-center z-10 border-2 border-blue-400 dark:border-blue-500">
                     <div className="text-center">
-                      <CloudUpload className="w-12 h-12 text-blue-500 mx-auto mb-2 animate-bounce" />
-                      <p className="text-blue-600 font-medium">Drop images here</p>
+                      <CloudUpload className="w-12 h-12 text-blue-500 dark:text-blue-400 mx-auto mb-2 animate-bounce" />
+                      <p className="text-blue-600 dark:text-blue-400 font-medium">Drop images here</p>
                     </div>
                   </div>
                 )}
@@ -1657,8 +1567,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                   onChange={(e) => setUserInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Describe your idea... or drag and drop images here (Press Enter to send)"
-                  className={`min-h-[80px] resize-none border-gray-300 focus:border-blue-400 focus:ring-blue-400 pr-12 transition-all duration-200 ${
-                    isDragOver ? 'border-blue-400 bg-blue-50' : ''
+                  className={`min-h-[80px] resize-none border-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 pr-12 transition-all duration-200 dark:bg-gray-900 dark:text-white ${
+                    isDragOver ? 'border-blue-400 bg-blue-50 dark:bg-blue-950' : ''
                   }`}
                   disabled={isGenerating}
                 />
@@ -1798,375 +1708,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                     </p>
                   </div>
 
-                  {/* Keep old dropdown hidden for now - will remove after testing */}
-                  <div className="hidden">
-                    <Select value={preferredVideoModel} onValueChange={handleModelSelectionChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select model" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[500px]">
-                        {/* TEXT-TO-IMAGE MODELS */}
-                        <div className="px-2 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 border-l-2 border-blue-200">
-                          📸 Text-to-Image
-                        </div>
-                        <SelectItem value="fal-ai/imagen4/preview">
-                          <div className="flex items-center gap-2">
-                            <img src="/gemini-color.svg" alt="Imagen 4" className="w-4 h-4" />
-                            <span>Imagen 4 (Google)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/v1.1-ultra">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux" className="w-4 h-4" />
-                            <span>Flux Pro Ultra</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/recraft/v3/text-to-image">
-                          <div className="flex items-center gap-2">
-                            <img src="/ideogram.svg" alt="Recraft" className="w-4 h-4" />
-                            <span>Recraft V3 (SOTA)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/hidream-i1-full">
-                          <div className="flex items-center gap-2">
-                            <img src="/deepseek-color.svg" alt="HiDream" className="w-4 h-4" />
-                            <span>HiDream-I1 (17B)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-krea-lora/stream">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Krea" className="w-4 h-4" />
-                            <span>Flux Krea LoRA Stream</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/nano-banana/edit">
-                          <div className="flex items-center gap-2">
-                            <img src="/gemini-color.svg" alt="Nano Banana" className="w-4 h-4" />
-                            <span>Nano Banana Edit (Image)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/bytedance/seedream/v4/edit">
-                          <div className="flex items-center gap-2">
-                            <img src="/bytedance-color.svg" alt="Seedream" className="w-4 h-4" />
-                            <span>Seedream 4.0 Edit</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/dreamomni2/edit">
-                          <div className="flex items-center gap-2">
-                            <img src="/bytedance-color.svg" alt="DreamOmni2" className="w-4 h-4" />
-                            <span>DreamOmni2 Edit</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-kontext-lora">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Kontext" className="w-4 h-4" />
-                            <span>Flux Kontext LoRA</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-kontext-lora/text-to-image">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Kontext T2I" className="w-4 h-4" />
-                            <span>Flux Kontext LoRA T2I</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-kontext-lora/inpaint">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Kontext Inpaint" className="w-4 h-4" />
-                            <span>Flux Kontext Inpaint</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/kontext/max/text-to-image">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Pro Kontext Max" className="w-4 h-4" />
-                            <span>Flux Pro Kontext Max T2I</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/kontext/text-to-image">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Pro Kontext" className="w-4 h-4" />
-                            <span>Flux Pro Kontext T2I</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/kontext/max">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Pro Kontext Max" className="w-4 h-4" />
-                            <span>Flux Pro Kontext Max</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/kontext/max/multi">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Pro Kontext Multi" className="w-4 h-4" />
-                            <span>Flux Pro Kontext Max Multi</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/kontext/multi">
-                          <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux Pro Kontext Multi" className="w-4 h-4" />
-                            <span>Flux Pro Kontext Multi</span>
-                          </div>
-                        </SelectItem>
 
-                        {/* TEXT-TO-VIDEO MODELS */}
-                        <div className="px-2 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border-l-2 border-purple-200 mt-2">
-                          🎬 Text-to-Video
-                        </div>
-                        <SelectItem value="fal-ai/sora-2/text-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/openai.svg" alt="Sora 2 T2V" className="w-4 h-4" />
-                            <span>Sora 2 Text-to-Video</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/sora-2/text-to-video/pro">
-                          <div className="flex items-center gap-2">
-                            <img src="/openai.svg" alt="Sora 2 Pro T2V" className="w-4 h-4" />
-                            <span>Sora 2 Pro Text-to-Video</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kandinsky5/text-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/deepseek-color.svg" alt="Kandinsky" className="w-4 h-4" />
-                            <span>Kandinsky 5.0 T2V</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kandinsky5/text-to-video/distill">
-                          <div className="flex items-center gap-2">
-                            <img src="/deepseek-color.svg" alt="Kandinsky Distill" className="w-4 h-4" />
-                            <span>Kandinsky 5.0 Distilled</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/ovi">
-                          <div className="flex items-center gap-2">
-                            <img src="/Gen4.png" alt="Ovi" className="w-4 h-4" />
-                            <span>Ovi (Audio-Video)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma" className="w-4 h-4" />
-                            <span>Luma Dream Machine v1.5</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kling-video/v2.5-turbo/pro/text-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/kling-color.svg" alt="Kling T2V" className="w-4 h-4" />
-                            <span>Kling 2.5 Turbo Pro T2V</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kling-video/v2.1/master/text-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/kling-color.svg" alt="Kling 2.1 Master T2V" className="w-4 h-4" />
-                            <span>Kling 2.1 Master T2V</span>
-                          </div>
-                        </SelectItem>
 
-                        {/* IMAGE-TO-VIDEO MODELS */}
-                        <div className="px-2 py-1.5 text-xs font-semibold text-green-700 bg-green-50 border-l-2 border-green-200 mt-2">
-                          🖼️ Image-to-Video
-                        </div>
-                        <SelectItem value="fal-ai/sora-2/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/openai.svg" alt="Sora 2" className="w-4 h-4" />
-                            <span>Sora 2 (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/sora-2/image-to-video/pro">
-                          <div className="flex items-center gap-2">
-                            <img src="/openai.svg" alt="Sora 2 Pro" className="w-4 h-4" />
-                            <span>Sora 2 Pro (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/veo3/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/Gen4.png" alt="Veo" className="w-4 h-4" />
-                            <span>Veo 3 (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kling-video/v2.1/master/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/kling-color.svg" alt="Kling" className="w-4 h-4" />
-                            <span>Kling v2.1 Master (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kling-video/v2.5-turbo/pro/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/kling-color.svg" alt="Kling" className="w-4 h-4" />
-                            <span>Kling V2.5 Turbo Pro (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/minimax/hailuo-02/standard/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/minimax-color.svg" alt="Minimax" className="w-4 h-4" />
-                            <span>Minimax Hailuo 02 (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/hunyuan-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/bytedance-color.svg" alt="Hunyuan" className="w-4 h-4" />
-                            <span>Hunyuan Video (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/wan-pro/image-to-video" disabled className="text-gray-400">
-                          <div className="flex items-center gap-2">
-                            <img src="/alibaba-color.svg" alt="Wan Pro" className="w-4 h-4 opacity-50" />
-                            <span>Wan Pro (I2V) - Disabled</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/wan/v2.2-a14b/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/alibaba-color.svg" alt="Wan v2.2-A14B" className="w-4 h-4" />
-                            <span>Wan v2.2-A14B (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/ovi/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/Gen4.png" alt="Ovi" className="w-4 h-4" />
-                            <span>Ovi (Image-to-Video with Audio)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma I2V" className="w-4 h-4" />
-                            <span>Luma Dream Machine (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Ray 2" className="w-4 h-4" />
-                            <span>Luma Ray 2</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Ray 2 I2V" className="w-4 h-4" />
-                            <span>Luma Ray 2 (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Ray 2 Flash" className="w-4 h-4" />
-                            <span>Luma Ray 2 Flash</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Ray 2 Flash I2V" className="w-4 h-4" />
-                            <span>Luma Ray 2 Flash (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/pixverse/v5/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/kling-color.svg" alt="PixVerse" className="w-4 h-4" />
-                            <span>PixVerse V5 (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/ltxv-13b-098-distilled/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/deepseek-color.svg" alt="LTX Video" className="w-4 h-4" />
-                            <span>LTX Video 0.9.8 13B</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="decart/lucy-14b/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/deepseek-color.svg" alt="Lucy 14B" className="w-4 h-4" />
-                            <span>Lucy-14B (Lightning Fast)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/wan/v2.2-a14b/image-to-video/lora">
-                          <div className="flex items-center gap-2">
-                            <img src="/alibaba-color.svg" alt="Wan LoRA" className="w-4 h-4" />
-                            <span>Wan 2.2 I2V (LoRA)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/bytedance/omnihuman">
-                          <div className="flex items-center gap-2">
-                            <img src="/bytedance-color.svg" alt="OmniHuman" className="w-4 h-4" />
-                            <span>OmniHuman (Avatar)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/wan-25-preview/image-to-video">
-                          <div className="flex items-center gap-2">
-                            <img src="/alibaba-color.svg" alt="Wan 2.5 Preview" className="w-4 h-4" />
-                            <span>Wan 2.5 Preview (I2V)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/kling-video/v1/pro/ai-avatar">
-                          <div className="flex items-center gap-2">
-                            <img src="/kling-color.svg" alt="Kling Avatar" className="w-4 h-4" />
-                            <span>Kling AI Avatar Pro</span>
-                          </div>
-                        </SelectItem>
-
-                        {/* VIDEO-TO-VIDEO MODELS */}
-                        <div className="px-2 py-1.5 text-xs font-semibold text-yellow-700 bg-yellow-50 border-l-2 border-yellow-200 mt-2">
-                          🎭 Video-to-Video
-                        </div>
-                        <SelectItem value="endframe/minimax-hailuo-02">
-                          <div className="flex items-center gap-2">
-                            <img src="/minimax-color.svg" alt="EndFrame" className="w-4 h-4" />
-                            <span>EndFrame (Minimax)</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/sora-2/video-to-video/remix">
-                          <div className="flex items-center gap-2">
-                            <img src="/openai.svg" alt="Sora Remix" className="w-4 h-4" />
-                            <span>Sora 2 Video Remix</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/modify">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Modify" className="w-4 h-4" />
-                            <span>Luma Ray 2 Modify</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash/modify">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Flash Modify" className="w-4 h-4" />
-                            <span>Luma Ray 2 Flash Modify</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/reframe">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Reframe" className="w-4 h-4" />
-                            <span>Luma Ray 2 Reframe</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash/reframe">
-                          <div className="flex items-center gap-2">
-                            <img src="/dreammachine.svg" alt="Luma Flash Reframe" className="w-4 h-4" />
-                            <span>Luma Ray 2 Flash Reframe</span>
-                          </div>
-                        </SelectItem>
-
-                        {/* AUDIO MODELS */}
-                        <div className="px-2 py-1.5 text-xs font-semibold text-red-700 bg-red-50 border-l-2 border-red-200 mt-2">
-                          🔊 Audio / Music
-                        </div>
-                        <SelectItem value="fal-ai/minimax-music/v1.5">
-                          <div className="flex items-center gap-2">
-                            <img src="/minimax-color.svg" alt="MiniMax Music" className="w-4 h-4" />
-                            <span>MiniMax Music v1.5</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fal-ai/minimax-music">
-                          <div className="flex items-center gap-2">
-                            <img src="/minimax-color.svg" alt="MiniMax Music" className="w-4 h-4" />
-                            <span>MiniMax Music</span>
-                          </div>
-                        </SelectItem>
-
-                        {/* 3D MODELS */}
-                        <div className="px-2 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border-l-2 border-indigo-200 mt-2">
-                          🧊 3D Models
-                        </div>
-                        <SelectItem value="fal-ai/meshy/v5/multi-image-to-3d">
-                          <div className="flex items-center gap-2">
-                            <img src="/deepseek-color.svg" alt="Meshy" className="w-4 h-4" />
-                            <span>Meshy V5 Multi-Image-to-3D</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
 
                 </div>
               </DialogContent>
@@ -2204,12 +1747,12 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
         <div className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
           showFloatingDialog ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}>
-          <div className="bg-white border border-gray-200 rounded-xl shadow-2xl p-4 max-w-md mx-4">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl p-4 max-w-md mx-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-gray-800">💡 Quick Actions</h3>
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-white">💡 Quick Actions</h3>
               <button
                 onClick={() => setShowFloatingDialog(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -2219,7 +1762,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                 <button
                   key={index}
                   onClick={() => handleFloatingSuggestionClick(suggestion)}
-                  className="w-full text-left text-sm bg-blue-50 hover:bg-blue-100 text-blue-800 px-3 py-2 rounded-lg transition-colors cursor-pointer border border-blue-200 hover:border-blue-300"
+                  className="w-full text-left text-sm bg-blue-50 hover:bg-blue-100 text-blue-800 dark:bg-blue-950 dark:hover:bg-blue-900 dark:text-blue-200 px-3 py-2 rounded-lg transition-colors cursor-pointer border border-blue-200 hover:border-blue-300 dark:border-blue-700 dark:hover:border-blue-600"
                 >
                   {suggestion}
                 </button>

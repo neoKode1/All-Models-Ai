@@ -437,10 +437,7 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
       <div className="p-6 border-b border-border/50">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="flex flex-col">
-              <h2 className="text-4xl font-bold leading-none">YOUR</h2>
-              <span className="text-sm font-bold text-muted-foreground">beautiful mind</span>
-            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content Gallery</h2>
             <Badge variant="secondary" className="badge-enhanced">
               {activeTab === 'content' ? contentCount : screenplayCount} {activeTab === 'content' ? 'items' : 'screenplays'}
             </Badge>

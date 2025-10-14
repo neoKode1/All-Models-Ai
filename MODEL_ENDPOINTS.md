@@ -1,8 +1,8 @@
 # AI Model Endpoints Catalog
 
-> **Last Updated**: 2025-01-14 (Session 2 - Final + UI Update)
+> **Last Updated**: 2025-01-14 (Session 3 - Lipsync Models Added)
 > 
-> **Progress**: 52/100+ models configured (52%)
+> **Progress**: 54/100+ models configured (54%)
 > **UI**: Color-coded modal selector with category cards ✨
 
 ## Status Legend
@@ -216,16 +216,17 @@
 
 ---
 
-## 🎥 Avatar / Lipsync Models
+## 🎥 Avatar / Lipsync Models (4 Configured)
 
 ### ✅ Already Configured
 - `fal-ai/kling-video/v1/pro/ai-avatar` - Kling AI Avatar Pro
+- `fal-ai/sync-lipsync/v2` - Sync Lipsync 2.0 ✔️
+- `veed/lipsync` - VEED Lipsync ✔️
+- `fal-ai/bytedance/omnihuman` - OmniHuman (Avatar) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/creatify/lipsync` - Creatify Lipsync (speed + quality)
-- `fal-ai/bytedance/omnihuman` - OmniHuman (human + audio)
 - `fal-ai/ai-avatar/single-text` - MultiTalk (image + text)
-- `fal-ai/sync-lipsync/v2` - Sync Lipsync 2.0
 - `fal-ai/pixverse/lipsync` - PixVerse Lipsync
 
 ---
