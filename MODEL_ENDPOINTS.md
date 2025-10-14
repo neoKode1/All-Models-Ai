@@ -89,18 +89,50 @@
 
 ### 🆕 New Models to Add (From Updated all models.txt)
 - `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V
-- `fal-ai/decart/lucy-5b/image-to-video` - Lucy-5B (5-sec videos in <5 sec)
+- `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast I2V) - See config notes above
 - `fal-ai/kling-video/v2.1/pro/image-to-video` - Kling 2.1 Pro I2V
 - `fal-ai/ltx-video-13b-distilled/image-to-video` - LTX Video 0.9.7 13B Distilled
-- `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V with LoRA support
+- `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V with LoRA - See config notes above
 
 ### 📋 Model Configuration Notes
+
 **OmniHuman** (`fal-ai/bytedance/omnihuman`):
 - **Category**: Avatar/Lipsync (Image + Audio → Video)
 - **Input**: `image_url` (human image), `audio_url` (audio <30s)
 - **Output**: `video` (File), `duration` (float)
 - **Use Case**: Animate human image with audio, emotions match audio
 - **Status**: 🆕 Needs to be added to Avatar category
+
+**Wan 2.2 I2V LoRA** (`fal-ai/wan/v2.2-a14b/image-to-video/lora`):
+- **Category**: Image-to-Video (with LoRA support)
+- **Input**: 
+  - `image_url` (required)
+  - `prompt` (required)
+  - `loras` (list of LoRA weights) - optional
+  - `num_frames` (17-161, default: 81)
+  - `frames_per_second` (4-60, default: 16)
+  - `resolution` (480p/580p/720p, default: 720p)
+  - `aspect_ratio` (auto/16:9/9:16/1:1, default: auto)
+  - `guidance_scale` (default: 3.5)
+  - `enable_prompt_expansion` (boolean)
+  - `interpolator_model` (none/film/rife, default: film)
+  - `video_quality` (low/medium/high/maximum, default: high)
+- **Output**: `video` (File), `prompt` (string), `seed` (integer)
+- **Use Case**: Generate high-quality videos from images with custom LoRA support
+- **Status**: 🆕 Needs configuration in dropdown
+
+**Lucy-14B** (`decart/lucy-14b/image-to-video`):
+- **Category**: Image-to-Video (Lightning Fast)
+- **Input**: 
+  - `prompt` (required) - text description
+  - `image_url` (required) - first frame image
+  - `resolution` (720p only)
+  - `aspect_ratio` (9:16 or 16:9, default: 16:9)
+  - `sync_mode` (boolean, default: true)
+- **Output**: `video` (File - MP4 with H.264 encoding)
+- **Use Case**: Ultra-fast video generation, lightning performance
+- **Special**: Simpler schema, optimized for speed
+- **Status**: 🆕 High priority - add to dropdown
 
 ---
 
