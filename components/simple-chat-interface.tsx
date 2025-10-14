@@ -1701,7 +1701,41 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                       <SelectTrigger>
                         <SelectValue placeholder="Select model" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="max-h-[500px]">
+                        {/* TEXT-TO-IMAGE MODELS */}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 border-l-2 border-blue-200">
+                          📸 Text-to-Image
+                        </div>
+                        <SelectItem value="fal-ai/imagen4/preview">
+                          <div className="flex items-center gap-2">
+                            <img src="/gemini-color.svg" alt="Imagen 4" className="w-4 h-4" />
+                            <span>Imagen 4 (Google)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-pro/v1.1-ultra">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux" className="w-4 h-4" />
+                            <span>Flux Pro Ultra</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/recraft/v3/text-to-image">
+                          <div className="flex items-center gap-2">
+                            <img src="/ideogram.svg" alt="Recraft" className="w-4 h-4" />
+                            <span>Recraft V3 (SOTA)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/hidream-i1-full">
+                          <div className="flex items-center gap-2">
+                            <img src="/deepseek-color.svg" alt="HiDream" className="w-4 h-4" />
+                            <span>HiDream-I1 (17B)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-krea-lora/stream">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Krea" className="w-4 h-4" />
+                            <span>Flux Krea LoRA Stream</span>
+                          </div>
+                        </SelectItem>
                         <SelectItem value="fal-ai/nano-banana/edit">
                           <div className="flex items-center gap-2">
                             <img src="/gemini-color.svg" alt="Nano Banana" className="w-4 h-4" />
@@ -1711,15 +1745,79 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                         <SelectItem value="fal-ai/bytedance/seedream/v4/edit">
                           <div className="flex items-center gap-2">
                             <img src="/bytedance-color.svg" alt="Seedream" className="w-4 h-4" />
-                            <span>Seedream 4.0 Edit (Image)</span>
+                            <span>Seedream 4.0 Edit</span>
                           </div>
                         </SelectItem>
-                        <SelectItem value="fal-ai/flux-pro/v1.1-ultra">
+                        <SelectItem value="fal-ai/dreamomni2/edit">
                           <div className="flex items-center gap-2">
-                            <img src="/flux.svg" alt="Flux" className="w-4 h-4" />
-                            <span>Flux Pro (Image)</span>
+                            <img src="/bytedance-color.svg" alt="DreamOmni2" className="w-4 h-4" />
+                            <span>DreamOmni2 Edit</span>
                           </div>
                         </SelectItem>
+                        <SelectItem value="fal-ai/flux-kontext-lora">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Kontext" className="w-4 h-4" />
+                            <span>Flux Kontext LoRA</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-kontext-lora/text-to-image">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Kontext T2I" className="w-4 h-4" />
+                            <span>Flux Kontext LoRA T2I</span>
+                          </div>
+                        </SelectItem>
+
+                        {/* TEXT-TO-VIDEO MODELS */}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border-l-2 border-purple-200 mt-2">
+                          🎬 Text-to-Video
+                        </div>
+                        <SelectItem value="fal-ai/sora-2/text-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/openai.svg" alt="Sora 2 T2V" className="w-4 h-4" />
+                            <span>Sora 2 Text-to-Video</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/sora-2/text-to-video/pro">
+                          <div className="flex items-center gap-2">
+                            <img src="/openai.svg" alt="Sora 2 Pro T2V" className="w-4 h-4" />
+                            <span>Sora 2 Pro Text-to-Video</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/kandinsky5/text-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/deepseek-color.svg" alt="Kandinsky" className="w-4 h-4" />
+                            <span>Kandinsky 5.0 T2V</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/kandinsky5/text-to-video/distill">
+                          <div className="flex items-center gap-2">
+                            <img src="/deepseek-color.svg" alt="Kandinsky Distill" className="w-4 h-4" />
+                            <span>Kandinsky 5.0 Distilled</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/ovi">
+                          <div className="flex items-center gap-2">
+                            <img src="/Gen4.png" alt="Ovi" className="w-4 h-4" />
+                            <span>Ovi (Audio-Video)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma" className="w-4 h-4" />
+                            <span>Luma Dream Machine v1.5</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/kling-video/v2.5-turbo/pro/text-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/kling-color.svg" alt="Kling T2V" className="w-4 h-4" />
+                            <span>Kling 2.5 Turbo Pro T2V</span>
+                          </div>
+                        </SelectItem>
+
+                        {/* IMAGE-TO-VIDEO MODELS */}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-green-700 bg-green-50 border-l-2 border-green-200 mt-2">
+                          🖼️ Image-to-Video
+                        </div>
                         <SelectItem value="fal-ai/sora-2/image-to-video">
                           <div className="flex items-center gap-2">
                             <img src="/openai.svg" alt="Sora 2" className="w-4 h-4" />
@@ -1780,10 +1878,46 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                             <span>Ovi (Image-to-Video with Audio)</span>
                           </div>
                         </SelectItem>
-                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/image-to-video">
+                        <SelectItem value="fal-ai/luma-dream-machine/image-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma I2V" className="w-4 h-4" />
+                            <span>Luma Dream Machine (I2V)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2">
                           <div className="flex items-center gap-2">
                             <img src="/dreammachine.svg" alt="Luma Ray 2" className="w-4 h-4" />
+                            <span>Luma Ray 2</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/image-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Ray 2 I2V" className="w-4 h-4" />
                             <span>Luma Ray 2 (I2V)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Ray 2 Flash" className="w-4 h-4" />
+                            <span>Luma Ray 2 Flash</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash/image-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Ray 2 Flash I2V" className="w-4 h-4" />
+                            <span>Luma Ray 2 Flash (I2V)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/pixverse/v5/image-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/kling-color.svg" alt="PixVerse" className="w-4 h-4" />
+                            <span>PixVerse V5 (I2V)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/ltxv-13b-098-distilled/image-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/deepseek-color.svg" alt="LTX Video" className="w-4 h-4" />
+                            <span>LTX Video 0.9.8 13B</span>
                           </div>
                         </SelectItem>
                         <SelectItem value="fal-ai/wan-25-preview/image-to-video">
@@ -1798,10 +1932,73 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                             <span>Kling AI Avatar Pro</span>
                           </div>
                         </SelectItem>
+
+                        {/* VIDEO-TO-VIDEO MODELS */}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-yellow-700 bg-yellow-50 border-l-2 border-yellow-200 mt-2">
+                          🎭 Video-to-Video
+                        </div>
                         <SelectItem value="endframe/minimax-hailuo-02">
                           <div className="flex items-center gap-2">
                             <img src="/minimax-color.svg" alt="EndFrame" className="w-4 h-4" />
                             <span>EndFrame (Minimax)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/sora-2/video-to-video/remix">
+                          <div className="flex items-center gap-2">
+                            <img src="/openai.svg" alt="Sora Remix" className="w-4 h-4" />
+                            <span>Sora 2 Video Remix</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/modify">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Modify" className="w-4 h-4" />
+                            <span>Luma Ray 2 Modify</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash/modify">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Flash Modify" className="w-4 h-4" />
+                            <span>Luma Ray 2 Flash Modify</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2/reframe">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Reframe" className="w-4 h-4" />
+                            <span>Luma Ray 2 Reframe</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/luma-dream-machine/ray-2-flash/reframe">
+                          <div className="flex items-center gap-2">
+                            <img src="/dreammachine.svg" alt="Luma Flash Reframe" className="w-4 h-4" />
+                            <span>Luma Ray 2 Flash Reframe</span>
+                          </div>
+                        </SelectItem>
+
+                        {/* AUDIO MODELS */}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-red-700 bg-red-50 border-l-2 border-red-200 mt-2">
+                          🔊 Audio / Music
+                        </div>
+                        <SelectItem value="fal-ai/minimax-music/v1.5">
+                          <div className="flex items-center gap-2">
+                            <img src="/minimax-color.svg" alt="MiniMax Music" className="w-4 h-4" />
+                            <span>MiniMax Music v1.5</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/minimax-music">
+                          <div className="flex items-center gap-2">
+                            <img src="/minimax-color.svg" alt="MiniMax Music" className="w-4 h-4" />
+                            <span>MiniMax Music</span>
+                          </div>
+                        </SelectItem>
+
+                        {/* 3D MODELS */}
+                        <div className="px-2 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border-l-2 border-indigo-200 mt-2">
+                          🧊 3D Models
+                        </div>
+                        <SelectItem value="fal-ai/meshy/v5/multi-image-to-3d">
+                          <div className="flex items-center gap-2">
+                            <img src="/deepseek-color.svg" alt="Meshy" className="w-4 h-4" />
+                            <span>Meshy V5 Multi-Image-to-3D</span>
                           </div>
                         </SelectItem>
                       </SelectContent>

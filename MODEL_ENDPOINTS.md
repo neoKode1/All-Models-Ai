@@ -1,8 +1,8 @@
 # AI Model Endpoints Catalog
 
-> **Last Updated**: 2025-01-14
+> **Last Updated**: 2025-01-14 (Session 2)
 > 
-> **Progress**: 17/100+ models configured (17%)
+> **Progress**: 38/100+ models configured (38%)
 
 ## Status Legend
 - ✅ **Already Configured** - Model is currently in the dropdown
@@ -23,36 +23,41 @@
 ## 📸 Text-to-Image Models
 
 ### ✅ Already Configured
-- `fal-ai/nano-banana/edit` - Nano Banana Edit (Google)
+- `fal-ai/imagen4/preview` - Google Imagen 4 ✔️ NEW
+- `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
+- `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️ NEW
+- `fal-ai/hidream-i1-full` - HiDream-I1 ✔️ NEW
+- `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️ NEW
+- `fal-ai/nano-banana/edit` - Nano Banana Edit
 - `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
-- `fal-ai/flux-pro/v1.1-ultra` - Flux Pro
+- `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️ NEW
+- `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️ NEW
+- `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️ NEW
 
 ### 🆕 New Models to Add
-- `fal-ai/imagen4/preview` - Google Imagen 4 (highest quality)
-- `fal-ai/recraft/v3/text-to-image` - Recraft V3 (SOTA, vector art, typography)
-- `fal-ai/hidream-i1-full` - HiDream-I1 (17B parameters, open-source)
 - `fal-ai/luma-photon` - Luma Photon (creative, personalizable)
 - `fal-ai/gemini-25-flash-image` - Gemini 2.5 Flash
 - `fal-ai/stable-diffusion-v35-large` - Stable Diffusion 3.5 Large
 - `fal-ai/qwen-image` - Qwen Image (complex text rendering)
-- `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA
 - `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max
-- `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream (super fast)
+- `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint
 
 ---
 
 ## 🎬 Text-to-Video Models
 
+### ✅ Already Configured
+- `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️ NEW
+- `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️ NEW
+- `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️ NEW
+- `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️ NEW
+- `fal-ai/ovi` - Ovi (Audio-Video) ✔️ NEW
+- `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️ NEW
+- `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️ NEW
+
 ### 🆕 New Models to Add
-- `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0
-- `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled (lightweight)
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
-- `fal-ai/ovi` - Ovi (unified audio-video generation)
-- `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5
 - `fal-ai/hunyuan-video` - Hunyuan Video (open, high quality)
-- `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro
-- `fal-ai/sora-2/text-to-video` - Sora 2 Text-to-Video
-- `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro Text-to-Video
 
 ---
 
@@ -71,11 +76,16 @@
 - `fal-ai/luma-dream-machine/ray-2/image-to-video` - Luma Ray 2 I2V
 - `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Preview I2V
 
+- `fal-ai/luma-dream-machine/image-to-video` - Luma Dream Machine I2V ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2` - Luma Ray 2 ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2-flash` - Luma Ray 2 Flash ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2-flash/image-to-video` - Luma Ray 2 Flash I2V ✔️ NEW
+- `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️ NEW
+- `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️ NEW
+
 ### 🆕 New Models to Add
 - `fal-ai/decart/lucy-5b/image-to-video` - Lucy-5B (5-sec videos in <5 sec)
 - `fal-ai/kling-video/v2.1/pro/image-to-video` - Kling 2.1 Pro I2V
-- `fal-ai/pixverse/v5/image-to-video` - PixVerse v5 I2V
-- `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B Distilled
 - `fal-ai/ltx-video-13b-distilled/image-to-video` - LTX Video 0.9.7 13B Distilled
 - `fal-ai/bytedance/omnihuman` - OmniHuman (human + audio)
 - `fal-ai/ai-avatar/single-text` - MultiTalk Avatar (image + text)
@@ -87,9 +97,13 @@
 
 ### ✅ Already Configured
 - `endframe/minimax-hailuo-02` - EndFrame (Minimax)
+- `fal-ai/sora-2/video-to-video/remix` - Sora 2 Video Remix ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2/modify` - Luma Ray 2 Modify ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2-flash/modify` - Luma Ray 2 Flash Modify ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2/reframe` - Luma Ray 2 Reframe ✔️ NEW
+- `fal-ai/luma-dream-machine/ray-2-flash/reframe` - Luma Ray 2 Flash Reframe ✔️ NEW
 
 ### 🆕 New Models to Add
-- `fal-ai/sora-2/video-to-video/remix` - Sora 2 Video Remix
 - `fal-ai/wan-vace-apps/long-reframe` - Wan VACE 2.1 Long Reframe
 - `fal-ai/creatify/lipsync` - Creatify Lipsync (realistic, fast)
 - `fal-ai/sync-lipsync/v2` - Sync Lipsync 2.0
@@ -108,6 +122,10 @@
 ---
 
 ## 🔊 Text-to-Speech / Audio Models
+
+### ✅ Already Configured
+- `fal-ai/minimax-music/v1.5` - MiniMax Music v1.5 ✔️ NEW
+- `fal-ai/minimax-music` - MiniMax Music ✔️ NEW
 
 ### 🆕 New Models to Add
 - `fal-ai/index-tts-2/text-to-speech` - Index TTS 2.0
@@ -172,10 +190,12 @@
 
 ## 🧊 3D Models
 
+### ✅ Already Configured
+- `fal-ai/meshy/v5/multi-image-to-3d` - Meshy V5 Multi-Image-to-3D ✔️ NEW
+
 ### 🆕 New Models to Add
 - `fal-ai/hunyuan-part` - Hunyuan Part (3D to point cloud)
 - `fal-ai/meshy/v6-preview/text-to-3d` - Meshy v6 Text-to-3D
-- `fal-ai/meshy/v5/multi-image-to-3d` - Meshy v5 Multi-Image-to-3D
 - `fal-ai/meshy/v6-preview/image-to-3d` - Meshy v6 Image-to-3D
 
 ---
@@ -235,21 +255,28 @@
 - ✅ Built color-coded ModelSelector component
 - ✅ Documented all 100+ models by category
 - **Models Configured**: 17
-  - Text-to-Image: 3 models (Nano Banana Edit, Seedream 4.0 Edit, Flux Pro)
-  - Image-to-Video: 11 models (Sora 2, Veo 3, Kling, Minimax, etc.)
-  - Avatar: 1 model (Kling AI Avatar Pro)
-  - Video-to-Video: 1 model (EndFrame Minimax)
-  - Special: 1 model (Wan Pro - disabled)
+
+### Session 2 - Category Organization & New Models (2025-01-14)
+- ✅ Added color-coded category headers in dropdown
+- ✅ Reorganized models by category with visual separators
+- ✅ Added 21 new models across multiple categories
+- **Models Added This Session**: 21
+  - Text-to-Image: 7 new (Imagen 4, Recraft V3, HiDream, Flux Krea, DreamOmni2, Flux Kontext x2)
+  - Text-to-Video: 7 new (Sora 2 T2V x2, Kandinsky 5.0 x2, Ovi, Luma Dream Machine, Kling 2.5 Turbo Pro)
+  - Image-to-Video: 6 new (Luma variants x5, PixVerse V5, LTX Video)
+  - Video-to-Video: 5 new (Sora 2 Remix, Luma Modify x2, Luma Reframe x2)
+  - Audio: 2 new (MiniMax Music x2)
+  - 3D: 1 new (Meshy V5)
+- **Total Models Now**: 38
 
 ### Next Implementation Session
-**Target**: Add Text-to-Video category (8-10 models)
-- [ ] Kandinsky 5.0 models
-- [ ] Veo 3 T2V
-- [ ] Ovi
-- [ ] Luma Dream Machine
-- [ ] Hunyuan Video
-- [ ] Kling 2.5 Turbo Pro T2V
-- [ ] Sora 2 T2V variants
+**Target**: Add Avatar/Lipsync and Audio/TTS models
+- [ ] Creatify Lipsync
+- [ ] Sync Lipsync 2.0
+- [ ] PixVerse Lipsync
+- [ ] Index TTS 2.0
+- [ ] Chatterbox TTS
+- [ ] PlayAI Dialog TTS
 
 ---
 
