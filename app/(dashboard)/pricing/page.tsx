@@ -165,7 +165,8 @@ export default function PricingPage() {
             Choose Your Plan
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Unlock the full potential of AI-powered content creation with our flexible pricing plans.
+            Unlock the full potential of All Models AI with our flexible pricing plans. 
+            Create stunning images, videos, and audio with all your favorite AI models.
           </p>
         </div>
 
@@ -217,7 +218,7 @@ export default function PricingPage() {
                     </div>
                     <div className="text-sm text-gray-400 mt-2">
                       {plan.credits} credits included
-                    </div>
+      </div>
                   </CardHeader>
 
                   <CardContent className="space-y-6">
@@ -432,7 +433,7 @@ export default function PricingPage() {
                     
                     {(() => {
                       const breakdown = calculateGenerationBreakdown(selectedPlan.credits);
-                      return (
+  return (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* Basic Images Only */}
                           <div className="bg-gray-800 rounded-lg p-4">
@@ -511,9 +512,9 @@ export default function PricingPage() {
                         <li key={index} className="flex items-center space-x-3">
                           <Check className="h-5 w-5 text-green-400 flex-shrink-0" />
                           <span className="text-gray-300">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+          </li>
+        ))}
+      </ul>
                   </div>
                 )}
 

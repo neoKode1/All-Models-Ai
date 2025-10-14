@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { use, useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleIcon, Home, LogOut, Sparkles, Image, Video, Music } from 'lucide-react';
+import { CircleIcon, Home, LogOut, Sparkles, CreditCard } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,6 +69,12 @@ function UserMenu() {
           <Link href="/ai-studio" className="flex w-full items-center">
             <Sparkles className="mr-2 h-4 w-4" />
             <span>AI Studio</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/pricing" className="flex w-full items-center">
+            <CreditCard className="mr-2 h-4 w-4" />
+            <span>Pricing</span>
           </Link>
         </DropdownMenuItem>
         <form action={handleSignOut} className="w-full">
