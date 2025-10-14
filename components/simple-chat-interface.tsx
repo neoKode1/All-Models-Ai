@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { EnhancedLoadingModal } from '@/components/enhanced-loading-modal';
+import { ModelSelectionModal } from '@/components/model-selection-modal';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Send, 
@@ -18,6 +19,7 @@ import {
   Video,
   Music,
   Download,
+  Sparkles,
   RefreshCw,
   Shuffle,
   FileImage,
@@ -77,10 +79,82 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
   const [preferredVideoModel, setPreferredVideoModel] = useState<string>('fal-ai/nano-banana/edit');
   const [forceVideoGeneration, setForceVideoGeneration] = useState<boolean>(false);
   const [userIntent, setUserIntent] = useState<'image' | 'video' | 'auto'>('image');
+  const [showModelSelector, setShowModelSelector] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
+
+  // Organize models by category
+  const modelsByCategory: Record<string, Array<{value: string; label: string; icon: string; isNew?: boolean; disabled?: boolean}>> = {
+    'text-to-image': [
+      { value: 'fal-ai/imagen4/preview', label: 'Imagen 4 (Google)', icon: '/gemini-color.svg', isNew: true },
+      { value: 'fal-ai/flux-pro/v1.1-ultra', label: 'Flux Pro Ultra', icon: '/flux.svg' },
+      { value: 'fal-ai/recraft/v3/text-to-image', label: 'Recraft V3 (SOTA)', icon: '/ideogram.svg', isNew: true },
+      { value: 'fal-ai/hidream-i1-full', label: 'HiDream-I1 (17B)', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/flux-krea-lora/stream', label: 'Flux Krea LoRA Stream', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/nano-banana/edit', label: 'Nano Banana Edit', icon: '/gemini-color.svg' },
+      { value: 'fal-ai/bytedance/seedream/v4/edit', label: 'Seedream 4.0 Edit', icon: '/bytedance-color.svg' },
+      { value: 'fal-ai/dreamomni2/edit', label: 'DreamOmni2 Edit', icon: '/bytedance-color.svg', isNew: true },
+      { value: 'fal-ai/flux-kontext-lora', label: 'Flux Kontext LoRA', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-kontext-lora/text-to-image', label: 'Flux Kontext LoRA T2I', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-kontext-lora/inpaint', label: 'Flux Kontext Inpaint', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-pro/kontext/max/text-to-image', label: 'Flux Pro Kontext Max T2I', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-pro/kontext/text-to-image', label: 'Flux Pro Kontext T2I', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-pro/kontext/max', label: 'Flux Pro Kontext Max', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-pro/kontext/max/multi', label: 'Flux Pro Kontext Max Multi', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/flux-pro/kontext/multi', label: 'Flux Pro Kontext Multi', icon: '/flux.svg', isNew: true },
+    ],
+    'text-to-video': [
+      { value: 'fal-ai/sora-2/text-to-video', label: 'Sora 2 Text-to-Video', icon: '/openai.svg', isNew: true },
+      { value: 'fal-ai/sora-2/text-to-video/pro', label: 'Sora 2 Pro Text-to-Video', icon: '/openai.svg', isNew: true },
+      { value: 'fal-ai/kandinsky5/text-to-video', label: 'Kandinsky 5.0 T2V', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/kandinsky5/text-to-video/distill', label: 'Kandinsky 5.0 Distilled', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/ovi', label: 'Ovi (Audio-Video)', icon: '/Gen4.png', isNew: true },
+      { value: 'fal-ai/luma-dream-machine', label: 'Luma Dream Machine v1.5', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video', label: 'Kling 2.5 Turbo Pro T2V', icon: '/kling-color.svg', isNew: true },
+      { value: 'fal-ai/kling-video/v2.1/master/text-to-video', label: 'Kling 2.1 Master T2V', icon: '/kling-color.svg', isNew: true },
+    ],
+    'image-to-video': [
+      { value: 'fal-ai/sora-2/image-to-video', label: 'Sora 2 (I2V)', icon: '/openai.svg' },
+      { value: 'fal-ai/sora-2/image-to-video/pro', label: 'Sora 2 Pro (I2V)', icon: '/openai.svg' },
+      { value: 'fal-ai/veo3/image-to-video', label: 'Veo 3 (I2V)', icon: '/Gen4.png' },
+      { value: 'fal-ai/kling-video/v2.1/master/image-to-video', label: 'Kling v2.1 Master (I2V)', icon: '/kling-color.svg' },
+      { value: 'fal-ai/kling-video/v2.5-turbo/pro/image-to-video', label: 'Kling V2.5 Turbo Pro (I2V)', icon: '/kling-color.svg' },
+      { value: 'fal-ai/minimax/hailuo-02/standard/image-to-video', label: 'Minimax Hailuo 02 (I2V)', icon: '/minimax-color.svg' },
+      { value: 'fal-ai/hunyuan-video', label: 'Hunyuan Video (I2V)', icon: '/bytedance-color.svg' },
+      { value: 'fal-ai/wan/v2.2-a14b/image-to-video', label: 'Wan v2.2-A14B (I2V)', icon: '/alibaba-color.svg' },
+      { value: 'fal-ai/ovi/image-to-video', label: 'Ovi (I2V with Audio)', icon: '/Gen4.png' },
+      { value: 'fal-ai/luma-dream-machine/ray-2/image-to-video', label: 'Luma Ray 2 (I2V)', icon: '/dreammachine.svg' },
+      { value: 'fal-ai/wan-25-preview/image-to-video', label: 'Wan 2.5 Preview (I2V)', icon: '/alibaba-color.svg' },
+      { value: 'fal-ai/luma-dream-machine/image-to-video', label: 'Luma Dream Machine (I2V)', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2', label: 'Luma Ray 2', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash', label: 'Luma Ray 2 Flash', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash/image-to-video', label: 'Luma Ray 2 Flash (I2V)', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/pixverse/v5/image-to-video', label: 'PixVerse V5 (I2V)', icon: '/kling-color.svg', isNew: true },
+      { value: 'fal-ai/ltxv-13b-098-distilled/image-to-video', label: 'LTX Video 0.9.8 13B', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'decart/lucy-14b/image-to-video', label: 'Lucy-14B (Lightning Fast)', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/wan/v2.2-a14b/image-to-video/lora', label: 'Wan 2.2 I2V (LoRA)', icon: '/alibaba-color.svg', isNew: true },
+      { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true },
+      { value: 'fal-ai/kling-video/v1/pro/ai-avatar', label: 'Kling AI Avatar Pro', icon: '/kling-color.svg' },
+      { value: 'fal-ai/wan-pro/image-to-video', label: 'Wan Pro (I2V) - Disabled', icon: '/alibaba-color.svg', disabled: true },
+    ],
+    'video-to-video': [
+      { value: 'endframe/minimax-hailuo-02', label: 'EndFrame (Minimax)', icon: '/minimax-color.svg' },
+      { value: 'fal-ai/sora-2/video-to-video/remix', label: 'Sora 2 Video Remix', icon: '/openai.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2/modify', label: 'Luma Ray 2 Modify', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash/modify', label: 'Luma Ray 2 Flash Modify', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2/reframe', label: 'Luma Ray 2 Reframe', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash/reframe', label: 'Luma Ray 2 Flash Reframe', icon: '/dreammachine.svg', isNew: true },
+    ],
+    'audio': [
+      { value: 'fal-ai/minimax-music/v1.5', label: 'MiniMax Music v1.5', icon: '/minimax-color.svg', isNew: true },
+      { value: 'fal-ai/minimax-music', label: 'MiniMax Music', icon: '/minimax-color.svg', isNew: true },
+    ],
+    '3d': [
+      { value: 'fal-ai/meshy/v5/multi-image-to-3d', label: 'Meshy V5 Multi-Image-to-3D', icon: '/deepseek-color.svg', isNew: true },
+    ],
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -1697,6 +1771,35 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
 
                   <div className="space-y-2">
                     <Label htmlFor="video-model">Preferred Model</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full justify-between"
+                      onClick={() => setShowModelSelector(true)}
+                    >
+                      <span className="flex items-center gap-2">
+                        <img 
+                          src={getModelIcon(preferredVideoModel)} 
+                          alt="Current model" 
+                          className="w-4 h-4" 
+                        />
+                        {(() => {
+                          for (const category in modelsByCategory) {
+                            const model = modelsByCategory[category]?.find(m => m.value === preferredVideoModel);
+                            if (model) return model.label;
+                          }
+                          return 'Select a model';
+                        })()}
+                      </span>
+                      <Sparkles className="h-4 w-4 text-purple-500" />
+                    </Button>
+                    <p className="text-xs text-gray-500">
+                      Click to browse models by category
+                    </p>
+                  </div>
+
+                  {/* Keep old dropdown hidden for now - will remove after testing */}
+                  <div className="hidden">
                     <Select value={preferredVideoModel} onValueChange={handleModelSelectionChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select model" />
@@ -2063,13 +2166,20 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-xs text-gray-500">
-                      Select your preferred model for content generation. Image models generate images, video models generate videos.
-                    </p>
                   </div>
+
                 </div>
               </DialogContent>
             </Dialog>
+
+            {/* Model Selection Modal */}
+            <ModelSelectionModal
+              isOpen={showModelSelector}
+              onClose={() => setShowModelSelector(false)}
+              currentModel={preferredVideoModel}
+              onModelSelect={handleModelSelectionChange}
+              models={modelsByCategory}
+            />
 
           </div>
         </form>
