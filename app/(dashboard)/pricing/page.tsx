@@ -6,10 +6,18 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 
 export default async function PricingPage() {
-  const [prices, products] = await Promise.all([
-    getStripePrices(),
-    getStripeProducts(),
-  ]);
+  // Only fetch Stripe data if Stripe is configured
+  let prices = [];
+  let products = [];
+  
+  try {
+    [prices, products] = await Promise.all([
+      getStripePrices(),
+      getStripeProducts(),
+    ]);
+  } catch (error) {
+    console.log('Stripe not configured, using default pricing');
+  }
 
   // Define your subscription plans
   const plans = [
