@@ -20,26 +20,25 @@
 
 ---
 
-## 📸 Text-to-Image Models
+## 📸 Text-to-Image Models (16 Configured)
 
 ### ✅ Already Configured
-- `fal-ai/imagen4/preview` - Google Imagen 4 ✔️ NEW
-- `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
-- `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️ NEW
-- `fal-ai/hidream-i1-full` - HiDream-I1 ✔️ NEW
-- `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️ NEW
-- `fal-ai/nano-banana/edit` - Nano Banana Edit
-- `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
-- `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️ NEW
-- `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️ NEW
-- `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️ NEW
-
-- `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️ NEW
-- `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️ NEW
-- `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️ NEW
-- `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️ NEW
-- `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️ NEW
-- `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️ NEW
+1. `fal-ai/imagen4/preview` - Google Imagen 4 ✔️
+2. `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
+3. `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️
+4. `fal-ai/hidream-i1-full` - HiDream-I1 ✔️
+5. `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️
+6. `fal-ai/nano-banana/edit` - Nano Banana Edit
+7. `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
+8. `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️
+9. `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️
+10. `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️
+11. `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️
+12. `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️
+13. `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️
+14. `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️
+15. `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️
+16. `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/luma-photon` - Luma Photon (creative, personalizable)
@@ -49,17 +48,17 @@
 
 ---
 
-## 🎬 Text-to-Video Models
+## 🎬 Text-to-Video Models (8 Configured)
 
 ### ✅ Already Configured
-- `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️ NEW
-- `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️ NEW
-- `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️ NEW
-- `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️ NEW
-- `fal-ai/ovi` - Ovi (Audio-Video) ✔️ NEW
-- `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️ NEW
-- `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️ NEW
-- `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️ NEW
+1. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
+2. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
+3. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
+4. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
+5. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
+6. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
+7. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
+8. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
@@ -67,30 +66,29 @@
 
 ---
 
-## 🖼️ Image-to-Video Models
+## 🖼️ Image-to-Video Models (19 Configured)
 
 ### ✅ Already Configured
-- `fal-ai/sora-2/image-to-video` - Sora 2 I2V
-- `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
-- `fal-ai/veo3/image-to-video` - Veo 3 I2V
-- `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V ✔️ UPDATED
-- `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` - Kling V2.5 Turbo Pro I2V
-- `fal-ai/minimax/hailuo-02/standard/image-to-video` - Minimax Hailuo 02 I2V
-- `fal-ai/hunyuan-video` - Hunyuan Video I2V
-- `fal-ai/wan/v2.2-a14b/image-to-video` - Wan v2.2-A14B I2V
-- `fal-ai/ovi/image-to-video` - Ovi I2V (with audio)
-- `fal-ai/luma-dream-machine/ray-2/image-to-video` - Luma Ray 2 I2V
-- `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Preview I2V
-- `fal-ai/luma-dream-machine/image-to-video` - Luma Dream Machine I2V ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2` - Luma Ray 2 ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2-flash` - Luma Ray 2 Flash ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2-flash/image-to-video` - Luma Ray 2 Flash I2V ✔️ NEW
-- `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️ NEW
-- `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️ NEW
-
-- `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast) ✔️ NEW
-- `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V LoRA ✔️ NEW
-- `fal-ai/bytedance/omnihuman` - OmniHuman (Image+Audio→Video) ✔️ NEW
+1. `fal-ai/sora-2/image-to-video` - Sora 2 I2V
+2. `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
+3. `fal-ai/veo3/image-to-video` - Veo 3 I2V
+4. `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V
+5. `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` - Kling V2.5 Turbo Pro I2V
+6. `fal-ai/minimax/hailuo-02/standard/image-to-video` - Minimax Hailuo 02 I2V
+7. `fal-ai/hunyuan-video` - Hunyuan Video I2V
+8. `fal-ai/wan/v2.2-a14b/image-to-video` - Wan v2.2-A14B I2V
+9. `fal-ai/ovi/image-to-video` - Ovi I2V (with audio)
+10. `fal-ai/luma-dream-machine/ray-2/image-to-video` - Luma Ray 2 I2V
+11. `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Preview I2V
+12. `fal-ai/luma-dream-machine/image-to-video` - Luma Dream Machine I2V ✔️
+13. `fal-ai/luma-dream-machine/ray-2` - Luma Ray 2 ✔️
+14. `fal-ai/luma-dream-machine/ray-2-flash` - Luma Ray 2 Flash ✔️
+15. `fal-ai/luma-dream-machine/ray-2-flash/image-to-video` - Luma Ray 2 Flash I2V ✔️
+16. `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️
+17. `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️
+18. `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast) ✔️
+19. `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V LoRA ✔️
+20. `fal-ai/bytedance/omnihuman` - OmniHuman (Image+Audio→Video) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/kling-video/v2.1/pro/image-to-video` - Kling 2.1 Pro I2V
@@ -159,15 +157,15 @@
 
 ---
 
-## 🎭 Video-to-Video Models
+## 🎭 Video-to-Video Models (6 Configured)
 
 ### ✅ Already Configured
-- `endframe/minimax-hailuo-02` - EndFrame (Minimax)
-- `fal-ai/sora-2/video-to-video/remix` - Sora 2 Video Remix ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2/modify` - Luma Ray 2 Modify ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2-flash/modify` - Luma Ray 2 Flash Modify ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2/reframe` - Luma Ray 2 Reframe ✔️ NEW
-- `fal-ai/luma-dream-machine/ray-2-flash/reframe` - Luma Ray 2 Flash Reframe ✔️ NEW
+1. `endframe/minimax-hailuo-02` - EndFrame (Minimax)
+2. `fal-ai/sora-2/video-to-video/remix` - Sora 2 Video Remix ✔️
+3. `fal-ai/luma-dream-machine/ray-2/modify` - Luma Ray 2 Modify ✔️
+4. `fal-ai/luma-dream-machine/ray-2-flash/modify` - Luma Ray 2 Flash Modify ✔️
+5. `fal-ai/luma-dream-machine/ray-2/reframe` - Luma Ray 2 Reframe ✔️
+6. `fal-ai/luma-dream-machine/ray-2-flash/reframe` - Luma Ray 2 Flash Reframe ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/wan-vace-apps/long-reframe` - Wan VACE 2.1 Long Reframe
@@ -187,11 +185,11 @@
 
 ---
 
-## 🔊 Text-to-Speech / Audio Models
+## 🔊 Audio / Music Models (2 Configured)
 
 ### ✅ Already Configured
-- `fal-ai/minimax-music/v1.5` - MiniMax Music v1.5 ✔️ NEW
-- `fal-ai/minimax-music` - MiniMax Music ✔️ NEW
+1. `fal-ai/minimax-music/v1.5` - MiniMax Music v1.5 ✔️
+2. `fal-ai/minimax-music` - MiniMax Music ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/index-tts-2/text-to-speech` - Index TTS 2.0
@@ -256,10 +254,10 @@
 
 ---
 
-## 🧊 3D Models
+## 🧊 3D Models (1 Configured)
 
 ### ✅ Already Configured
-- `fal-ai/meshy/v5/multi-image-to-3d` - Meshy V5 Multi-Image-to-3D ✔️ NEW
+1. `fal-ai/meshy/v5/multi-image-to-3d` - Meshy V5 Multi-Image-to-3D ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/hunyuan-part` - Hunyuan Part (3D to point cloud)
@@ -281,11 +279,19 @@
 ## 📊 Summary
 
 ### Current Status (Updated from all models.txt)
-- **Total Models Listed**: ~45+ documented models
-- **Already Configured**: 38 models (38% complete)
-- **New Models to Add**: 10+ high-priority models
+- **Total Models Listed**: ~50+ documented models
+- **Already Configured**: 49 models (49% complete - nearly halfway!)
+- **New Models to Add**: ~10 high-priority models remaining
 - **Categories**: 12 categories
-- **New Models Identified**: Flux Pro Kontext variants, Wan Trainer variants, Kling 2.1 Master T2V
+- **Breakdown by Category**:
+  - Text-to-Image: 16 models
+  - Text-to-Video: 8 models
+  - Image-to-Video: 20 models (includes OmniHuman)
+  - Video-to-Video: 6 models
+  - Audio/Music: 2 models
+  - 3D: 1 model
+  - Avatar: 1 model (Kling AI Avatar Pro)
+  - Others: Pending implementation
 
 ### Priority Implementation Order
 1. **High Priority**: Text-to-Video, Image-to-Video (most requested)
