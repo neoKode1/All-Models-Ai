@@ -34,13 +34,17 @@
 - `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️ NEW
 - `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️ NEW
 
-### 🆕 New Models to Add
+### 🆕 New Models to Add (From Updated all models.txt)
 - `fal-ai/luma-photon` - Luma Photon (creative, personalizable)
 - `fal-ai/gemini-25-flash-image` - Gemini 2.5 Flash
 - `fal-ai/stable-diffusion-v35-large` - Stable Diffusion 3.5 Large
 - `fal-ai/qwen-image` - Qwen Image (complex text rendering)
-- `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max
+- `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I
+- `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I
 - `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint
+- `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max
+- `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi
+- `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi
 
 ---
 
@@ -55,7 +59,8 @@
 - `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️ NEW
 - `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️ NEW
 
-### 🆕 New Models to Add
+### 🆕 New Models to Add (From Updated all models.txt)
+- `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
 - `fal-ai/hunyuan-video` - Hunyuan Video (open, high quality)
 
@@ -67,7 +72,7 @@
 - `fal-ai/sora-2/image-to-video` - Sora 2 I2V
 - `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
 - `fal-ai/veo3/image-to-video` - Veo 3 I2V
-- `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V
+- `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V ✔️ UPDATED
 - `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` - Kling V2.5 Turbo Pro I2V
 - `fal-ai/minimax/hailuo-02/standard/image-to-video` - Minimax Hailuo 02 I2V
 - `fal-ai/hunyuan-video` - Hunyuan Video I2V
@@ -75,7 +80,6 @@
 - `fal-ai/ovi/image-to-video` - Ovi I2V (with audio)
 - `fal-ai/luma-dream-machine/ray-2/image-to-video` - Luma Ray 2 I2V
 - `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Preview I2V
-
 - `fal-ai/luma-dream-machine/image-to-video` - Luma Dream Machine I2V ✔️ NEW
 - `fal-ai/luma-dream-machine/ray-2` - Luma Ray 2 ✔️ NEW
 - `fal-ai/luma-dream-machine/ray-2-flash` - Luma Ray 2 Flash ✔️ NEW
@@ -83,13 +87,20 @@
 - `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️ NEW
 - `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️ NEW
 
-### 🆕 New Models to Add
+### 🆕 New Models to Add (From Updated all models.txt)
+- `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V
 - `fal-ai/decart/lucy-5b/image-to-video` - Lucy-5B (5-sec videos in <5 sec)
 - `fal-ai/kling-video/v2.1/pro/image-to-video` - Kling 2.1 Pro I2V
 - `fal-ai/ltx-video-13b-distilled/image-to-video` - LTX Video 0.9.7 13B Distilled
-- `fal-ai/bytedance/omnihuman` - OmniHuman (human + audio)
-- `fal-ai/ai-avatar/single-text` - MultiTalk Avatar (image + text)
 - `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V with LoRA support
+
+### 📋 Model Configuration Notes
+**OmniHuman** (`fal-ai/bytedance/omnihuman`):
+- **Category**: Avatar/Lipsync (Image + Audio → Video)
+- **Input**: `image_url` (human image), `audio_url` (audio <30s)
+- **Output**: `video` (File), `duration` (float)
+- **Use Case**: Animate human image with audio, emotions match audio
+- **Status**: 🆕 Needs to be added to Avatar category
 
 ---
 
@@ -178,11 +189,13 @@
 
 ## 🎓 Training / LoRA Models
 
-### 🆕 New Models to Add
+### 🆕 New Models to Add (From Updated all models.txt)
 - `fal-ai/flux-lora-portrait-trainer` - Flux LoRA Portrait Trainer
 - `fal-ai/flux-kontext-trainer` - Flux Kontext LoRA Trainer
 - `fal-ai/flux-lora-fast-training` - Flux LoRA Fast Training
-- `fal-ai/wan-trainer/t2v-14b` - Wan 2.1 T2V 14B Trainer
+- `fal-ai/wan-trainer/t2v-14b` - Wan Trainer T2V 14B
+- `fal-ai/wan-trainer/t2v` - Wan Trainer T2V
+- `fal-ai/wan-trainer/i2v-720p` - Wan Trainer I2V 720p
 - `fal-ai/flux-pro-trainer` - Flux Pro Trainer
 - `fal-ai/wan-22-image-trainer` - Wan 2.2 Image Trainer
 
@@ -212,11 +225,12 @@
 
 ## 📊 Summary
 
-### Current Status
-- **Total Models Listed**: ~100+
-- **Already Configured**: 17 models
-- **New Models to Add**: 80+ models
+### Current Status (Updated from all models.txt)
+- **Total Models Listed**: ~45+ documented models
+- **Already Configured**: 38 models (38% complete)
+- **New Models to Add**: 10+ high-priority models
 - **Categories**: 12 categories
+- **New Models Identified**: Flux Pro Kontext variants, Wan Trainer variants, Kling 2.1 Master T2V
 
 ### Priority Implementation Order
 1. **High Priority**: Text-to-Video, Image-to-Video (most requested)
