@@ -1,8 +1,8 @@
 # AI Model Endpoints Catalog
 
-> **Last Updated**: 2025-01-14 (Session 2)
+> **Last Updated**: 2025-01-14 (Session 2 - Final)
 > 
-> **Progress**: 38/100+ models configured (38%)
+> **Progress**: 49/100+ models configured (49%)
 
 ## Status Legend
 - ✅ **Already Configured** - Model is currently in the dropdown
@@ -34,17 +34,18 @@
 - `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️ NEW
 - `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️ NEW
 
-### 🆕 New Models to Add (From Updated all models.txt)
+- `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️ NEW
+- `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️ NEW
+- `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️ NEW
+- `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️ NEW
+- `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️ NEW
+- `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️ NEW
+
+### 🆕 New Models to Add
 - `fal-ai/luma-photon` - Luma Photon (creative, personalizable)
 - `fal-ai/gemini-25-flash-image` - Gemini 2.5 Flash
 - `fal-ai/stable-diffusion-v35-large` - Stable Diffusion 3.5 Large
 - `fal-ai/qwen-image` - Qwen Image (complex text rendering)
-- `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I
-- `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I
-- `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint
-- `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max
-- `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi
-- `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi
 
 ---
 
@@ -58,9 +59,9 @@
 - `fal-ai/ovi` - Ovi (Audio-Video) ✔️ NEW
 - `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️ NEW
 - `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️ NEW
+- `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️ NEW
 
-### 🆕 New Models to Add (From Updated all models.txt)
-- `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V
+### 🆕 New Models to Add
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
 - `fal-ai/hunyuan-video` - Hunyuan Video (open, high quality)
 
@@ -87,12 +88,13 @@
 - `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️ NEW
 - `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️ NEW
 
-### 🆕 New Models to Add (From Updated all models.txt)
-- `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V
-- `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast I2V) - See config notes above
+- `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast) ✔️ NEW
+- `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V LoRA ✔️ NEW
+- `fal-ai/bytedance/omnihuman` - OmniHuman (Image+Audio→Video) ✔️ NEW
+
+### 🆕 New Models to Add
 - `fal-ai/kling-video/v2.1/pro/image-to-video` - Kling 2.1 Pro I2V
 - `fal-ai/ltx-video-13b-distilled/image-to-video` - LTX Video 0.9.7 13B Distilled
-- `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V with LoRA - See config notes above
 
 ### 📋 Model Configuration Notes
 
@@ -326,15 +328,15 @@
 ### Session 2 - Category Organization & New Models (2025-01-14)
 - ✅ Added color-coded category headers in dropdown
 - ✅ Reorganized models by category with visual separators
-- ✅ Added 21 new models across multiple categories
-- **Models Added This Session**: 21
-  - Text-to-Image: 7 new (Imagen 4, Recraft V3, HiDream, Flux Krea, DreamOmni2, Flux Kontext x2)
-  - Text-to-Video: 7 new (Sora 2 T2V x2, Kandinsky 5.0 x2, Ovi, Luma Dream Machine, Kling 2.5 Turbo Pro)
-  - Image-to-Video: 6 new (Luma variants x5, PixVerse V5, LTX Video)
+- ✅ Added 32 new models across multiple categories
+- **Models Added This Session**: 32
+  - Text-to-Image: 13 new (Imagen 4, Recraft V3, HiDream, Flux Krea, DreamOmni2, Flux Kontext x7)
+  - Text-to-Video: 8 new (Sora 2 T2V x2, Kandinsky 5.0 x2, Ovi, Luma Dream Machine, Kling x2)
+  - Image-to-Video: 9 new (Luma variants x5, PixVerse V5, LTX Video, Lucy-14B, Wan LoRA, OmniHuman)
   - Video-to-Video: 5 new (Sora 2 Remix, Luma Modify x2, Luma Reframe x2)
   - Audio: 2 new (MiniMax Music x2)
   - 3D: 1 new (Meshy V5)
-- **Total Models Now**: 38
+- **Total Models Now**: 49
 
 ### Next Implementation Session
 **Target**: Add Avatar/Lipsync and Audio/TTS models

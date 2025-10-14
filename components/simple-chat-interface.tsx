@@ -1766,6 +1766,42 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                             <span>Flux Kontext LoRA T2I</span>
                           </div>
                         </SelectItem>
+                        <SelectItem value="fal-ai/flux-kontext-lora/inpaint">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Kontext Inpaint" className="w-4 h-4" />
+                            <span>Flux Kontext Inpaint</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-pro/kontext/max/text-to-image">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Pro Kontext Max" className="w-4 h-4" />
+                            <span>Flux Pro Kontext Max T2I</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-pro/kontext/text-to-image">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Pro Kontext" className="w-4 h-4" />
+                            <span>Flux Pro Kontext T2I</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-pro/kontext/max">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Pro Kontext Max" className="w-4 h-4" />
+                            <span>Flux Pro Kontext Max</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-pro/kontext/max/multi">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Pro Kontext Multi" className="w-4 h-4" />
+                            <span>Flux Pro Kontext Max Multi</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/flux-pro/kontext/multi">
+                          <div className="flex items-center gap-2">
+                            <img src="/flux.svg" alt="Flux Pro Kontext Multi" className="w-4 h-4" />
+                            <span>Flux Pro Kontext Multi</span>
+                          </div>
+                        </SelectItem>
 
                         {/* TEXT-TO-VIDEO MODELS */}
                         <div className="px-2 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border-l-2 border-purple-200 mt-2">
@@ -1811,6 +1847,12 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                           <div className="flex items-center gap-2">
                             <img src="/kling-color.svg" alt="Kling T2V" className="w-4 h-4" />
                             <span>Kling 2.5 Turbo Pro T2V</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/kling-video/v2.1/master/text-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/kling-color.svg" alt="Kling 2.1 Master T2V" className="w-4 h-4" />
+                            <span>Kling 2.1 Master T2V</span>
                           </div>
                         </SelectItem>
 
@@ -1918,6 +1960,24 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                           <div className="flex items-center gap-2">
                             <img src="/deepseek-color.svg" alt="LTX Video" className="w-4 h-4" />
                             <span>LTX Video 0.9.8 13B</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="decart/lucy-14b/image-to-video">
+                          <div className="flex items-center gap-2">
+                            <img src="/deepseek-color.svg" alt="Lucy 14B" className="w-4 h-4" />
+                            <span>Lucy-14B (Lightning Fast)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/wan/v2.2-a14b/image-to-video/lora">
+                          <div className="flex items-center gap-2">
+                            <img src="/alibaba-color.svg" alt="Wan LoRA" className="w-4 h-4" />
+                            <span>Wan 2.2 I2V (LoRA)</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="fal-ai/bytedance/omnihuman">
+                          <div className="flex items-center gap-2">
+                            <img src="/bytedance-color.svg" alt="OmniHuman" className="w-4 h-4" />
+                            <span>OmniHuman (Avatar)</span>
                           </div>
                         </SelectItem>
                         <SelectItem value="fal-ai/wan-25-preview/image-to-video">

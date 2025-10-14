@@ -8968,3 +8968,4431 @@ OBJ format 3D model
 
 usdz File
 USDZ format 3D model
+
+
+fal-ai/kling-video/v2.1/master/image-to-video
+
+2.1 Master (Image to Video)
+Kling 2.1 Master: The premium endpoint for Kling 2.1, designed for top-tier image-to-video generation with unparalleled motion fluidity, cinematic visuals, and exceptional prompt precision.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Kling 2.1 Master Image to Video API.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/kling-video/v2.1/master/image-to-video", {
+  input: {
+    prompt: "Sunlight dapples through budding branches, illuminating a vibrant tapestry of greens and browns as a pair of robins meticulously weave twigs and mud into a cradle of life, their tiny forms a whirlwind of activity against a backdrop of blossoming spring.  The scene unfolds with a gentle, observational pace, allowing the viewer to fully appreciate the intricate details of nest construction, the soft textures of downy feathers contrasted against the rough bark of the branches, the delicate balance of strength and fragility in their creation.",
+    image_url: "https://v3.fal.media/files/zebra/9Nrm22YyLojSTPJbZYNhh_image.webp"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/kling-video/v2.1/master/image-to-video", {
+  input: {
+    prompt: "Sunlight dapples through budding branches, illuminating a vibrant tapestry of greens and browns as a pair of robins meticulously weave twigs and mud into a cradle of life, their tiny forms a whirlwind of activity against a backdrop of blossoming spring.  The scene unfolds with a gentle, observational pace, allowing the viewer to fully appreciate the intricate details of nest construction, the soft textures of downy feathers contrasted against the rough bark of the branches, the delicate balance of strength and fragility in their creation.",
+    image_url: "https://v3.fal.media/files/zebra/9Nrm22YyLojSTPJbZYNhh_image.webp"
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/kling-video/v2.1/master/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/kling-video/v2.1/master/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+
+{
+  "prompt": "Sunlight dapples through budding branches, illuminating a vibrant tapestry of greens and browns as a pair of robins meticulously weave twigs and mud into a cradle of life, their tiny forms a whirlwind of activity against a backdrop of blossoming spring.  The scene unfolds with a gentle, observational pace, allowing the viewer to fully appreciate the intricate details of nest construction, the soft textures of downy feathers contrasted against the rough bark of the branches, the delicate balance of strength and fragility in their creation.",
+  "image_url": "https://v3.fal.media/files/zebra/9Nrm22YyLojSTPJbZYNhh_image.webp",
+  "duration": "5",
+  "negative_prompt": "blur, distort, and low quality",
+  "cfg_scale": 0.5
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://v3.fal.media/files/rabbit/YuUWKFq508zzWIiQ0i2vt_output.mp4"
+  }
+}
+Other types
+#
+TextToVideoV21MasterRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+ProImageToVideoRequest
+#
+prompt string
+image_url string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+tail_image_url string
+URL of the image to be used for the end of the video
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+V1TextToVideoRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+camera_control CameraControlEnum
+Camera control parameters
+
+Possible enum values: down_back, forward_up, right_turn_forward, left_turn_forward
+
+advanced_camera_control CameraControl
+Advanced Camera control parameters
+
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+TextToVideoV25ProRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+ImageToVideoRequest
+#
+prompt string
+image_url string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+LipsyncA2VRequest
+#
+video_url string
+The URL of the video to generate the lip sync for. Supports .mp4/.mov, ≤100MB, 2–10s, 720p/1080p only, width/height 720–1920px.
+
+audio_url string
+The URL of the audio to generate the lip sync for. Minimum duration is 2s and maximum duration is 60s. Maximum file size is 5MB.
+
+CameraControl
+#
+movement_type MovementTypeEnum
+The type of camera movement
+
+Possible enum values: horizontal, vertical, pan, tilt, roll, zoom
+
+movement_value integer
+The value of the camera movement
+
+ImageToVideoV21StandardRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+TextToVideoRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+LipsyncT2VRequest
+#
+video_url string
+The URL of the video to generate the lip sync for. Supports .mp4/.mov, ≤100MB, 2-60s, 720p/1080p only, width/height 720–1920px. If validation fails, an error is returned.
+
+text string
+Text content for lip-sync video generation. Max 120 characters.
+
+voice_id VoiceIdEnum
+Voice ID to use for speech synthesis
+
+Possible enum values: genshin_vindi2, zhinen_xuesheng, AOT, ai_shatang, genshin_klee2, genshin_kirara, ai_kaiya, oversea_male1, ai_chenjiahao_712, girlfriend_4_speech02, chat1_female_new-3, chat_0407_5-1, cartoon-boy-07, uk_boy1, cartoon-girl-01, PeppaPig_platform, ai_huangzhong_712, ai_huangyaoshi_712, ai_laoguowang_712, chengshu_jiejie, you_pingjing, calm_story1, uk_man2, laopopo_speech02, heainainai_speech02, reader_en_m-v1, commercial_lady_en_f-v1, tiyuxi_xuedi, tiexin_nanyou, girlfriend_1_speech02, girlfriend_2_speech02, zhuxi_speech02, uk_oldman3, dongbeilaotie_speech02, chongqingxiaohuo_speech02, chuanmeizi_speech02, chaoshandashu_speech02, ai_taiwan_man2_speech02, xianzhanggui_speech02, tianjinjiejie_speech02, diyinnansang_DB_CN_M_04-v2, yizhipiannan-v1, guanxiaofang-v2, tianmeixuemei-v1, daopianyansang-v1, mengwa-v1
+
+voice_language VoiceLanguageEnum
+The voice language corresponding to the Voice ID Default value: "en"
+
+Possible enum values: zh, en
+
+voice_speed float
+Speech rate for Text to Video generation Default value: 1
+
+ImageToVideoV21ProRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+tail_image_url string
+URL of the image to be used for the end of the video
+
+DynamicMask
+#
+mask_url string
+URL of the image for Dynamic Brush Application Area (Mask image created by users using the motion brush)
+
+trajectories list<Trajectory>
+List of trajectories
+
+ImageToVideoV25ProRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+VideoEffectsRequest
+#
+input_image_urls list<string>
+URL of images to be used for hug, kiss or heart_gesture video.
+
+effect_scene EffectSceneEnum
+The effect scene to use for the video generation
+
+Possible enum values: hug, kiss, heart_gesture, squish, expansion, fuzzyfuzzy, bloombloom, dizzydizzy, jelly_press, jelly_slice, jelly_squish, jelly_jiggle, pixelpixel, yearbook, instant_film, anime_figure, rocketrocket
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+MultiImageToVideoRequest
+#
+prompt string
+input_image_urls list<string>
+List of image URLs to use for video generation. Supports up to 4 images.
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+V1ImageToVideoRequest
+#
+prompt string
+The prompt for the video
+
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+tail_image_url string
+URL of the image to be used for the end of the video
+
+static_mask_url string
+URL of the image for Static Brush Application Area (Mask image created by users using the motion brush)
+
+dynamic_masks list<DynamicMask>
+List of dynamic masks
+
+TextToVideoV2MasterRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+Trajectory
+#
+x integer
+X coordinate of the motion trajectory
+
+y integer
+Y coordinate of the motion trajectory
+
+ImageToVideoV2MasterRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+fal-ai/kling-video/v2.1/master/text-to-video
+
+2.1 Master (Text to Video)
+Kling 2.1 Master: The premium endpoint for Kling 2.1, designed for top-tier text-to-video generation with unparalleled motion fluidity, cinematic visuals, and exceptional prompt precision.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Kling 2.1 Master Text to Video API.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/kling-video/v2.1/master/text-to-video", {
+  input: {
+    prompt: "Warm, earthy tones bathe the scene as the potter's hands, rough and calloused, coax a shapeless lump of clay into a vessel of elegant curves, the slow, deliberate movements highlighted by the subtle shifting light; the clay's cool, damp texture contrasts sharply with the warmth of the potter's touch, creating a captivating interplay between material and maker."
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/kling-video/v2.1/master/text-to-video", {
+  input: {
+    prompt: "Warm, earthy tones bathe the scene as the potter's hands, rough and calloused, coax a shapeless lump of clay into a vessel of elegant curves, the slow, deliberate movements highlighted by the subtle shifting light; the clay's cool, damp texture contrasts sharply with the warmth of the potter's touch, creating a captivating interplay between material and maker."
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/kling-video/v2.1/master/text-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/kling-video/v2.1/master/text-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+
+{
+  "prompt": "Warm, earthy tones bathe the scene as the potter's hands, rough and calloused, coax a shapeless lump of clay into a vessel of elegant curves, the slow, deliberate movements highlighted by the subtle shifting light; the clay's cool, damp texture contrasts sharply with the warmth of the potter's touch, creating a captivating interplay between material and maker.",
+  "duration": "5",
+  "aspect_ratio": "16:9",
+  "negative_prompt": "blur, distort, and low quality",
+  "cfg_scale": 0.5
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://v3.fal.media/files/lion/0wTlhR7GCXFI-_BZXGy99_output.mp4"
+  }
+}
+Other types
+#
+ProImageToVideoRequest
+#
+prompt string
+image_url string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+tail_image_url string
+URL of the image to be used for the end of the video
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+V1TextToVideoRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+camera_control CameraControlEnum
+Camera control parameters
+
+Possible enum values: down_back, forward_up, right_turn_forward, left_turn_forward
+
+advanced_camera_control CameraControl
+Advanced Camera control parameters
+
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+TextToVideoV25ProRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+ImageToVideoRequest
+#
+prompt string
+image_url string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+ImageToVideoV21MasterRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+LipsyncA2VRequest
+#
+video_url string
+The URL of the video to generate the lip sync for. Supports .mp4/.mov, ≤100MB, 2–10s, 720p/1080p only, width/height 720–1920px.
+
+audio_url string
+The URL of the audio to generate the lip sync for. Minimum duration is 2s and maximum duration is 60s. Maximum file size is 5MB.
+
+CameraControl
+#
+movement_type MovementTypeEnum
+The type of camera movement
+
+Possible enum values: horizontal, vertical, pan, tilt, roll, zoom
+
+movement_value integer
+The value of the camera movement
+
+ImageToVideoV21StandardRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+TextToVideoRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+LipsyncT2VRequest
+#
+video_url string
+The URL of the video to generate the lip sync for. Supports .mp4/.mov, ≤100MB, 2-60s, 720p/1080p only, width/height 720–1920px. If validation fails, an error is returned.
+
+text string
+Text content for lip-sync video generation. Max 120 characters.
+
+voice_id VoiceIdEnum
+Voice ID to use for speech synthesis
+
+Possible enum values: genshin_vindi2, zhinen_xuesheng, AOT, ai_shatang, genshin_klee2, genshin_kirara, ai_kaiya, oversea_male1, ai_chenjiahao_712, girlfriend_4_speech02, chat1_female_new-3, chat_0407_5-1, cartoon-boy-07, uk_boy1, cartoon-girl-01, PeppaPig_platform, ai_huangzhong_712, ai_huangyaoshi_712, ai_laoguowang_712, chengshu_jiejie, you_pingjing, calm_story1, uk_man2, laopopo_speech02, heainainai_speech02, reader_en_m-v1, commercial_lady_en_f-v1, tiyuxi_xuedi, tiexin_nanyou, girlfriend_1_speech02, girlfriend_2_speech02, zhuxi_speech02, uk_oldman3, dongbeilaotie_speech02, chongqingxiaohuo_speech02, chuanmeizi_speech02, chaoshandashu_speech02, ai_taiwan_man2_speech02, xianzhanggui_speech02, tianjinjiejie_speech02, diyinnansang_DB_CN_M_04-v2, yizhipiannan-v1, guanxiaofang-v2, tianmeixuemei-v1, daopianyansang-v1, mengwa-v1
+
+voice_language VoiceLanguageEnum
+The voice language corresponding to the Voice ID Default value: "en"
+
+Possible enum values: zh, en
+
+voice_speed float
+Speech rate for Text to Video generation Default value: 1
+
+ImageToVideoV21ProRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+tail_image_url string
+URL of the image to be used for the end of the video
+
+DynamicMask
+#
+mask_url string
+URL of the image for Dynamic Brush Application Area (Mask image created by users using the motion brush)
+
+trajectories list<Trajectory>
+List of trajectories
+
+ImageToVideoV25ProRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+VideoEffectsRequest
+#
+input_image_urls list<string>
+URL of images to be used for hug, kiss or heart_gesture video.
+
+effect_scene EffectSceneEnum
+The effect scene to use for the video generation
+
+Possible enum values: hug, kiss, heart_gesture, squish, expansion, fuzzyfuzzy, bloombloom, dizzydizzy, jelly_press, jelly_slice, jelly_squish, jelly_jiggle, pixelpixel, yearbook, instant_film, anime_figure, rocketrocket
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+MultiImageToVideoRequest
+#
+prompt string
+input_image_urls list<string>
+List of image URLs to use for video generation. Supports up to 4 images.
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+V1ImageToVideoRequest
+#
+prompt string
+The prompt for the video
+
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+tail_image_url string
+URL of the image to be used for the end of the video
+
+static_mask_url string
+URL of the image for Static Brush Application Area (Mask image created by users using the motion brush)
+
+dynamic_masks list<DynamicMask>
+List of dynamic masks
+
+TextToVideoV2MasterRequest
+#
+prompt string
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video frame Default value: "16:9"
+
+Possible enum values: 16:9, 9:16, 1:1
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+Trajectory
+#
+x integer
+X coordinate of the motion trajectory
+
+y integer
+Y coordinate of the motion trajectory
+
+ImageToVideoV2MasterRequest
+#
+prompt string
+image_url string
+URL of the image to be used for the video
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "5"
+
+Possible enum values: 5, 10
+
+negative_prompt string
+Default value: "blur, distort, and low quality"
+
+cfg_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt. Default value: 0.5
+
+fal-ai/flux-pro/kontext/max
+
+Kontext [max] -- Editing
+FLUX.1 Kontext [max] is a model with greatly improved prompt adherence and typography generation meet premium consistency for editing without compromise on speed.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+FLUX.1 Kontext [Max] -- Frontier image editing model.
+
+Kontext Max is a more powerful version of Kontext that can handle more complex tasks.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/flux-pro/kontext/max", {
+  input: {
+    prompt: "Put a donut next to the flour.",
+    image_url: "https://v3.fal.media/files/rabbit/rmgBxhwGYb2d3pl3x9sKf_output.png"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/flux-pro/kontext/max", {
+  input: {
+    prompt: "Put a donut next to the flour.",
+    image_url: "https://v3.fal.media/files/rabbit/rmgBxhwGYb2d3pl3x9sKf_output.png"
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/flux-pro/kontext/max", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/flux-pro/kontext/max", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image.
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+image_url string
+Image prompt for the omni model.
+
+
+{
+  "prompt": "Put a donut next to the flour.",
+  "guidance_scale": 3.5,
+  "num_images": 1,
+  "output_format": "jpeg",
+  "safety_tolerance": "2",
+  "image_url": "https://v3.fal.media/files/rabbit/rmgBxhwGYb2d3pl3x9sKf_output.png"
+}
+Output
+#
+images list<fal__toolkit__image__image__Image>
+The generated image files info.
+
+timings Timings
+seed integer
+Seed of the generated Image. It will be the same value of the one passed in the input or the randomly generated that was used in case none was passed.
+
+has_nsfw_concepts list<boolean>
+Whether the generated images contain NSFW concepts.
+
+prompt string
+The prompt used for generating the image.
+
+
+{
+  "images": [
+    {
+      "height": 1024,
+      "url": "https://fal.media/files/tiger/7dSJbIU_Ni-0Zp9eaLsvR_fe56916811d84ac69c6ffc0d32dca151.jpg",
+      "width": 1024
+    }
+  ],
+  "prompt": ""
+}
+Other types
+#
+registry__image__fast_sdxl__models__Image
+#
+url string
+width integer
+height integer
+content_type string
+Default value: "image/jpeg"
+
+FluxProRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+FluxProV1Redux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+fal__toolkit__image__image__Image
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+width integer
+The width of the image in pixels.
+
+height integer
+The height of the image in pixels.
+
+FluxProUltraTextToImageInputRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+enable_safety_checker boolean
+If set to true, the safety checker will be enabled. Default value: true
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+image_prompt_strength float
+The strength of the image prompt, between 0 and 1. Default value: 0.1
+
+aspect_ratio Enum | string
+The aspect ratio of the generated image. Default value: 16:9
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+raw boolean
+Generate less processed, more natural-looking images.
+
+ImageSize
+#
+width integer
+The width of the generated image. Default value: 512
+
+height integer
+The height of the generated image. Default value: 512
+
+FluxProTextToImageInputWithAR
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image. Default value: "1:1"
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+fal-ai/flux-pro/kontext/max/multi
+
+Kontext [max] -- Editing (experimental Multi Image)
+Experimental version of FLUX.1 Kontext [max] with multi image handling capabilities
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Experimental version of FLUX.1 Kontext [Max] with multiple images.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/flux-pro/kontext/max/multi", {
+  input: {
+    prompt: "Put the little duckling on top of the woman's t-shirt.",
+    image_urls: ["https://v3.fal.media/files/penguin/XoW0qavfF-ahg-jX4BMyL_image.webp", "https://v3.fal.media/files/tiger/bml6YA7DWJXOigadvxk75_image.webp"]
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/flux-pro/kontext/max/multi", {
+  input: {
+    prompt: "Put the little duckling on top of the woman's t-shirt.",
+    image_urls: ["https://v3.fal.media/files/penguin/XoW0qavfF-ahg-jX4BMyL_image.webp", "https://v3.fal.media/files/tiger/bml6YA7DWJXOigadvxk75_image.webp"]
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/flux-pro/kontext/max/multi", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/flux-pro/kontext/max/multi", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image.
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+image_urls list<string>
+Image prompt for the omni model.
+
+
+{
+  "prompt": "Put the little duckling on top of the woman's t-shirt.",
+  "guidance_scale": 3.5,
+  "num_images": 1,
+  "output_format": "jpeg",
+  "safety_tolerance": "2",
+  "image_urls": [
+    "https://v3.fal.media/files/penguin/XoW0qavfF-ahg-jX4BMyL_image.webp",
+    "https://v3.fal.media/files/tiger/bml6YA7DWJXOigadvxk75_image.webp"
+  ]
+}
+Output
+#
+images list<registry__image__fast_sdxl__models__Image>
+The generated image files info.
+
+timings Timings
+seed integer
+Seed of the generated Image. It will be the same value of the one passed in the input or the randomly generated that was used in case none was passed.
+
+has_nsfw_concepts list<boolean>
+Whether the generated images contain NSFW concepts.
+
+prompt string
+The prompt used for generating the image.
+
+
+{
+  "images": [
+    {
+      "url": "",
+      "content_type": "image/jpeg"
+    }
+  ],
+  "prompt": ""
+}
+Other types
+#
+registry__image__fast_sdxl__models__Image
+#
+url string
+width integer
+height integer
+content_type string
+Default value: "image/jpeg"
+
+FluxProRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+FluxProV1Redux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+fal__toolkit__image__image__Image
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+width integer
+The width of the image in pixels.
+
+height integer
+The height of the image in pixels.
+
+FluxProUltraTextToImageInputRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+enable_safety_checker boolean
+If set to true, the safety checker will be enabled. Default value: true
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+image_prompt_strength float
+The strength of the image prompt, between 0 and 1. Default value: 0.1
+
+aspect_ratio Enum | string
+The aspect ratio of the generated image. Default value: 16:9
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+raw boolean
+Generate less processed, more natural-looking images.
+
+ImageSize
+#
+width integer
+The width of the generated image. Default value: 512
+
+height integer
+The height of the generated image. Default value: 512
+
+FluxProTextToImageInputWithAR
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image. Default value: "1:1"
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+fal-ai/flux-pro/kontext/max/text-to-image
+
+Kontext [max] -- Text to Image
+FLUX.1 Kontext [max] text-to-image is a new premium model brings maximum performance across all aspects – greatly improved prompt adherence.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+FLUX.1 Kontext [Max] -- Frontier image generation model.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/flux-pro/kontext/max/text-to-image", {
+  input: {
+    prompt: "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" is painted over it in big, white brush strokes with visible texture."
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/flux-pro/kontext/max/text-to-image", {
+  input: {
+    prompt: "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" is painted over it in big, white brush strokes with visible texture."
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/flux-pro/kontext/max/text-to-image", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/flux-pro/kontext/max/text-to-image", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image. Default value: "1:1"
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+
+{
+  "prompt": "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" is painted over it in big, white brush strokes with visible texture.",
+  "guidance_scale": 3.5,
+  "num_images": 1,
+  "output_format": "jpeg",
+  "safety_tolerance": "2",
+  "aspect_ratio": "1:1"
+}
+Output
+#
+images list<registry__image__fast_sdxl__models__Image>
+The generated image files info.
+
+timings Timings
+seed integer
+Seed of the generated Image. It will be the same value of the one passed in the input or the randomly generated that was used in case none was passed.
+
+has_nsfw_concepts list<boolean>
+Whether the generated images contain NSFW concepts.
+
+prompt string
+The prompt used for generating the image.
+
+
+{
+  "images": [
+    {
+      "url": "",
+      "content_type": "image/jpeg"
+    }
+  ],
+  "prompt": ""
+}
+Other types
+#
+registry__image__fast_sdxl__models__Image
+#
+url string
+width integer
+height integer
+content_type string
+Default value: "image/jpeg"
+
+FluxProRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+FluxProV1Redux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+fal__toolkit__image__image__Image
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+width integer
+The width of the image in pixels.
+
+height integer
+The height of the image in pixels.
+
+FluxProUltraTextToImageInputRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+enable_safety_checker boolean
+If set to true, the safety checker will be enabled. Default value: true
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+image_prompt_strength float
+The strength of the image prompt, between 0 and 1. Default value: 0.1
+
+aspect_ratio Enum | string
+The aspect ratio of the generated image. Default value: 16:9
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+raw boolean
+Generate less processed, more natural-looking images.
+
+ImageSize
+#
+width integer
+The width of the generated image. Default value: 512
+
+height integer
+The height of the generated image. Default value: 512
+
+fal-ai/flux-pro/kontext/multi
+
+Kontext [pro] -- Editing (experimental Multi Image)
+Experimental version of FLUX.1 Kontext [pro] with multi image handling capabilities
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Experimental version of FLUX.1 Kontext [pro] with multiple images.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/flux-pro/kontext/multi", {
+  input: {
+    prompt: "Put the little duckling on top of the woman's t-shirt.",
+    image_urls: ["https://v3.fal.media/files/penguin/XoW0qavfF-ahg-jX4BMyL_image.webp", "https://v3.fal.media/files/tiger/bml6YA7DWJXOigadvxk75_image.webp"]
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/flux-pro/kontext/multi", {
+  input: {
+    prompt: "Put the little duckling on top of the woman's t-shirt.",
+    image_urls: ["https://v3.fal.media/files/penguin/XoW0qavfF-ahg-jX4BMyL_image.webp", "https://v3.fal.media/files/tiger/bml6YA7DWJXOigadvxk75_image.webp"]
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/flux-pro/kontext/multi", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/flux-pro/kontext/multi", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image.
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+image_urls list<string>
+Image prompt for the omni model.
+
+
+{
+  "prompt": "Put the little duckling on top of the woman's t-shirt.",
+  "guidance_scale": 3.5,
+  "num_images": 1,
+  "output_format": "jpeg",
+  "safety_tolerance": "2",
+  "image_urls": [
+    "https://v3.fal.media/files/penguin/XoW0qavfF-ahg-jX4BMyL_image.webp",
+    "https://v3.fal.media/files/tiger/bml6YA7DWJXOigadvxk75_image.webp"
+  ]
+}
+Output
+#
+images list<registry__image__fast_sdxl__models__Image>
+The generated image files info.
+
+timings Timings
+seed integer
+Seed of the generated Image. It will be the same value of the one passed in the input or the randomly generated that was used in case none was passed.
+
+has_nsfw_concepts list<boolean>
+Whether the generated images contain NSFW concepts.
+
+prompt string
+The prompt used for generating the image.
+
+
+{
+  "images": [
+    {
+      "url": "",
+      "content_type": "image/jpeg"
+    }
+  ],
+  "prompt": ""
+}
+Other types
+#
+registry__image__fast_sdxl__models__Image
+#
+url string
+width integer
+height integer
+content_type string
+Default value: "image/jpeg"
+
+FluxProRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+FluxProV1Redux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+fal__toolkit__image__image__Image
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+width integer
+The width of the image in pixels.
+
+height integer
+The height of the image in pixels.
+
+FluxProUltraTextToImageInputRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+enable_safety_checker boolean
+If set to true, the safety checker will be enabled. Default value: true
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+image_prompt_strength float
+The strength of the image prompt, between 0 and 1. Default value: 0.1
+
+aspect_ratio Enum | string
+The aspect ratio of the generated image. Default value: 16:9
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+raw boolean
+Generate less processed, more natural-looking images.
+
+ImageSize
+#
+width integer
+The width of the generated image. Default value: 512
+
+height integer
+The height of the generated image. Default value: 512
+
+FluxProTextToImageInputWithAR
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image. Default value: "1:1"
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+fal-ai/flux-pro/kontext/text-to-image
+
+Kontext [pro] -- Text to Image
+The FLUX.1 Kontext [pro] text-to-image delivers state-of-the-art image generation results with unprecedented prompt following, photorealistic rendering, and flawless typography.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+FLUX.1 Kontext [pro] -- Frontier image generation model.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/flux-pro/kontext/text-to-image", {
+  input: {
+    prompt: "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" is painted over it in big, white brush strokes with visible texture."
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/flux-pro/kontext/text-to-image", {
+  input: {
+    prompt: "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" is painted over it in big, white brush strokes with visible texture."
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/flux-pro/kontext/text-to-image", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/flux-pro/kontext/text-to-image", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The prompt to generate an image from.
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated image. Default value: "1:1"
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+
+{
+  "prompt": "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" is painted over it in big, white brush strokes with visible texture.",
+  "guidance_scale": 3.5,
+  "num_images": 1,
+  "output_format": "jpeg",
+  "safety_tolerance": "2",
+  "aspect_ratio": "1:1"
+}
+Output
+#
+images list<registry__image__fast_sdxl__models__Image>
+The generated image files info.
+
+timings Timings
+seed integer
+Seed of the generated Image. It will be the same value of the one passed in the input or the randomly generated that was used in case none was passed.
+
+has_nsfw_concepts list<boolean>
+Whether the generated images contain NSFW concepts.
+
+prompt string
+The prompt used for generating the image.
+
+
+{
+  "images": [
+    {
+      "url": "",
+      "content_type": "image/jpeg"
+    }
+  ],
+  "prompt": ""
+}
+Other types
+#
+registry__image__fast_sdxl__models__Image
+#
+url string
+width integer
+height integer
+content_type string
+Default value: "image/jpeg"
+
+FluxProRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+FluxProV1Redux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+image_size ImageSize | Enum
+The size of the generated image. Default value: landscape_4_3
+
+Possible enum values: square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9
+
+Note: For custom image sizes, you can pass the width and height as an object:
+
+
+"image_size": {
+  "width": 1280,
+  "height": 720
+}
+num_inference_steps integer
+The number of inference steps to perform. Default value: 28
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+guidance_scale float
+The CFG (Classifier Free Guidance) scale is a measure of how close you want the model to stick to your prompt when looking for a related image to show you. Default value: 3.5
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+fal__toolkit__image__image__Image
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+width integer
+The width of the image in pixels.
+
+height integer
+The height of the image in pixels.
+
+FluxProUltraTextToImageInputRedux
+#
+prompt string
+The prompt to generate an image from. Default value: ""
+
+seed integer
+The same seed and the same prompt given to the same version of the model will output the same image every time.
+
+sync_mode boolean
+If True, the media will be returned as a data URI and the output data won't be available in the request history.
+
+num_images integer
+The number of images to generate. Default value: 1
+
+enable_safety_checker boolean
+If set to true, the safety checker will be enabled. Default value: true
+
+output_format OutputFormatEnum
+The format of the generated image. Default value: "jpeg"
+
+Possible enum values: jpeg, png
+
+safety_tolerance SafetyToleranceEnum
+The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive. Default value: "2"
+
+Possible enum values: 1, 2, 3, 4, 5, 6
+
+Note: This property is only available through API calls.
+
+enhance_prompt boolean
+Whether to enhance the prompt for better results.
+
+image_url string
+The image URL to generate an image from. Needs to match the dimensions of the mask.
+
+image_prompt_strength float
+The strength of the image prompt, between 0 and 1. Default value: 0.1
+
+aspect_ratio Enum | string
+The aspect ratio of the generated image. Default value: 16:9
+
+Possible enum values: 21:9, 16:9, 4:3, 3:2, 1:1, 2:3, 3:4, 9:16, 9:21
+
+raw boolean
+Generate less processed, more natural-looking images.
+
+ImageSize
+#
+width integer
+The width of the generated image. Default value: 512
+
+height integer
+The height of the generated image. Default value: 512
+
+decart/lucy-5b/image-to-video
+
+Lucy-5B is a model that can create 5-second I2V videos in under 5 seconds, achieving >1x RTF end-to-end
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate a video from an input image and text prompt using AI video generation models.
+
+This endpoint accepts a base64-encoded image and a text prompt, then returns an MP4 video file with H.264 encoding.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("decart/lucy-5b/image-to-video", {
+  input: {
+    prompt: "Viking warrior, powerful build, battle-ready pose, fierce expression beneath war paint, fur-lined armor with battle axe, longship on stormy seas, dramatic storm lighting, action combat stance, long braided blonde hair with beaded beard, weathered face with ritual scars, northern warrior spirit",
+    image_url: "https://storage.googleapis.com/falserverless/model_tests/lucy-5b/lucy-5b-viking-image.jpg"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("decart/lucy-5b/image-to-video", {
+  input: {
+    prompt: "Viking warrior, powerful build, battle-ready pose, fierce expression beneath war paint, fur-lined armor with battle axe, longship on stormy seas, dramatic storm lighting, action combat stance, long braided blonde hair with beaded beard, weathered face with ritual scars, northern warrior spirit",
+    image_url: "https://storage.googleapis.com/falserverless/model_tests/lucy-5b/lucy-5b-viking-image.jpg"
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("decart/lucy-5b/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("decart/lucy-5b/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+Text description of the desired video content
+
+image_url string
+URL of the image to use as the first frame
+
+aspect_ratio AspectRatioEnum
+Aspect ratio of the generated video. Default value: "16:9"
+
+Possible enum values: 9:16, 16:9
+
+sync_mode boolean
+If set to true, the function will wait for the image to be generated and uploaded before returning the response. This will increase the latency of the function but it allows you to get the image directly in the response without going through the CDN. Default value: true
+
+
+{
+  "prompt": "Viking warrior, powerful build, battle-ready pose, fierce expression beneath war paint, fur-lined armor with battle axe, longship on stormy seas, dramatic storm lighting, action combat stance, long braided blonde hair with beaded beard, weathered face with ritual scars, northern warrior spirit",
+  "image_url": "https://storage.googleapis.com/falserverless/model_tests/lucy-5b/lucy-5b-viking-image.jpg",
+  "aspect_ratio": "16:9",
+  "sync_mode": true
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/model_tests/lucy-5b/lucy-5b-viking-image-output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+
+fal-ai/wan-trainer/t2v-14b
+
+T2V 14B
+Train custom LoRAs for Wan-2.1 T2V 14B
+Training
+Commercial use
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Runs training on the T2V 14B model.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/wan-trainer/t2v-14b", {
+  input: {
+    training_data_url: ""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/wan-trainer/t2v-14b", {
+  input: {
+    training_data_url: ""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/wan-trainer/t2v-14b", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/wan-trainer/t2v-14b", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+training_data_url string
+URL to zip archive with images of a consistent style. Try to use at least 10 images and/or videos, although more is better.
+
+In addition to images the archive can contain text files with captions. Each text file should have the same name as the image/video file it corresponds to.
+
+number_of_steps integer
+The number of steps to train for. Default value: 400
+
+learning_rate float
+The rate at which the model learns. Higher values can lead to faster training, but over-fitting. Default value: 0.0002
+
+trigger_phrase string
+The phrase that will trigger the model to generate an image. Default value: ""
+
+auto_scale_input boolean
+If true, the input will be automatically scale the video to 81 frames at 16fps.
+
+
+{
+  "training_data_url": "",
+  "number_of_steps": 400,
+  "learning_rate": 0.0002,
+  "auto_scale_input": true
+}
+Output
+#
+lora_file File
+URL to the trained LoRA weights.
+
+config_file File
+Configuration used for setting up the inference endpoints.
+
+
+{
+  "lora_file": {
+    "url": "",
+    "content_type": "image/png",
+    "file_name": "z9RV14K95DvU.png",
+    "file_size": 4404019
+  },
+  "config_file": {
+    "url": "",
+    "content_type": "image/png",
+    "file_name": "z9RV14K95DvU.png",
+    "file_size": 4404019
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/wan-trainer/t2v
+
+T2V 1.3B
+Train custom LoRAs for Wan-2.1 T2V 1.3B
+Training
+Commercial use
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Runs training on the T2V 1.3B model.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/wan-trainer/t2v", {
+  input: {
+    training_data_url: ""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/wan-trainer/t2v", {
+  input: {
+    training_data_url: ""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/wan-trainer/t2v", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/wan-trainer/t2v", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+training_data_url string
+URL to zip archive with images of a consistent style. Try to use at least 10 images and/or videos, although more is better.
+
+In addition to images the archive can contain text files with captions. Each text file should have the same name as the image/video file it corresponds to.
+
+number_of_steps integer
+The number of steps to train for. Default value: 400
+
+learning_rate float
+The rate at which the model learns. Higher values can lead to faster training, but over-fitting. Default value: 0.0002
+
+trigger_phrase string
+The phrase that will trigger the model to generate an image. Default value: ""
+
+auto_scale_input boolean
+If true, the input will be automatically scale the video to 81 frames at 16fps.
+
+
+{
+  "training_data_url": "",
+  "number_of_steps": 400,
+  "learning_rate": 0.0002,
+  "auto_scale_input": true
+}
+Output
+#
+lora_file File
+URL to the trained LoRA weights.
+
+config_file File
+Configuration used for setting up the inference endpoints.
+
+
+{
+  "lora_file": {
+    "url": "",
+    "content_type": "image/png",
+    "file_name": "z9RV14K95DvU.png",
+    "file_size": 4404019
+  },
+  "config_file": {
+    "url": "",
+    "content_type": "image/png",
+    "file_name": "z9RV14K95DvU.png",
+    "file_size": 4404019
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/wan-trainer/i2v-720p
+
+I2V 14B 720P
+Train custom LoRAs for Wan-2.1 I2V 720P
+Training
+Commercial use
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Runs training on the I2V 14B 720P model.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/wan-trainer/i2v-720p", {
+  input: {
+    training_data_url: ""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/wan-trainer/i2v-720p", {
+  input: {
+    training_data_url: ""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/wan-trainer/i2v-720p", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/wan-trainer/i2v-720p", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+training_data_url string
+URL to zip archive with images of a consistent style. Try to use at least 10 images and/or videos, although more is better.
+
+In addition to images the archive can contain text files with captions. Each text file should have the same name as the image/video file it corresponds to.
+
+number_of_steps integer
+The number of steps to train for. Default value: 400
+
+learning_rate float
+The rate at which the model learns. Higher values can lead to faster training, but over-fitting. Default value: 0.0002
+
+trigger_phrase string
+The phrase that will trigger the model to generate an image. Default value: ""
+
+auto_scale_input boolean
+If true, the input will be automatically scale the video to 81 frames at 16fps.
+
+
+{
+  "training_data_url": "",
+  "number_of_steps": 400,
+  "learning_rate": 0.0002,
+  "auto_scale_input": true
+}
+Output
+#
+lora_file File
+URL to the trained LoRA weights.
+
+config_file File
+Configuration used for setting up the inference endpoints.
+
+
+{
+  "lora_file": {
+    "url": "",
+    "content_type": "image/png",
+    "file_name": "z9RV14K95DvU.png",
+    "file_size": 4404019
+  },
+  "config_file": {
+    "url": "",
+    "content_type": "image/png",
+    "file_name": "z9RV14K95DvU.png",
+    "file_size": 4404019
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/bytedance/omnihuman
+
+OmniHuman generates video using an image of a human figure paired with an audio file. It produces vivid, high-quality videos where the character’s emotions and movements maintain a strong correlation with the audio.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+Streaming
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate incredibly accurate videos of human beings speaking a dialogue using Bytednce's OmniHuman model.
+
+This endpoint allows you to provide an image of a human along with an audio file to generate a video. The model will animate the image based on the audio.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/bytedance/omnihuman", {
+  input: {
+    image_url: "https://storage.googleapis.com/falserverless/example_inputs/omnihuman.png",
+    audio_url: "https://storage.googleapis.com/falserverless/example_inputs/omnihuman_audio.mp3"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/bytedance/omnihuman", {
+  input: {
+    image_url: "https://storage.googleapis.com/falserverless/example_inputs/omnihuman.png",
+    audio_url: "https://storage.googleapis.com/falserverless/example_inputs/omnihuman_audio.mp3"
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/bytedance/omnihuman", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/bytedance/omnihuman", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+image_url string
+The URL of the image used to generate the video
+
+audio_url string
+The URL of the audio file to generate the video. Audio must be under 30s long.
+
+
+{
+  "image_url": "https://storage.googleapis.com/falserverless/example_inputs/omnihuman.png",
+  "audio_url": "https://storage.googleapis.com/falserverless/example_inputs/omnihuman_audio.mp3"
+}
+Output
+#
+video File
+Generated video file
+
+duration float
+Duration of audio input/video output as used for billing.
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/example_outputs/omnihuman_output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+Image
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+width integer
+The width of the image in pixels.
+
+height integer
+The height of the image in pixels.
+
+ImageSize
+#
+width integer
+The width of the generated image. Default value: 512
+
+height integer
+The height of the generated image. Default value: 512
