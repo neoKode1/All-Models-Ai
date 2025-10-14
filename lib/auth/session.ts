@@ -3,7 +3,18 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NewUser } from '@/lib/db/schema';
 
-const key = new TextEncoder().encode(process.env.AUTH_SECRET);
+// Ensure AUTH_SECRET is defined, throw error if not
+const AUTH_SECRET = process.env.AUTH_SECRET;
+if (!AUTH_SECRET || AUTH_SECRET.length === 0) {
+  console.error('❌ AUTH_SECRET environment variable is missing or empty!');
+  console.error('💡 To fix this:');
+  console.error('   1. Run: pnpm db:setup (to generate a new .env file)');
+  console.error('   2. Or set AUTH_SECRET in your production environment');
+  console.error('   3. AUTH_SECRET should be a 64-character hex string');
+  throw new Error('AUTH_SECRET environment variable is required and must not be empty. Please run "pnpm db:setup" or set the AUTH_SECRET environment variable.');
+}
+
+const key = new TextEncoder().encode(AUTH_SECRET);
 const SALT_ROUNDS = 10;
 
 export async function hashPassword(password: string) {
