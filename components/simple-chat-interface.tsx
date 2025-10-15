@@ -385,7 +385,17 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
 
   // Event listener for model selection changes
   const handleModelSelectionChange = (newModel: string) => {
-    console.log('🎯 [Chat] Model selection changed:', { from: preferredVideoModel, to: newModel });
+    // ============================================
+    // 🎯 USER SELECTED NEW MODEL
+    // ============================================
+    console.log(`\n${'='.repeat(80)}`);
+    console.log(`🎯 USER MODEL SELECTION`);
+    console.log(`${'='.repeat(80)}`);
+    console.log(`📅 Timestamp: ${new Date().toISOString()}`);
+    console.log(`🔄 Previous Model: ${preferredVideoModel || 'None'}`);
+    console.log(`🤖 New Model: ${newModel}`);
+    console.log(`📊 Model Type: ${isVideoModel(newModel) ? 'VIDEO' : 'IMAGE'}`);
+    console.log(`${'='.repeat(80)}\n`);
     
     // Update the preferred model
     setPreferredVideoModel(newModel);
@@ -393,7 +403,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
     // Set user intent based on model selection
     if (isVideoModel(newModel)) {
       setUserIntent('video'); // User explicitly wants video
-      console.log('🎯 [Chat] Intent set to VIDEO - user selected video model');
+      console.log('✅ Intent set to VIDEO - user selected video model');
       
       // Adjust duration to a valid value for the new model
       const supportedDurations = getSupportedDurations(newModel);
@@ -402,12 +412,12 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       if (!currentDurationValid) {
         // Set to the first available duration for the new model
         const newDuration = supportedDurations[0].value;
-        console.log(`🎯 [Chat] Adjusting duration from ${duration}s to ${newDuration}s for ${newModel}`);
+        console.log(`🔧 Adjusting duration from ${duration}s to ${newDuration}s for ${newModel}`);
         setDuration(newDuration);
       }
     } else {
       setUserIntent('image'); // User explicitly wants image (default behavior)
-      console.log('🎯 [Chat] Intent set to IMAGE - user selected image model');
+      console.log('✅ Intent set to IMAGE - user selected image model');
     }
   };
 

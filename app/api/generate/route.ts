@@ -136,16 +136,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }, { status: 400 });
     }
     
-    console.log(`🔍 [Generate API] [${requestId}] Request received:`, {
-      model: body.model,
-      prompt: body.prompt?.substring(0, 100) + '...',
-      hasImage: !!body.image_url,
-      imageUrl: body.image_url,
-      aspectRatio: body.aspect_ratio,
-      duration: body.duration,
-      resolution: body.resolution,
-      allKeys: Object.keys(body)
-    });
+    // ============================================
+    // 🎯 USER REQUEST DETAILS
+    // ============================================
+    console.log(`\n${'='.repeat(80)}`);
+    console.log(`🎯 USER GENERATION REQUEST [${requestId}]`);
+    console.log(`${'='.repeat(80)}`);
+    console.log(`📅 Timestamp: ${new Date().toISOString()}`);
+    console.log(`🤖 Model Selected: ${body.model}`);
+    console.log(`📝 User Prompt: "${body.prompt}"`);
+    console.log(`📊 Parameters:`);
+    console.log(`   - Aspect Ratio: ${body.aspect_ratio || 'default'}`);
+    console.log(`   - Duration: ${body.duration || 'default'}`);
+    console.log(`   - Resolution: ${body.resolution || 'default'}`);
+    console.log(`   - Has Image: ${!!body.image_url ? 'Yes' : 'No'}`);
+    console.log(`   - Has Multiple Images: ${body.image_urls?.length > 0 ? `Yes (${body.image_urls.length})` : 'No'}`);
+    console.log(`   - Has Audio: ${!!body.audio_url ? 'Yes' : 'No'}`);
+    console.log(`   - Has Video ID: ${!!body.video_id ? 'Yes' : 'No'}`);
+    console.log(`📦 All Request Keys: ${Object.keys(body).join(', ')}`);
+    console.log(`${'='.repeat(80)}\n`);
     
     // Validate required fields
     if (!body.model) {
@@ -985,15 +994,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         timeoutDuration = 2 * 60 * 1000; // 2 minutes for standard image models
       }
       
+      // ============================================
+      // 🚀 CALLING FAL API
+      // ============================================
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`🚀 CALLING FAL API [${requestId}]`);
+      console.log(`${'='.repeat(80)}`);
+      console.log(`🤖 Model: ${model}`);
+      console.log(`⏱️  Timeout: ${timeoutDuration / 1000 / 60} minutes`);
+      console.log(`📤 Input Parameters:`);
+      console.log(JSON.stringify(input, null, 2));
+      console.log(`${'='.repeat(80)}\n`);
+
       result = await Promise.race([
         fal.subscribe(model, {
           input,
           logs: true,
           onQueueUpdate: (update: any) => {
-            console.log(`📊 [Generate API] [${requestId}] Queue update:`, update.status);
+            console.log(`📊 [FAL Queue Update] Status: ${update.status}`);
             if (update.logs) {
               update.logs.forEach((log: any) => {
-                console.log(`📊 [Generate API] [${requestId}] Queue log:`, log.message);
+                console.log(`   📝 ${log.message}`);
               });
             }
           },
@@ -1003,8 +1024,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         )
       ]) as any;
 
-      console.log(`✅ [Generate API] [${requestId}] FAL API call successful`);
-      console.log(`📦 [Generate API] [${requestId}] Result:`, result);
+      // ============================================
+      // ✅ FAL API SUCCESS
+      // ============================================
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`✅ FAL API RESPONSE SUCCESS [${requestId}]`);
+      console.log(`${'='.repeat(80)}`);
+      console.log(`📦 Response Data:`);
+      console.log(JSON.stringify(result.data, null, 2));
+      console.log(`🆔 Request ID: ${result.requestId}`);
+      console.log(`${'='.repeat(80)}\n`);
 
       const endTime = Date.now();
       const duration = endTime - startTime;
@@ -1029,9 +1058,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Continue without failing the request
       }
       
-      console.log(`🔍 [Generate API] [${requestId}] ===== GENERATION REQUEST COMPLETED =====`);
-      
-      return NextResponse.json({
+      // ============================================
+      // 🎉 SENDING SUCCESS RESPONSE TO CLIENT
+      // ============================================
+      const responsePayload = {
         success: true,
         data: result.data,
         requestId: result.requestId,
@@ -1043,12 +1073,34 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         optimizationSuggestions: optimizationResult.suggestions.length > 0 ? optimizationResult.suggestions : undefined,
         duration: duration,
         timestamp: new Date().toISOString()
-      });
+      };
+      
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`🎉 GENERATION COMPLETED SUCCESSFULLY [${requestId}]`);
+      console.log(`${'='.repeat(80)}`);
+      console.log(`⏱️  Total Time: ${duration}ms (${(duration / 1000).toFixed(2)}s)`);
+      console.log(`🤖 Model: ${model}`);
+      console.log(`📝 Prompt: "${prompt}"`);
+      console.log(`🖼️  Output URL: ${outputUrl}`);
+      console.log(`✅ Status: ${responsePayload.status}`);
+      console.log(`${'='.repeat(80)}\n`);
+      
+      return NextResponse.json(responsePayload);
 
     } catch (falError: any) {
-      console.error(`❌ [Generate API] [${requestId}] FAL API error:`, falError);
-      console.error(`❌ [Generate API] [${requestId}] Error status:`, falError.status);
-      console.error(`❌ [Generate API] [${requestId}] Error body:`, falError.body);
+      // ============================================
+      // ❌ FAL API ERROR
+      // ============================================
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`❌ FAL API ERROR [${requestId}]`);
+      console.log(`${'='.repeat(80)}`);
+      console.log(`🤖 Model: ${model}`);
+      console.log(`📝 Prompt: "${prompt}"`);
+      console.log(`🔴 Error Status: ${falError.status}`);
+      console.log(`🔴 Error Message: ${falError.message}`);
+      console.log(`🔴 Error Body:`);
+      console.log(JSON.stringify(falError.body, null, 2));
+      console.log(`${'='.repeat(80)}\n`);
       
       // Save failed generation to database
       try {

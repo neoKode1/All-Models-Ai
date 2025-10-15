@@ -225,11 +225,18 @@ function AIStudioContent() {
         ...generationData // Include any other parameters
       };
       
-      console.log('🔧 [AI Studio] Calling unified API:', {
-        url: apiEndpoint,
-        method: 'POST',
-        data: cleanGenerationData
-      });
+      // ============================================
+      // 📤 SENDING REQUEST TO API
+      // ============================================
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`📤 FRONTEND: Sending Request to API`);
+      console.log(`${'='.repeat(80)}`);
+      console.log(`🔗 API Endpoint: ${apiEndpoint}`);
+      console.log(`🤖 Model: ${cleanGenerationData.model}`);
+      console.log(`📝 Prompt: "${cleanGenerationData.prompt}"`);
+      console.log(`📊 Full Request Body:`);
+      console.log(JSON.stringify(cleanGenerationData, null, 2));
+      console.log(`${'='.repeat(80)}\n`);
       
       const response = await fetch(apiEndpoint, {
         method: 'POST',
@@ -249,7 +256,17 @@ function AIStudioContent() {
             throw new Error(`API returned non-JSON response (status ${response.status}). This usually indicates a server error.`);
           }
           const errorData = await response.json();
-          console.error('❌ [AI Studio] API error response:', errorData);
+          
+          // ============================================
+          // ❌ RECEIVED ERROR RESPONSE FROM API
+          // ============================================
+          console.log(`\n${'='.repeat(80)}`);
+          console.log(`❌ FRONTEND: Received Error Response`);
+          console.log(`${'='.repeat(80)}`);
+          console.log(`🔴 HTTP Status: ${response.status}`);
+          console.log(`🔴 Error Data:`);
+          console.log(JSON.stringify(errorData, null, 2));
+          console.log(`${'='.repeat(80)}\n`);
           
           // Check for content policy violations
           if (errorData.result?.error === 'Unprocessable Entity' || response.status === 422) {
@@ -284,7 +301,20 @@ function AIStudioContent() {
       }
       
       const result = await response.json();
-      console.log('📦 [AI Studio] API response:', result);
+      
+      // ============================================
+      // ✅ RECEIVED SUCCESS RESPONSE FROM API
+      // ============================================
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`✅ FRONTEND: Received Success Response`);
+      console.log(`${'='.repeat(80)}`);
+      console.log(`🤖 Model: ${result.model}`);
+      console.log(`📝 Prompt: "${result.prompt}"`);
+      console.log(`✅ Status: ${result.status}`);
+      console.log(`🆔 Request ID: ${result.requestId}`);
+      console.log(`📦 Full Response:`);
+      console.log(JSON.stringify(result, null, 2));
+      console.log(`${'='.repeat(80)}\n`);
       
       // Create content object for both display and storage
       const contentToStore = {
