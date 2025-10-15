@@ -771,7 +771,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       
       // Sora 2 Pro supports resolution: 'auto', '720p', '1080p'
       // Sora 2 (standard) supports resolution: 'auto', '720p'
-      const isSora2Pro = model.includes('sora-2/image-to-video/pro');
+      const isSora2Pro = model.includes('/pro');
+      const isVideoRemix = model.includes('video-to-video/remix');
+      const isTextToVideo = model.includes('text-to-video');
+      const isImageToVideo = model.includes('image-to-video');
       
       // Sora 2 models default to 'auto' for resolution (matching playground example)
       if (body.resolution) {
@@ -844,34 +847,69 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       console.log(`🔧 [Generate API] [${requestId}] Applying Sora 2 exact schema parameters`);
       
       // Build input according to exact FAL AI schema - ONLY include valid parameters
-      const sora2Input: Record<string, any> = {
-        prompt: input.prompt
-      };
+      const sora2Input: Record<string, any> = {};
       
-      // Only add image_url if it exists and is valid
-      if (input.image_url) {
-        sora2Input.image_url = input.image_url;
-      }
-      
-      // Add optional parameters only if they have valid values
-      if (isSora2Pro) {
-        // Sora 2 Pro supports 1080p
-        if (input.resolution && ['auto', '720p', '1080p'].includes(input.resolution)) {
-          sora2Input.resolution = input.resolution;
+      // Handle video-to-video/remix specific parameters
+      if (isVideoRemix) {
+        // Video remix requires video_id from a previous Sora generation
+        if (body.video_id) {
+          sora2Input.video_id = body.video_id;
+          sora2Input.prompt = input.prompt; // Updated prompt for remix
+          console.log(`🎬 [Generate API] [${requestId}] Sora 2 video remix with video_id: ${body.video_id}`);
+        } else {
+          console.error(`❌ [Generate API] [${requestId}] Sora 2 video remix requires video_id parameter`);
+          return NextResponse.json({
+            success: false,
+            error: "Sora 2 video remix requires video_id from a previous Sora generation",
+            requestId: requestId,
+            timestamp: new Date().toISOString()
+          }, { status: 400 });
         }
       } else {
-        // Sora 2 standard only supports auto and 720p
-        if (input.resolution && ['auto', '720p'].includes(input.resolution)) {
-          sora2Input.resolution = input.resolution;
+        // Standard text-to-video or image-to-video
+        sora2Input.prompt = input.prompt;
+        
+        // Only add image_url for image-to-video models
+        if (isImageToVideo && input.image_url) {
+          sora2Input.image_url = input.image_url;
         }
       }
       
-      if (input.aspect_ratio && ['auto', '9:16', '16:9'].includes(input.aspect_ratio)) {
-        sora2Input.aspect_ratio = input.aspect_ratio;
+      // Add optional parameters only if they have valid values (not for video remix)
+      if (!isVideoRemix) {
+        if (isTextToVideo) {
+          // Text-to-video models: Standard only supports 720p, Pro supports 720p/1080p (NO auto option)
+          if (isSora2Pro) {
+            if (input.resolution && ['720p', '1080p'].includes(input.resolution)) {
+              sora2Input.resolution = input.resolution;
+            }
+          } else {
+            // Standard text-to-video only supports 720p
+            sora2Input.resolution = '720p';
+          }
+        } else if (isImageToVideo) {
+          // Image-to-video models support auto/720p for standard, auto/720p/1080p for Pro
+          if (isSora2Pro) {
+            if (input.resolution && ['auto', '720p', '1080p'].includes(input.resolution)) {
+              sora2Input.resolution = input.resolution;
+            }
+          } else {
+            if (input.resolution && ['auto', '720p'].includes(input.resolution)) {
+              sora2Input.resolution = input.resolution;
+            }
+          }
+        }
       }
       
-      if (input.duration && [4, 8, 12].includes(Number(input.duration))) {
-        sora2Input.duration = Number(input.duration);
+      // Aspect ratio and duration only for non-remix models
+      if (!isVideoRemix) {
+        if (input.aspect_ratio && ['auto', '9:16', '16:9'].includes(input.aspect_ratio)) {
+          sora2Input.aspect_ratio = input.aspect_ratio;
+        }
+        
+        if (input.duration && [4, 8, 12].includes(Number(input.duration))) {
+          sora2Input.duration = Number(input.duration);
+        }
       }
       
       // Completely replace input with clean Sora 2 parameters
