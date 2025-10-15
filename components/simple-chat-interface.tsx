@@ -114,6 +114,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/luma-dream-machine', label: 'Luma Dream Machine v1.5', icon: '/dreammachine.svg', isNew: true },
       { value: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video', label: 'Kling 2.5 Turbo Pro T2V', icon: '/kling-color.svg', isNew: true },
       { value: 'fal-ai/kling-video/v2.1/master/text-to-video', label: 'Kling 2.1 Master T2V', icon: '/kling-color.svg', isNew: true },
+      { value: 'fal-ai/veo3.1/reference-to-video', label: 'Veo 3.1 Reference-to-Video', icon: '/Gen4.png', isNew: true },
     ],
     'image-to-video': [
       { value: 'fal-ai/sora-2/image-to-video', label: 'Sora 2 (I2V)', icon: '/openai.svg' },

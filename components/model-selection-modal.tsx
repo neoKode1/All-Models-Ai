@@ -44,7 +44,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-purple-50 dark:bg-purple-950',
     borderColor: 'border-purple-300 dark:border-purple-600',
     description: 'Create videos from text prompts',
-    count: 8
+    count: 9
   },
   {
     id: 'image-to-video',

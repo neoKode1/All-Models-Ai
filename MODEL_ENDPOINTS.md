@@ -49,7 +49,7 @@
 
 ---
 
-## 🎬 Text-to-Video Models (8 Configured)
+## 🎬 Text-to-Video Models (9 Configured)
 
 ### ✅ Already Configured
 1. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
@@ -60,6 +60,7 @@
 6. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
 7. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
 8. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
+9. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/veo3` - Veo 3 by Google (with sound)

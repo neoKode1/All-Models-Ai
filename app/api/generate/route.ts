@@ -408,6 +408,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
       }
 
+      // Handle Veo 3.1 reference-to-video specific parameters
+      if (model.includes('reference-to-video')) {
+        // Veo 3.1 reference-to-video requires image_urls array
+        if (body.image_urls && Array.isArray(body.image_urls)) {
+          input.image_urls = body.image_urls;
+          console.log(`🎬 [Generate API] [${requestId}] Veo 3.1 reference-to-video with ${body.image_urls.length} reference images`);
+        } else if (body.image_url) {
+          // Fallback: convert single image_url to array
+          input.image_urls = [body.image_url];
+          console.log(`🎬 [Generate API] [${requestId}] Veo 3.1 reference-to-video with single reference image (converted from image_url)`);
+        } else {
+          console.error(`❌ [Generate API] [${requestId}] Veo 3.1 reference-to-video requires image_urls array`);
+          return NextResponse.json({
+            success: false,
+            error: "Veo 3.1 reference-to-video requires image_urls array with reference images",
+            requestId: requestId,
+            timestamp: new Date().toISOString()
+          }, { status: 400 });
+        }
+      }
+
       // Set default generate_audio to true for Veo 3
       if (input.generate_audio === undefined) {
         input.generate_audio = true;
@@ -421,6 +442,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         finalResolution: input.resolution,
         finalAspectRatio: input.aspect_ratio,
         generateAudio: input.generate_audio,
+        hasImageUrls: !!input.image_urls,
+        imageUrlsCount: input.image_urls?.length || 0,
         note: 'Veo 3 uses duration: 8s (string with s), resolution: 720p or 1080p, aspect_ratio: auto/16:9/9:16'
       });
     }
