@@ -21,25 +21,29 @@
 
 ---
 
-## 📸 Text-to-Image Models (16 Configured)
+## 📸 Text-to-Image Models (20 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/imagen4/preview` - Google Imagen 4 ✔️
-2. `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
-3. `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️
-4. `fal-ai/hidream-i1-full` - HiDream-I1 ✔️
-5. `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️
-6. `fal-ai/nano-banana/edit` - Nano Banana Edit
-7. `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
-8. `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️
-9. `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️
-10. `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️
-11. `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️
-12. `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️
-13. `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️
-14. `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️
-15. `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️
-16. `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️
+1. `fal-ai/wan-25-preview/text-to-image` - Wan 2.5 Text-to-Image (high quality) ✔️
+2. `fal-ai/imagen4/preview` - Google Imagen 4 ✔️
+3. `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
+4. `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️
+5. `fal-ai/hidream-i1-full` - HiDream-I1 ✔️
+6. `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️
+7. `fal-ai/qwen-image-edit/image-to-image` - Qwen Image Edit (superior text editing) ✔️
+8. `fal-ai/wan-25-preview/image-to-image` - Wan 2.5 Image-to-Image (multi-ref fusion) ✔️
+9. `fal-ai/nano-banana/edit` - Nano Banana Edit
+10. `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
+11. `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️
+12. `fal-ai/luma-photon/flash/reframe` - Luma Photon Flash Reframe ✔️
+13. `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️
+14. `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️
+15. `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️
+16. `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️
+17. `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️
+18. `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️
+19. `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️
+20. `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/luma-photon` - Luma Photon (creative, personalizable)
@@ -49,20 +53,21 @@
 
 ---
 
-## 🎬 Text-to-Video Models (11 Configured)
+## 🎬 Text-to-Video Models (12 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/veo3.1` - Veo 3.1 by Google (with sound, 720p/1080p, 4-8s) ✔️
-2. `fal-ai/veo3.1/fast` - Veo 3.1 Fast (faster & cost effective) ✔️
-3. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
-4. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
-5. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
-6. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
-7. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
-8. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
-9. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
-10. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
-11. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
+1. `fal-ai/wan-25-preview/text-to-video` - Wan 2.5 Text-to-Video (480p-1080p, 5-10s) ✔️
+2. `fal-ai/veo3.1` - Veo 3.1 by Google (with sound, 720p/1080p, 4-8s) ✔️
+3. `fal-ai/veo3.1/fast` - Veo 3.1 Fast (faster & cost effective) ✔️
+4. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
+5. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
+6. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
+7. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
+8. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
+9. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
+10. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
+11. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
+12. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
@@ -70,16 +75,17 @@
 
 ---
 
-## 🖼️ Image-to-Video Models (24 Configured)
+## 🖼️ Image-to-Video Models (25 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/veo3.1/image-to-video` - Veo 3.1 I2V (720p/1080p, 8s) ✔️
-2. `fal-ai/veo3.1/fast/image-to-video` - Veo 3.1 Fast I2V (faster & cost effective) ✔️
-3. `fal-ai/veo3.1/first-last-frame-to-video` - Veo 3.1 First/Last Frame (animate between frames) ✔️
-4. `fal-ai/veo3.1/fast/first-last-frame-to-video` - Veo 3.1 Fast First/Last Frame ✔️
-5. `fal-ai/sora-2/image-to-video` - Sora 2 I2V
-6. `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
-7. `fal-ai/veo3/image-to-video` - Veo 3 I2V
+1. `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Image-to-Video (480p-1080p, 5-10s, audio) ✔️
+2. `fal-ai/veo3.1/image-to-video` - Veo 3.1 I2V (720p/1080p, 8s) ✔️
+3. `fal-ai/veo3.1/fast/image-to-video` - Veo 3.1 Fast I2V (faster & cost effective) ✔️
+4. `fal-ai/veo3.1/first-last-frame-to-video` - Veo 3.1 First/Last Frame (animate between frames) ✔️
+5. `fal-ai/veo3.1/fast/first-last-frame-to-video` - Veo 3.1 Fast First/Last Frame ✔️
+6. `fal-ai/sora-2/image-to-video` - Sora 2 I2V
+7. `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
+8. `fal-ai/veo3/image-to-video` - Veo 3 I2V
 8. `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V
 9. `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` - Kling V2.5 Turbo Pro I2V
 10. `fal-ai/minimax/hailuo-02/standard/image-to-video` - Minimax Hailuo 02 I2V
@@ -239,6 +245,92 @@
 - **Output**: `video` (VideoFile), `video_id` (string)
 - **Use Case**: Transform existing Sora-generated videos with new prompts
 - **Note**: Can only remix videos generated by Sora (via T2V/I2V), not arbitrary uploads
+- **Status**: ✔️ Configured
+
+**Qwen Image Edit** (`fal-ai/qwen-image-edit/image-to-image`):
+- **Category**: Image-to-Image (Superior Text Editing)
+- **Input**: 
+  - `prompt` (required) - editing instruction
+  - `image_url` (required) - image to edit
+  - `image_size` (square_hd/square/portrait_4_3/portrait_16_9/landscape_4_3/landscape_16_9 or custom width/height)
+  - `num_inference_steps` (default: 30)
+  - `guidance_scale` (default: 4)
+  - `strength` (0.0-1.0, default: 0.94) - transformation strength
+  - `negative_prompt` (optional)
+  - `acceleration` (none/regular/high, default: regular)
+  - `num_images` (1-N, default: 1)
+  - `seed` (optional)
+- **Output**: `images` (list), `seed` (integer)
+- **Use Case**: Superior text editing capabilities in images
+- **Status**: ✔️ Configured
+
+**Wan 2.5 Text-to-Image** (`fal-ai/wan-25-preview/text-to-image`):
+- **Category**: Text-to-Image
+- **Input**: 
+  - `prompt` (required) - max 2000 characters
+  - `negative_prompt` (optional) - max 500 characters
+  - `image_size` (square_hd/square/portrait_4_3/portrait_16_9/landscape_4_3/landscape_16_9 or custom, total pixels 768×768 to 1440×1440)
+  - `num_images` (1-4, default: 1)
+  - `enable_prompt_expansion` (boolean, default: true)
+  - `seed` (optional)
+- **Output**: `images` (list), `seeds` (list), `actual_prompt` (string if expanded)
+- **Use Case**: High-quality image generation with prompt expansion
+- **Status**: ✔️ Configured
+
+**Wan 2.5 Image-to-Image** (`fal-ai/wan-25-preview/image-to-image`):
+- **Category**: Image-to-Image (Multi-Reference Fusion)
+- **Input**: 
+  - `prompt` (required) - editing instruction, max 2000 characters
+  - `image_urls` (required) - 1-2 URLs (single edit or multi-reference generation)
+  - `negative_prompt` (optional) - max 500 characters
+  - `image_size` (square_hd/square/portrait_4_3/portrait_16_9/landscape_4_3/landscape_16_9, width/height 384-1440px)
+  - `num_images` (1-4, default: 1)
+  - `seed` (optional)
+- **Output**: `images` (list), `seeds` (list), `actual_prompt` (string)
+- **Use Case**: Subject-consistent editing, multi-image fusion
+- **Status**: ✔️ Configured
+
+**Wan 2.5 Text-to-Video** (`fal-ai/wan-25-preview/text-to-video`):
+- **Category**: Text-to-Video
+- **Input**: 
+  - `prompt` (required) - max 800 characters
+  - `aspect_ratio` (16:9/9:16/1:1, default: 16:9)
+  - `resolution` (480p/720p/1080p, default: 1080p)
+  - `duration` (5/10 seconds, default: 5)
+  - `audio_url` (optional) - WAV/MP3, 3-30s, max 15MB
+  - `negative_prompt` (optional) - max 500 characters
+  - `enable_prompt_expansion` (boolean, default: true)
+  - `seed` (optional)
+- **Output**: `video` (VideoFile), `seed` (integer), `actual_prompt` (string if expanded)
+- **Use Case**: Best visual quality and motion stability
+- **Status**: ✔️ Configured
+
+**Wan 2.5 Image-to-Video** (`fal-ai/wan-25-preview/image-to-video`):
+- **Category**: Image-to-Video
+- **Input**: 
+  - `prompt` (required) - max 800 characters
+  - `image_url` (required) - 360-2000px, max 10MB, JPEG/PNG/BMP/WEBP
+  - `resolution` (480p/720p/1080p, default: 1080p)
+  - `duration` (5/10 seconds, default: 5)
+  - `audio_url` (optional) - WAV/MP3, 3-30s, max 15MB
+  - `negative_prompt` (optional) - max 500 characters
+  - `enable_prompt_expansion` (boolean, default: true)
+  - `seed` (optional)
+- **Output**: `video` (VideoFile), `seed` (integer), `actual_prompt` (string if expanded)
+- **Use Case**: High-quality image animation with audio support
+- **Processing Time**: 1-3 minutes
+- **Status**: ✔️ Configured
+
+**Luma Photon Flash Reframe** (`fal-ai/luma-photon/flash/reframe`):
+- **Category**: Image Reframing (Aspect Ratio Change)
+- **Input**: 
+  - `image_url` (required) - input image to reframe
+  - `aspect_ratio` (1:1/16:9/9:16/4:3/3:4/21:9/9:21)
+  - `prompt` (optional) - optional reframing guidance
+  - Grid position parameters (x/y start/end, optional)
+- **Output**: `images` (list of File)
+- **Use Case**: Intelligent image expansion and reframing
+- **Speed**: Flash (very fast)
 - **Status**: ✔️ Configured
 
 **OmniHuman** (`fal-ai/bytedance/omnihuman`):
@@ -424,15 +516,15 @@
 
 ## 📊 Summary
 
-### Current Status (Updated with Veo 3.1 Models)
-- **Total Models Listed**: ~60+ documented models
-- **Already Configured**: 55 models (55% complete - over halfway!)
-- **New Models to Add**: ~10 high-priority models remaining
+### Current Status (Updated with Wan 2.5, Qwen, and Luma Photon Models)
+- **Total Models Listed**: ~65+ documented models
+- **Already Configured**: 61 models (61% complete - over halfway!)
+- **New Models to Add**: ~5 high-priority models remaining
 - **Categories**: 12 categories
 - **Breakdown by Category**:
-  - Text-to-Image: 16 models
-  - Text-to-Video: 11 models (includes all Veo 3.1 variants)
-  - Image-to-Video: 24 models (includes Veo 3.1 I2V variants)
+  - Text-to-Image: 20 models (includes Wan 2.5 T2I, Qwen Edit, Luma Reframe)
+  - Text-to-Video: 12 models (includes Wan 2.5 T2V, all Veo 3.1 variants)
+  - Image-to-Video: 25 models (includes Wan 2.5 I2V, Veo 3.1 I2V variants)
   - Video-to-Video: 6 models
   - Audio/Music: 2 models
   - 3D: 1 model

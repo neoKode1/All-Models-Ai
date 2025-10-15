@@ -88,14 +88,18 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
   // Organize models by category
   const modelsByCategory: Record<string, Array<{value: string; label: string; icon: string; isNew?: boolean; disabled?: boolean}>> = {
     'text-to-image': [
+      { value: 'fal-ai/wan-25-preview/text-to-image', label: 'Wan 2.5 Text-to-Image', icon: '/alibaba-color.svg', isNew: true },
       { value: 'fal-ai/imagen4/preview', label: 'Imagen 4 (Google)', icon: '/gemini-color.svg', isNew: true },
       { value: 'fal-ai/flux-pro/v1.1-ultra', label: 'Flux Pro Ultra', icon: '/flux.svg' },
       { value: 'fal-ai/recraft/v3/text-to-image', label: 'Recraft V3 (SOTA)', icon: '/ideogram.svg', isNew: true },
       { value: 'fal-ai/hidream-i1-full', label: 'HiDream-I1 (17B)', icon: '/deepseek-color.svg', isNew: true },
       { value: 'fal-ai/flux-krea-lora/stream', label: 'Flux Krea LoRA Stream', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/qwen-image-edit/image-to-image', label: 'Qwen Image Edit (I2I)', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/wan-25-preview/image-to-image', label: 'Wan 2.5 Image-to-Image', icon: '/alibaba-color.svg', isNew: true },
       { value: 'fal-ai/nano-banana/edit', label: 'Nano Banana Edit', icon: '/gemini-color.svg' },
       { value: 'fal-ai/bytedance/seedream/v4/edit', label: 'Seedream 4.0 Edit', icon: '/bytedance-color.svg' },
       { value: 'fal-ai/dreamomni2/edit', label: 'DreamOmni2 Edit', icon: '/bytedance-color.svg', isNew: true },
+      { value: 'fal-ai/luma-photon/flash/reframe', label: 'Luma Photon Flash Reframe', icon: '/dreammachine.svg', isNew: true },
       { value: 'fal-ai/flux-kontext-lora', label: 'Flux Kontext LoRA', icon: '/flux.svg', isNew: true },
       { value: 'fal-ai/flux-kontext-lora/text-to-image', label: 'Flux Kontext LoRA T2I', icon: '/flux.svg', isNew: true },
       { value: 'fal-ai/flux-kontext-lora/inpaint', label: 'Flux Kontext Inpaint', icon: '/flux.svg', isNew: true },
@@ -106,6 +110,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/flux-pro/kontext/multi', label: 'Flux Pro Kontext Multi', icon: '/flux.svg', isNew: true },
     ],
     'text-to-video': [
+      { value: 'fal-ai/wan-25-preview/text-to-video', label: 'Wan 2.5 Text-to-Video', icon: '/alibaba-color.svg', isNew: true },
       { value: 'fal-ai/veo3.1', label: 'Veo 3.1', icon: '/gemini-color.svg', isNew: true },
       { value: 'fal-ai/veo3.1/fast', label: 'Veo 3.1 Fast', icon: '/gemini-color.svg', isNew: true },
       { value: 'fal-ai/sora-2/text-to-video', label: 'Sora 2 Text-to-Video', icon: '/openai.svg', isNew: true },
@@ -133,7 +138,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/wan/v2.2-a14b/image-to-video', label: 'Wan v2.2-A14B (I2V)', icon: '/alibaba-color.svg' },
       { value: 'fal-ai/ovi/image-to-video', label: 'Ovi (I2V with Audio)', icon: '/Gen4.png' },
       { value: 'fal-ai/luma-dream-machine/ray-2/image-to-video', label: 'Luma Ray 2 (I2V)', icon: '/dreammachine.svg' },
-      { value: 'fal-ai/wan-25-preview/image-to-video', label: 'Wan 2.5 Preview (I2V)', icon: '/alibaba-color.svg' },
+      { value: 'fal-ai/wan-25-preview/image-to-video', label: 'Wan 2.5 (I2V)', icon: '/alibaba-color.svg', isNew: true },
       { value: 'fal-ai/luma-dream-machine/image-to-video', label: 'Luma Dream Machine (I2V)', icon: '/dreammachine.svg', isNew: true },
       { value: 'fal-ai/luma-dream-machine/ray-2', label: 'Luma Ray 2', icon: '/dreammachine.svg', isNew: true },
       { value: 'fal-ai/luma-dream-machine/ray-2-flash', label: 'Luma Ray 2 Flash', icon: '/dreammachine.svg', isNew: true },
