@@ -241,6 +241,13 @@ function AIStudioContent() {
         let errorMessage = `API call failed with status ${response.status}`;
         let errorType = 'unknown';
         try {
+          // Check if response is actually JSON
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            const textResponse = await response.text();
+            console.error('❌ [AI Studio] Non-JSON error response (likely HTML):', textResponse.substring(0, 200));
+            throw new Error(`API returned non-JSON response (status ${response.status}). This usually indicates a server error.`);
+          }
           const errorData = await response.json();
           console.error('❌ [AI Studio] API error response:', errorData);
           
@@ -266,6 +273,14 @@ function AIStudioContent() {
         (error as any).type = errorType;
         (error as any).status = response.status;
         throw error;
+      }
+      
+      // Check if response is actually JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        console.error('❌ [AI Studio] Non-JSON success response (likely HTML):', textResponse.substring(0, 200));
+        throw new Error('API returned non-JSON response. This usually indicates a server configuration error.');
       }
       
       const result = await response.json();
