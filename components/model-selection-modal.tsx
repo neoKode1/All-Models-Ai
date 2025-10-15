@@ -44,7 +44,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-purple-50 dark:bg-purple-950',
     borderColor: 'border-purple-300 dark:border-purple-600',
     description: 'Create videos from text prompts',
-    count: 9
+    count: 11
   },
   {
     id: 'image-to-video',
@@ -54,7 +54,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-green-50 dark:bg-green-950',
     borderColor: 'border-green-300 dark:border-green-600',
     description: 'Animate images into videos',
-    count: 20
+    count: 24
   },
   {
     id: 'video-to-video',

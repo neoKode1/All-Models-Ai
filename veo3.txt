@@ -1,0 +1,1738 @@
+fal-ai/veo3.1
+
+Text to Video
+Veo 3.1 by Google, the most advanced AI video generation model in the world. With sound on!
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos using Google's Veo 3.1 model.
+
+For best results, prompts should be descriptive and clear. Include:
+
+Subject: What you want in the video (object, person, animal, scenery)
+Context: The background/setting
+Action: What the subject is doing
+Style: Film style keywords (horror, noir, cartoon etc.)
+Camera motion (optional): aerial view, tracking shot etc.
+Composition (optional): wide shot, close-up etc.
+Ambiance (optional): Color and lighting details
+More details are available in our prompting guide.
+
+The model supports:
+
+720p or 1080p resolution videos
+5-8 second duration at 24 FPS
+Both 16:9 (landscape) and 9:16 (portrait) aspect ratios
+Safety filters prevent generation of inappropriate content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1", {
+  input: {
+    prompt: "Two person street interview in New York City.
+  Sample Dialogue:
+  Host: \"Did you hear the news?\"
+  Person: \"Yes! Veo 3.1 is now available on fal. If you want to see it, go check their website.\""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1", {
+  input: {
+    prompt: "Two person street interview in New York City.
+  Sample Dialogue:
+  Host: \"Did you hear the news?\"
+  Person: \"Yes! Veo 3.1 is now available on fal. If you want to see it, go check their website.\""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The text prompt describing the video you want to generate
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video. If it is set to 1:1, the video will be outpainted. Default value: "16:9"
+
+Possible enum values: 9:16, 16:9, 1:1
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 4s, 6s, 8s
+
+negative_prompt string
+A negative prompt to guide the video generation
+
+enhance_prompt boolean
+Whether to enhance the video generation Default value: true
+
+seed integer
+A seed to use for the video generation
+
+auto_fix boolean
+Whether to automatically attempt to fix prompts that fail content policy or other validation checks by rewriting them Default value: true
+
+resolution ResolutionEnum
+The resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+
+{
+  "prompt": "Two person street interview in New York City.\nSample Dialogue:\nHost: \"Did you hear the news?\"\nPerson: \"Yes! Veo 3.1 is now available on fal. If you want to see it, go check their website.\"",
+  "aspect_ratio": "16:9",
+  "duration": "8s",
+  "enhance_prompt": true,
+  "auto_fix": true,
+  "resolution": "720p",
+  "generate_audio": true
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://v3b.fal.media/files/b/kangaroo/oUCiZjQwEy6bIQdPUSLDF_output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/veo3.1/fast
+
+Text to Video (Fast)
+Faster and more cost effective version of Google's Veo 3.1!
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos using Google's Veo 3.1 fast model.
+
+For best results, prompts should be descriptive and clear. Include:
+
+Subject: What you want in the video (object, person, animal, scenery)
+Context: The background/setting
+Action: What the subject is doing
+Style: Film style keywords (horror, noir, cartoon etc.)
+Camera motion (optional): aerial view, tracking shot etc.
+Composition (optional): wide shot, close-up etc.
+Ambiance (optional): Color and lighting details
+More details are available in our prompting guide.
+
+The model supports:
+
+720p or 1080p resolution videos
+5-8 second duration at 24 FPS
+Both 16:9 (landscape) and 9:16 (portrait) aspect ratios
+Safety filters prevent generation of inappropriate content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1/fast", {
+  input: {
+    prompt: "Two person street interview in New York City.
+  Sample Dialogue:
+  Host: \"Did you hear the news?\"
+  Person: \"Yes! Veo 3.1 is now available on fal. If you want to see it, go check their website.\""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1/fast", {
+  input: {
+    prompt: "Two person street interview in New York City.
+  Sample Dialogue:
+  Host: \"Did you hear the news?\"
+  Person: \"Yes! Veo 3.1 is now available on fal. If you want to see it, go check their website.\""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1/fast", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1/fast", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The text prompt describing the video you want to generate
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video. If it is set to 1:1, the video will be outpainted. Default value: "16:9"
+
+Possible enum values: 9:16, 16:9, 1:1
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 4s, 6s, 8s
+
+negative_prompt string
+A negative prompt to guide the video generation
+
+enhance_prompt boolean
+Whether to enhance the video generation Default value: true
+
+seed integer
+A seed to use for the video generation
+
+auto_fix boolean
+Whether to automatically attempt to fix prompts that fail content policy or other validation checks by rewriting them Default value: true
+
+resolution ResolutionEnum
+The resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+
+{
+  "prompt": "Two person street interview in New York City.\nSample Dialogue:\nHost: \"Did you hear the news?\"\nPerson: \"Yes! Veo 3.1 is now available on fal. If you want to see it, go check their website.\"",
+  "aspect_ratio": "16:9",
+  "duration": "8s",
+  "enhance_prompt": true,
+  "auto_fix": true,
+  "resolution": "720p",
+  "generate_audio": true
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://v3b.fal.media/files/b/kangaroo/oUCiZjQwEy6bIQdPUSLDF_output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/veo3.1/fast/first-last-frame-to-video
+
+First/Last Frame to Video (Fast)
+Generate videos from a first/last frame using Google's Veo 3.1 Fast
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos by animating between a first and last frame using Google's Veo 3 Fast model.
+
+The prompt should describe how to animate between the first and last frame. Include:
+
+Action: How the first and last frame should be animated
+Style: Desired animation style
+Camera motion (optional): How camera should move
+Ambiance (optional): Desired mood and atmosphere
+More details are available in our prompting guide.
+
+The model supports:
+
+Input images up to 8MB in size
+720p or 1080p output resolution
+16:9 or 9:16 aspect ratio
+Natural motion and realistic animations
+Control over animation via text prompts
+Safety filters are applied to both input images and generated content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1/fast/first-last-frame-to-video", {
+  input: {
+    first_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-1.jpeg",
+    last_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-2.jpeg",
+    prompt: "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3.1 First-Last-Frame-to-Video on Fal? It's incredible!\""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1/fast/first-last-frame-to-video", {
+  input: {
+    first_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-1.jpeg",
+    last_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-2.jpeg",
+    prompt: "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3.1 First-Last-Frame-to-Video on Fal? It's incredible!\""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1/fast/first-last-frame-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1/fast/first-last-frame-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+first_frame_url string
+URL of the first frame of the video
+
+last_frame_url string
+URL of the last frame of the video
+
+prompt string
+The text prompt describing the video you want to generate
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 8s
+
+aspect_ratio AspectRatioEnum
+Aspect ratio of the generated video Default value: "auto"
+
+Possible enum values: auto, 9:16, 16:9, 1:1
+
+resolution ResolutionEnum
+Resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+
+{
+  "first_frame_url": "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-1.jpeg",
+  "last_frame_url": "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-2.jpeg",
+  "prompt": "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3.1 First-Last-Frame-to-Video on Fal? It's incredible!\"",
+  "duration": "8s",
+  "aspect_ratio": "auto",
+  "resolution": "720p",
+  "generate_audio": true
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/example_outputs/veo31-flf2v-output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/veo3.1/fast/image-to-video
+
+Image to Video (Fast)
+Generate videos from your image prompts using Veo 3.1 fast.
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos by animating an input image using Google's Veo 3.1 Fast model.
+
+The prompt should describe how to animate the input image. Include:
+
+Action: How the image should be animated
+Style: Desired animation style
+Camera motion (optional): How camera should move
+Ambiance (optional): Desired mood and atmosphere
+More details are available in our prompting guide.
+
+The model supports:
+
+Input images up to 8MB in size
+720p or 1080p output resolution
+16:9 or 9:16 aspect ratio
+Natural motion and realistic animations
+Control over animation via text prompts
+Safety filters are applied to both input images and generated content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1/fast/image-to-video", {
+  input: {
+    prompt: "A monkey and polar bear host a casual podcast about AI inference, bringing their unique perspectives from different environments (tropical vs. arctic) to discuss how AI systems make decisions and process information.
+  Sample Dialogue:
+  Monkey (Banana): \"Welcome back to Bananas & Ice! I am Banana\"
+  Polar Bear (Ice): \"And I'm Ice!\"",
+    image_url: "https://v3b.fal.media/files/b/elephant/eeZYKGpxiSM7BInbOEx8n_f90f0805d51f4dd0b5c95eabb7b294e5.jpg"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1/fast/image-to-video", {
+  input: {
+    prompt: "A monkey and polar bear host a casual podcast about AI inference, bringing their unique perspectives from different environments (tropical vs. arctic) to discuss how AI systems make decisions and process information.
+  Sample Dialogue:
+  Monkey (Banana): \"Welcome back to Bananas & Ice! I am Banana\"
+  Polar Bear (Ice): \"And I'm Ice!\"",
+    image_url: "https://v3b.fal.media/files/b/elephant/eeZYKGpxiSM7BInbOEx8n_f90f0805d51f4dd0b5c95eabb7b294e5.jpg"
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1/fast/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1/fast/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The text prompt describing the video you want to generate
+
+image_url string
+URL of the input image to animate. Should be 720p or higher resolution in 16:9 or 9:16 aspect ratio. If the image is not in 16:9 or 9:16 aspect ratio, it will be cropped to fit.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video Default value: "auto"
+
+Possible enum values: auto, 9:16, 16:9, 1:1
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 8s
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+resolution ResolutionEnum
+Resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+
+{
+  "prompt": "A monkey and polar bear host a casual podcast about AI inference, bringing their unique perspectives from different environments (tropical vs. arctic) to discuss how AI systems make decisions and process information.\nSample Dialogue:\nMonkey (Banana): \"Welcome back to Bananas & Ice! I am Banana\"\nPolar Bear (Ice): \"And I'm Ice!\"",
+  "image_url": "https://v3b.fal.media/files/b/elephant/eeZYKGpxiSM7BInbOEx8n_f90f0805d51f4dd0b5c95eabb7b294e5.jpg",
+  "aspect_ratio": "auto",
+  "duration": "8s",
+  "generate_audio": true,
+  "resolution": "720p"
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/model_tests/gallery/veo3-1-i2v.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/veo3.1/first-last-frame-to-video
+
+First/Last Frame to Video
+Generate videos from a first and last framed using Google's Veo 3.1
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos by animating between a first and last frame using Google's Veo 3 model.
+
+The prompt should describe how to animate between the first and last frame. Include:
+
+Action: How the first and last frame should be animated
+Style: Desired animation style
+Camera motion (optional): How camera should move
+Ambiance (optional): Desired mood and atmosphere
+More details are available in our prompting guide.
+
+The model supports:
+
+Input images up to 8MB in size
+720p or 1080p output resolution
+16:9 or 9:16 aspect ratio
+Natural motion and realistic animations
+Control over animation via text prompts
+Safety filters are applied to both input images and generated content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1/first-last-frame-to-video", {
+  input: {
+    first_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-1.jpeg",
+    last_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-2.jpeg",
+    prompt: "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3.1 First-Last-Frame-to-Video on Fal? It's incredible!\""
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1/first-last-frame-to-video", {
+  input: {
+    first_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-1.jpeg",
+    last_frame_url: "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-2.jpeg",
+    prompt: "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3.1 First-Last-Frame-to-Video on Fal? It's incredible!\""
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1/first-last-frame-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1/first-last-frame-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+first_frame_url string
+URL of the first frame of the video
+
+last_frame_url string
+URL of the last frame of the video
+
+prompt string
+The text prompt describing the video you want to generate
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 8s
+
+aspect_ratio AspectRatioEnum
+Aspect ratio of the generated video Default value: "auto"
+
+Possible enum values: auto, 9:16, 16:9, 1:1
+
+resolution ResolutionEnum
+Resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+
+{
+  "first_frame_url": "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-1.jpeg",
+  "last_frame_url": "https://storage.googleapis.com/falserverless/example_inputs/veo31-flf2v-input-2.jpeg",
+  "prompt": "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3.1 First-Last-Frame-to-Video on Fal? It's incredible!\"",
+  "duration": "8s",
+  "aspect_ratio": "auto",
+  "resolution": "720p",
+  "generate_audio": true
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/example_outputs/veo31-flf2v-output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/veo3.1/image-to-video
+
+Image to Video
+Veo 3.1 is the latest state-of-the art video generation model from Google DeepMind
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos by animating an input image using Google's Veo 3.1 model.
+
+The prompt should describe how to animate the input image. Include:
+
+Action: How the image should be animated
+Style: Desired animation style
+Camera motion (optional): How camera should move
+Ambiance (optional): Desired mood and atmosphere
+More details are available in our prompting guide.
+
+The model supports:
+
+Input images up to 8MB in size
+720p or 1080p output resolution
+16:9 or 9:16 aspect ratio
+Natural motion and realistic animations
+Control over animation via text prompts
+Safety filters are applied to both input images and generated content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1/image-to-video", {
+  input: {
+    prompt: "A monkey and polar bear host a casual podcast about AI inference, bringing their unique perspectives from different environments (tropical vs. arctic) to discuss how AI systems make decisions and process information.
+  Sample Dialogue:
+  Monkey (Banana): \"Welcome back to Bananas & Ice! I am Banana\"
+  Polar Bear (Ice): \"And I'm Ice!\"",
+    image_url: "https://v3b.fal.media/files/b/elephant/eeZYKGpxiSM7BInbOEx8n_f90f0805d51f4dd0b5c95eabb7b294e5.jpg"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1/image-to-video", {
+  input: {
+    prompt: "A monkey and polar bear host a casual podcast about AI inference, bringing their unique perspectives from different environments (tropical vs. arctic) to discuss how AI systems make decisions and process information.
+  Sample Dialogue:
+  Monkey (Banana): \"Welcome back to Bananas & Ice! I am Banana\"
+  Polar Bear (Ice): \"And I'm Ice!\"",
+    image_url: "https://v3b.fal.media/files/b/elephant/eeZYKGpxiSM7BInbOEx8n_f90f0805d51f4dd0b5c95eabb7b294e5.jpg"
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1/image-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+prompt string
+The text prompt describing the video you want to generate
+
+image_url string
+URL of the input image to animate. Should be 720p or higher resolution in 16:9 or 9:16 aspect ratio. If the image is not in 16:9 or 9:16 aspect ratio, it will be cropped to fit.
+
+aspect_ratio AspectRatioEnum
+The aspect ratio of the generated video Default value: "auto"
+
+Possible enum values: auto, 9:16, 16:9, 1:1
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 8s
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+resolution ResolutionEnum
+Resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+
+{
+  "prompt": "A monkey and polar bear host a casual podcast about AI inference, bringing their unique perspectives from different environments (tropical vs. arctic) to discuss how AI systems make decisions and process information.\nSample Dialogue:\nMonkey (Banana): \"Welcome back to Bananas & Ice! I am Banana\"\nPolar Bear (Ice): \"And I'm Ice!\"",
+  "image_url": "https://v3b.fal.media/files/b/elephant/eeZYKGpxiSM7BInbOEx8n_f90f0805d51f4dd0b5c95eabb7b294e5.jpg",
+  "aspect_ratio": "auto",
+  "duration": "8s",
+  "generate_audio": true,
+  "resolution": "720p"
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/model_tests/gallery/veo3-1-i2v.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data
+
+fal-ai/veo3.1/reference-to-video
+
+Reference to Video
+Generate Videos from Ingredients using Google's Veo 3.1
+Inference
+Commercial use
+Partner
+Schema
+LLMs
+
+Table of contents
+
+JavaScript / Node.js
+1. Calling the API
+Install the client
+Setup your API Key
+Submit a request
+2. Authentication
+API Key
+3. Queue
+Submit a request
+Fetch request status
+Get the result
+4. Files
+Data URI (base64)
+Hosted files (URL)
+Uploading files
+5. Schema
+Input
+Output
+Other
+About
+Generate videos from reference image(s) and text using Google's Veo 3 model.
+
+The prompt should describe how to animate between the first and last frame. Include:
+
+Action: How the first and last frame should be animated
+Style: Desired animation style
+Camera motion (optional): How camera should move
+Ambiance (optional): Desired mood and atmosphere
+More details are available in our prompting guide.
+
+The model supports:
+
+Input images up to 8MB in size
+720p or 1080p output resolution
+16:9 or 9:16 aspect ratio
+Natural motion and realistic animations
+Control over animation via text prompts
+Safety filters are applied to both input images and generated content.
+
+1. Calling the API
+#
+Install the client
+#
+The client provides a convenient way to interact with the model API.
+
+npmyarnpnpmbun
+
+npm install --save @fal-ai/client
+Migrate to @fal-ai/client
+The @fal-ai/serverless-client package has been deprecated in favor of @fal-ai/client. Please check the migration guide for more information.
+
+Setup your API Key
+#
+Set FAL_KEY as an environment variable in your runtime.
+
+
+export FAL_KEY="YOUR_API_KEY"
+Submit a request
+#
+The client API handles the API submit protocol. It will handle the request status updates and return the result when the request is completed.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("fal-ai/veo3.1/reference-to-video", {
+  input: {
+    image_urls: ["https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-1.png", "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-2.png", "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-3.png"],
+    prompt: "A graceful ballerina dancing outside a circus tent on green grass, with colorful wildflowers swaying around her as she twirls and poses in the meadow."
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  },
+});
+console.log(result.data);
+console.log(result.requestId);
+2. Authentication
+#
+The API uses an API Key for authentication. It is recommended you set the FAL_KEY environment variable in your runtime when possible.
+
+API Key
+#
+In case your app is running in an environment where you cannot set environment variables, you can set the API Key manually as a client configuration.
+
+import { fal } from "@fal-ai/client";
+
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+Protect your API Key
+When running code on the client-side (e.g. in a browser, mobile app or GUI applications), make sure to not expose your FAL_KEY. Instead, use a server-side proxy to make requests to the API. For more information, check out our server-side integration guide.
+
+3. Queue
+#
+Long-running requests
+For long-running requests, such as training jobs or models with slower inference times, it is recommended to check the Queue status and rely on Webhooks instead of blocking while waiting for the result.
+
+Submit a request
+#
+The client API provides a convenient way to submit requests to the model.
+
+
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("fal-ai/veo3.1/reference-to-video", {
+  input: {
+    image_urls: ["https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-1.png", "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-2.png", "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-3.png"],
+    prompt: "A graceful ballerina dancing outside a circus tent on green grass, with colorful wildflowers swaying around her as she twirls and poses in the meadow."
+  },
+  webhookUrl: "https://optional.webhook.url/for/results",
+});
+Fetch request status
+#
+You can fetch the status of a request to check if it is completed or still in progress.
+
+
+import { fal } from "@fal-ai/client";
+
+const status = await fal.queue.status("fal-ai/veo3.1/reference-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b",
+  logs: true,
+});
+Get the result
+#
+Once the request is completed, you can fetch the result. See the Output Schema for the expected result format.
+
+
+import { fal } from "@fal-ai/client";
+
+const result = await fal.queue.result("fal-ai/veo3.1/reference-to-video", {
+  requestId: "764cabcf-b745-4b3e-ae38-1200304cf45b"
+});
+console.log(result.data);
+console.log(result.requestId);
+4. Files
+#
+Some attributes in the API accept file URLs as input. Whenever that's the case you can pass your own URL or a Base64 data URI.
+
+Data URI (base64)
+#
+You can pass a Base64 data URI as a file input. The API will handle the file decoding for you. Keep in mind that for large files, this alternative although convenient can impact the request performance.
+
+Hosted files (URL)
+#
+You can also pass your own URLs as long as they are publicly accessible. Be aware that some hosts might block cross-site requests, rate-limit, or consider the request as a bot.
+
+Uploading files
+#
+We provide a convenient file storage that allows you to upload files and use them in your requests. You can upload files using the client API and use the returned URL in your requests.
+
+
+import { fal } from "@fal-ai/client";
+
+const file = new File(["Hello, World!"], "hello.txt", { type: "text/plain" });
+const url = await fal.storage.upload(file);
+Auto uploads
+The client will auto-upload the file for you if you pass a binary object (e.g. File, Data).
+
+Read more about file handling in our file upload guide.
+
+5. Schema
+#
+Input
+#
+image_urls list<string>
+URLs of the reference images to use for consistent subject appearance
+
+prompt string
+The text prompt describing the video you want to generate
+
+duration DurationEnum
+The duration of the generated video in seconds Default value: "8s"
+
+Possible enum values: 8s
+
+resolution ResolutionEnum
+Resolution of the generated video Default value: "720p"
+
+Possible enum values: 720p, 1080p
+
+generate_audio boolean
+Whether to generate audio for the video. If false, %33 less credits will be used. Default value: true
+
+
+{
+  "image_urls": [
+    "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-1.png",
+    "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-2.png",
+    "https://storage.googleapis.com/falserverless/example_inputs/veo31-r2v-input-3.png"
+  ],
+  "prompt": "A graceful ballerina dancing outside a circus tent on green grass, with colorful wildflowers swaying around her as she twirls and poses in the meadow.",
+  "duration": "8s",
+  "resolution": "720p",
+  "generate_audio": true
+}
+Output
+#
+video File
+The generated video
+
+
+{
+  "video": {
+    "url": "https://storage.googleapis.com/falserverless/example_outputs/veo31-r2v-output.mp4"
+  }
+}
+Other types
+#
+File
+#
+url string
+The URL where the file can be downloaded from.
+
+content_type string
+The mime type of the file.
+
+file_name string
+The name of the file. It will be auto-generated if not provided.
+
+file_size integer
+The size of the file in bytes.
+
+file_data string
+File data

@@ -106,6 +106,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/flux-pro/kontext/multi', label: 'Flux Pro Kontext Multi', icon: '/flux.svg', isNew: true },
     ],
     'text-to-video': [
+      { value: 'fal-ai/veo3.1', label: 'Veo 3.1', icon: '/gemini-color.svg', isNew: true },
+      { value: 'fal-ai/veo3.1/fast', label: 'Veo 3.1 Fast', icon: '/gemini-color.svg', isNew: true },
       { value: 'fal-ai/sora-2/text-to-video', label: 'Sora 2 Text-to-Video', icon: '/openai.svg', isNew: true },
       { value: 'fal-ai/sora-2/text-to-video/pro', label: 'Sora 2 Pro Text-to-Video', icon: '/openai.svg', isNew: true },
       { value: 'fal-ai/kandinsky5/text-to-video', label: 'Kandinsky 5.0 T2V', icon: '/deepseek-color.svg', isNew: true },
@@ -114,9 +116,13 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/luma-dream-machine', label: 'Luma Dream Machine v1.5', icon: '/dreammachine.svg', isNew: true },
       { value: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video', label: 'Kling 2.5 Turbo Pro T2V', icon: '/kling-color.svg', isNew: true },
       { value: 'fal-ai/kling-video/v2.1/master/text-to-video', label: 'Kling 2.1 Master T2V', icon: '/kling-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1/reference-to-video', label: 'Veo 3.1 Reference-to-Video', icon: '/Gen4.png', isNew: true },
+      { value: 'fal-ai/veo3.1/reference-to-video', label: 'Veo 3.1 Reference-to-Video', icon: '/gemini-color.svg', isNew: true },
     ],
     'image-to-video': [
+      { value: 'fal-ai/veo3.1/image-to-video', label: 'Veo 3.1 (I2V)', icon: '/gemini-color.svg', isNew: true },
+      { value: 'fal-ai/veo3.1/fast/image-to-video', label: 'Veo 3.1 Fast (I2V)', icon: '/gemini-color.svg', isNew: true },
+      { value: 'fal-ai/veo3.1/first-last-frame-to-video', label: 'Veo 3.1 First/Last Frame', icon: '/gemini-color.svg', isNew: true },
+      { value: 'fal-ai/veo3.1/fast/first-last-frame-to-video', label: 'Veo 3.1 Fast First/Last Frame', icon: '/gemini-color.svg', isNew: true },
       { value: 'fal-ai/sora-2/image-to-video', label: 'Sora 2 (I2V)', icon: '/openai.svg' },
       { value: 'fal-ai/sora-2/image-to-video/pro', label: 'Sora 2 Pro (I2V)', icon: '/openai.svg' },
       { value: 'fal-ai/veo3/image-to-video', label: 'Veo 3 (I2V)', icon: '/Gen4.png' },

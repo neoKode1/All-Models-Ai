@@ -428,6 +428,29 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           }, { status: 400 });
         }
       }
+      
+      // Handle Veo 3.1 first-last-frame-to-video specific parameters
+      if (model.includes('first-last-frame-to-video')) {
+        // Veo 3.1 first-last-frame requires first_frame_url and last_frame_url
+        if (body.first_frame_url && body.last_frame_url) {
+          input.first_frame_url = body.first_frame_url;
+          input.last_frame_url = body.last_frame_url;
+          console.log(`🎬 [Generate API] [${requestId}] Veo 3.1 first-last-frame with first and last frames`);
+        } else if (body.image_urls && Array.isArray(body.image_urls) && body.image_urls.length >= 2) {
+          // Fallback: use first and last from image_urls array
+          input.first_frame_url = body.image_urls[0];
+          input.last_frame_url = body.image_urls[body.image_urls.length - 1];
+          console.log(`🎬 [Generate API] [${requestId}] Veo 3.1 first-last-frame using first and last from image_urls array`);
+        } else {
+          console.error(`❌ [Generate API] [${requestId}] Veo 3.1 first-last-frame requires first_frame_url and last_frame_url`);
+          return NextResponse.json({
+            success: false,
+            error: "Veo 3.1 first-last-frame-to-video requires first_frame_url and last_frame_url parameters",
+            requestId: requestId,
+            timestamp: new Date().toISOString()
+          }, { status: 400 });
+        }
+      }
 
       // Set default generate_audio to true for Veo 3
       if (input.generate_audio === undefined) {

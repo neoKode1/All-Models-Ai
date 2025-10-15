@@ -49,18 +49,20 @@
 
 ---
 
-## 🎬 Text-to-Video Models (9 Configured)
+## 🎬 Text-to-Video Models (11 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
-2. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
-3. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
-4. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
-5. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
-6. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
-7. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
-8. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
-9. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
+1. `fal-ai/veo3.1` - Veo 3.1 by Google (with sound, 720p/1080p, 4-8s) ✔️
+2. `fal-ai/veo3.1/fast` - Veo 3.1 Fast (faster & cost effective) ✔️
+3. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
+4. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
+5. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
+6. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
+7. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
+8. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
+9. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
+10. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
+11. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
@@ -68,35 +70,115 @@
 
 ---
 
-## 🖼️ Image-to-Video Models (19 Configured)
+## 🖼️ Image-to-Video Models (24 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/sora-2/image-to-video` - Sora 2 I2V
-2. `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
-3. `fal-ai/veo3/image-to-video` - Veo 3 I2V
-4. `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V
-5. `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` - Kling V2.5 Turbo Pro I2V
-6. `fal-ai/minimax/hailuo-02/standard/image-to-video` - Minimax Hailuo 02 I2V
-7. `fal-ai/hunyuan-video` - Hunyuan Video I2V
-8. `fal-ai/wan/v2.2-a14b/image-to-video` - Wan v2.2-A14B I2V
-9. `fal-ai/ovi/image-to-video` - Ovi I2V (with audio)
-10. `fal-ai/luma-dream-machine/ray-2/image-to-video` - Luma Ray 2 I2V
-11. `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Preview I2V
-12. `fal-ai/luma-dream-machine/image-to-video` - Luma Dream Machine I2V ✔️
-13. `fal-ai/luma-dream-machine/ray-2` - Luma Ray 2 ✔️
-14. `fal-ai/luma-dream-machine/ray-2-flash` - Luma Ray 2 Flash ✔️
-15. `fal-ai/luma-dream-machine/ray-2-flash/image-to-video` - Luma Ray 2 Flash I2V ✔️
-16. `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️
-17. `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️
-18. `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast) ✔️
-19. `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V LoRA ✔️
-20. `fal-ai/bytedance/omnihuman` - OmniHuman (Image+Audio→Video) ✔️
+1. `fal-ai/veo3.1/image-to-video` - Veo 3.1 I2V (720p/1080p, 8s) ✔️
+2. `fal-ai/veo3.1/fast/image-to-video` - Veo 3.1 Fast I2V (faster & cost effective) ✔️
+3. `fal-ai/veo3.1/first-last-frame-to-video` - Veo 3.1 First/Last Frame (animate between frames) ✔️
+4. `fal-ai/veo3.1/fast/first-last-frame-to-video` - Veo 3.1 Fast First/Last Frame ✔️
+5. `fal-ai/sora-2/image-to-video` - Sora 2 I2V
+6. `fal-ai/sora-2/image-to-video/pro` - Sora 2 Pro I2V
+7. `fal-ai/veo3/image-to-video` - Veo 3 I2V
+8. `fal-ai/kling-video/v2.1/master/image-to-video` - Kling v2.1 Master I2V
+9. `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` - Kling V2.5 Turbo Pro I2V
+10. `fal-ai/minimax/hailuo-02/standard/image-to-video` - Minimax Hailuo 02 I2V
+11. `fal-ai/hunyuan-video` - Hunyuan Video I2V
+12. `fal-ai/wan/v2.2-a14b/image-to-video` - Wan v2.2-A14B I2V
+13. `fal-ai/ovi/image-to-video` - Ovi I2V (with audio)
+14. `fal-ai/luma-dream-machine/ray-2/image-to-video` - Luma Ray 2 I2V
+15. `fal-ai/wan-25-preview/image-to-video` - Wan 2.5 Preview I2V
+16. `fal-ai/luma-dream-machine/image-to-video` - Luma Dream Machine I2V ✔️
+17. `fal-ai/luma-dream-machine/ray-2` - Luma Ray 2 ✔️
+18. `fal-ai/luma-dream-machine/ray-2-flash` - Luma Ray 2 Flash ✔️
+19. `fal-ai/luma-dream-machine/ray-2-flash/image-to-video` - Luma Ray 2 Flash I2V ✔️
+20. `fal-ai/pixverse/v5/image-to-video` - PixVerse V5 I2V ✔️
+21. `fal-ai/ltxv-13b-098-distilled/image-to-video` - LTX Video 0.9.8 13B ✔️
+22. `decart/lucy-14b/image-to-video` - Lucy-14B (lightning fast) ✔️
+23. `fal-ai/wan/v2.2-a14b/image-to-video/lora` - Wan 2.2 I2V LoRA ✔️
+24. `fal-ai/bytedance/omnihuman` - OmniHuman (Image+Audio→Video) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/kling-video/v2.1/pro/image-to-video` - Kling 2.1 Pro I2V
 - `fal-ai/ltx-video-13b-distilled/image-to-video` - LTX Video 0.9.7 13B Distilled
 
 ### 📋 Model Configuration Notes
+
+**Veo 3.1** (`fal-ai/veo3.1`):
+- **Category**: Text-to-Video
+- **Input**: 
+  - `prompt` (required) - text description
+  - `aspect_ratio` (9:16/16:9/1:1, default: 16:9)
+  - `duration` (4s/6s/8s, default: 8s)
+  - `resolution` (720p/1080p, default: 720p)
+  - `negative_prompt` (optional)
+  - `enhance_prompt` (boolean, default: true)
+  - `auto_fix` (boolean, default: true)
+  - `generate_audio` (boolean, default: true - 33% less credits if false)
+  - `seed` (optional)
+- **Output**: `video` (File)
+- **Use Case**: State-of-the-art text-to-video with audio generation
+- **Status**: ✔️ Configured
+
+**Veo 3.1 Fast** (`fal-ai/veo3.1/fast`):
+- **Category**: Text-to-Video (Fast)
+- **Input**: Same as Veo 3.1
+- **Output**: `video` (File)
+- **Use Case**: Faster and more cost-effective version of Veo 3.1
+- **Status**: ✔️ Configured
+
+**Veo 3.1 Image-to-Video** (`fal-ai/veo3.1/image-to-video`):
+- **Category**: Image-to-Video
+- **Input**: 
+  - `prompt` (required)
+  - `image_url` (required) - input image to animate
+  - `aspect_ratio` (auto/9:16/16:9/1:1, default: auto)
+  - `duration` (8s only)
+  - `resolution` (720p/1080p, default: 720p)
+  - `generate_audio` (boolean, default: true)
+- **Output**: `video` (File)
+- **Use Case**: Animate still images with Veo 3.1
+- **Status**: ✔️ Configured
+
+**Veo 3.1 Fast Image-to-Video** (`fal-ai/veo3.1/fast/image-to-video`):
+- **Category**: Image-to-Video (Fast)
+- **Input**: Same as Veo 3.1 I2V
+- **Output**: `video` (File)
+- **Use Case**: Faster image animation
+- **Status**: ✔️ Configured
+
+**Veo 3.1 First/Last Frame** (`fal-ai/veo3.1/first-last-frame-to-video`):
+- **Category**: Image-to-Video
+- **Input**: 
+  - `first_frame_url` (required) - URL of first frame
+  - `last_frame_url` (required) - URL of last frame
+  - `prompt` (required) - how to animate between frames
+  - `duration` (8s only)
+  - `aspect_ratio` (auto/9:16/16:9/1:1, default: auto)
+  - `resolution` (720p/1080p, default: 720p)
+  - `generate_audio` (boolean, default: true)
+- **Output**: `video` (File)
+- **Use Case**: Animate between two keyframes
+- **Status**: ✔️ Configured
+
+**Veo 3.1 Fast First/Last Frame** (`fal-ai/veo3.1/fast/first-last-frame-to-video`):
+- **Category**: Image-to-Video (Fast)
+- **Input**: Same as Veo 3.1 First/Last Frame
+- **Output**: `video` (File)
+- **Use Case**: Faster keyframe animation
+- **Status**: ✔️ Configured
+
+**Veo 3.1 Reference-to-Video** (`fal-ai/veo3.1/reference-to-video`):
+- **Category**: Text-to-Video (Multiple Images)
+- **Input**: 
+  - `image_urls` (required) - array of reference image URLs
+  - `prompt` (required)
+  - `duration` (8s only)
+  - `resolution` (720p/1080p, default: 720p)
+  - `generate_audio` (boolean, default: true)
+- **Output**: `video` (File)
+- **Use Case**: Generate videos with consistent subjects from multiple reference images
+- **Status**: ✔️ Configured
 
 **OmniHuman** (`fal-ai/bytedance/omnihuman`):
 - **Category**: Avatar/Lipsync (Image + Audio → Video)
@@ -281,15 +363,15 @@
 
 ## 📊 Summary
 
-### Current Status (Updated from all models.txt)
-- **Total Models Listed**: ~50+ documented models
-- **Already Configured**: 49 models (49% complete - nearly halfway!)
+### Current Status (Updated with Veo 3.1 Models)
+- **Total Models Listed**: ~60+ documented models
+- **Already Configured**: 55 models (55% complete - over halfway!)
 - **New Models to Add**: ~10 high-priority models remaining
 - **Categories**: 12 categories
 - **Breakdown by Category**:
   - Text-to-Image: 16 models
-  - Text-to-Video: 8 models
-  - Image-to-Video: 20 models (includes OmniHuman)
+  - Text-to-Video: 11 models (includes all Veo 3.1 variants)
+  - Image-to-Video: 24 models (includes Veo 3.1 I2V variants)
   - Video-to-Video: 6 models
   - Audio/Music: 2 models
   - 3D: 1 model
