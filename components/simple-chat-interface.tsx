@@ -85,95 +85,170 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
 
+  // Model descriptions mapping
+  const modelDescriptions: Record<string, string> = {
+    'fal-ai/imagen4/preview': "Google's highest quality image generation model with enhanced detail and lighting",
+    'fal-ai/flux-pro/kontext/max/text-to-image': "FLUX.1 Kontext [max] - Maximum performance with greatly improved prompt adherence",
+    'fal-ai/flux-krea-lora/stream': "Super fast FLUX.1 [dev] with LoRA support for rapid, high-quality image generation",
+    'fal-ai/recraft/v3/text-to-image': "SOTA text-to-image model with long text generation, vector art, and brand style capabilities",
+    'fal-ai/hidream-i1-full': "High-detail dream-like image generation with advanced artistic capabilities",
+    'fal-ai/kandinsky5/text-to-video': "Kandinsky-style video generation with artistic motion and transitions",
+    'fal-ai/pixverse/v5/image-to-video': "Advanced image-to-video generation with smooth motion and high quality",
+    'fal-ai/dreamomni2/edit': "Advanced image editing with DreamOmni2's powerful modification capabilities",
+    'fal-ai/moondream3-preview/detect': "Object detection and analysis with MoonDream3's advanced vision capabilities",
+    'fal-ai/ovi': "Audio-video generation with synchronized sound and motion",
+    'fal-ai/wan-alpha': "Generate videos with transparent backgrounds",
+    'fal-ai/luma-dream-machine': "Luma's flagship video generation with high-quality motion and detail",
+    'fal-ai/wan-25-preview/text-to-image': "Wan 2.5 text-to-image with enhanced quality and artistic styles",
+    'fal-ai/wan-25-preview/text-to-video': "Wan 2.5 text-to-video with best visual quality and motion stability",
+    'fal-ai/wan-25-preview/image-to-video': "Wan 2.5 image-to-video with smooth motion generation from images",
+    'fal-ai/wan-25-preview/image-to-image': "Wan 2.5 image editing with subject-consistent modifications",
+    'fal-ai/veo3.1': "Veo 3.1 by Google, the most advanced AI video generation model in the world. With sound on!",
+    'fal-ai/veo3.1/fast': "Faster and more cost effective version of Google's Veo 3.1!",
+    'fal-ai/veo3.1/image-to-video': "Veo 3.1 is the latest state-of-the art video generation model from Google DeepMind",
+    'fal-ai/veo3.1/fast/image-to-video': "Generate videos from your image prompts using Veo 3.1 fast",
+    'fal-ai/veo3.1/first-last-frame-to-video': "Generate videos from a first and last framed using Google's Veo 3.1",
+    'fal-ai/veo3.1/fast/first-last-frame-to-video': "Generate videos from a first/last frame using Google's Veo 3.1 Fast",
+    'fal-ai/veo3.1/reference-to-video': "Generate Videos from Ingredients using Google's Veo 3.1",
+    'fal-ai/sora-2/text-to-video': "Text-to-video endpoint for Sora 2, OpenAI's state-of-the-art video model capable of creating richly detailed, dynamic clips with audio from natural language or images",
+    'fal-ai/sora-2/text-to-video/pro': "Text-to-video endpoint for Sora 2 Pro, OpenAI's state-of-the-art video model capable of creating richly detailed, dynamic clips with audio from natural language or images",
+    'fal-ai/sora-2/image-to-video': "Image-to-video endpoint for Sora 2, OpenAI's state-of-the-art video model capable of creating richly detailed, dynamic clips with audio from natural language or images",
+    'fal-ai/sora-2/image-to-video/pro': "Image-to-video endpoint for Sora 2 Pro, OpenAI's state-of-the-art video model capable of creating richly detailed, dynamic clips with audio from natural language or images",
+    'fal-ai/sora-2/video-to-video/remix': "Video-to-video remix endpoint for Sora 2, OpenAI's advanced model that transforms existing videos based on new text or image prompts allowing rich edits, style changes, and creative reinterpretations while preserving motion and structure",
+    'fal-ai/kling-video/v2.1/master/text-to-video': "Kling 2.1 Master text-to-video with professional quality",
+    'fal-ai/kling-video/v2.1/master/image-to-video': "Kling 2.1 Master image-to-video with smooth motion",
+    'fal-ai/kling-video/v2.5-turbo/pro/text-to-video': "Kling 2.5 Turbo Pro text-to-video with enhanced speed",
+    'fal-ai/kling-video/v2.5-turbo/pro/image-to-video': "Kling 2.5 Turbo Pro image-to-video with fast processing",
+    'fal-ai/minimax/hailuo-02/standard/image-to-video': "Minimax Hailuo 02 standard image-to-video generation",
+    'fal-ai/hunyuan-video': "Hunyuan video generation with high quality and consistency",
+    'fal-ai/wan/v2.2-a14b/image-to-video': "Wan v2.2-A14B image-to-video with advanced capabilities",
+    'fal-ai/ovi/image-to-video': "Ovi image-to-video with synchronized audio generation",
+    'fal-ai/luma-dream-machine/ray-2/image-to-video': "Luma Ray 2 image-to-video with enhanced quality",
+    'fal-ai/luma-dream-machine/image-to-video': "Luma Dream Machine image-to-video generation",
+    'fal-ai/luma-dream-machine/ray-2': "Luma Ray 2 with advanced video generation capabilities",
+    'fal-ai/luma-dream-machine/ray-2-flash': "Luma Ray 2 Flash for fast video generation",
+    'fal-ai/luma-dream-machine/ray-2-flash/image-to-video': "Luma Ray 2 Flash image-to-video with speed optimization",
+    'fal-ai/ltxv-13b-098-distilled/image-to-video': "LTX Video 0.9.8 13B distilled image-to-video",
+    'decart/lucy-14b/image-to-video': "Lucy-14B lightning fast image-to-video generation",
+    'fal-ai/wan/v2.2-a14b/image-to-video/lora': "Wan 2.2 I2V with LoRA support for customization",
+    'fal-ai/bytedance/omnihuman': "ByteDance OmniHuman for human-focused video generation",
+    'fal-ai/kling-video/v1/pro/ai-avatar': "Kling AI Avatar Pro for avatar video generation",
+    'fal-ai/sync-lipsync/v2': "Sync Lipsync v2 for synchronized lip movement",
+    'veed/lipsync': "VEED Lipsync for professional lip synchronization",
+    'endframe/minimax-hailuo-02': "EndFrame for smooth transitions between start and end frames",
+    'fal-ai/luma-dream-machine/ray-2/modify': "Luma Ray 2 image modification with advanced editing",
+    'fal-ai/luma-dream-machine/ray-2-flash/modify': "Luma Ray 2 Flash fast image modification",
+    'fal-ai/luma-dream-machine/ray-2/reframe': "Luma Ray 2 image reframing with aspect ratio changes",
+    'fal-ai/luma-dream-machine/ray-2-flash/reframe': "Luma Ray 2 Flash fast image reframing",
+    'fal-ai/minimax-music/v1.5': "MiniMax Music v1.5 for AI music generation with style control",
+    'fal-ai/minimax-music': "MiniMax Music for AI music generation",
+    'fal-ai/meshy/v5/multi-image-to-3d': "Meshy V5 multi-image-to-3D model generation",
+    'fal-ai/nano-banana/edit': "Nano Banana Edit for advanced image editing capabilities",
+    'fal-ai/bytedance/seedream/v4/edit': "Seedream 4.0 Edit for professional image modification",
+    'fal-ai/qwen-image-edit/image-to-image': "Qwen Image Edit with superior text editing capabilities",
+    'fal-ai/luma-photon/flash/reframe': "Luma Photon Flash reframing with intelligent content expansion",
+    'fal-ai/flux-kontext-lora': "Flux Kontext LoRA with enhanced context understanding",
+    'fal-ai/flux-kontext-lora/text-to-image': "Flux Kontext LoRA text-to-image with context enhancement",
+    'fal-ai/flux-kontext-lora/inpaint': "Flux Kontext LoRA inpainting with context-aware filling",
+    'fal-ai/flux-pro/kontext/text-to-image': "Flux Pro Kontext text-to-image with advanced context",
+    'fal-ai/flux-pro/kontext/max': "Flux Pro Kontext Max with maximum context performance",
+    'fal-ai/flux-pro/kontext/max/multi': "Flux Pro Kontext Max Multi with multi-context capabilities",
+    'fal-ai/flux-pro/kontext/multi': "Flux Pro Kontext Multi with enhanced multi-context support",
+    'fal-ai/wan-trainer/t2v-14b': "Wan Trainer T2V 14B with 14B parameter text-to-video",
+    'fal-ai/wan-trainer/t2v': "Wan Trainer T2V for text-to-video training and generation",
+    'fal-ai/wan-trainer/i2v-720p': "Wan Trainer I2V 720p for image-to-video at 720p resolution"
+  };
+
   // Organize models by category
-  const modelsByCategory: Record<string, Array<{value: string; label: string; icon: string; isNew?: boolean; disabled?: boolean}>> = {
+  const modelsByCategory: Record<string, Array<{value: string; label: string; icon: string; isNew?: boolean; disabled?: boolean; description?: string}>> = {
     'text-to-image': [
-      { value: 'fal-ai/wan-25-preview/text-to-image', label: 'Wan 2.5 Text-to-Image', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/imagen4/preview', label: 'Imagen 4 (Google)', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/flux-pro/v1.1-ultra', label: 'Flux Pro Ultra', icon: '/flux.svg' },
-      { value: 'fal-ai/recraft/v3/text-to-image', label: 'Recraft V3 (SOTA)', icon: '/ideogram.svg', isNew: true },
-      { value: 'fal-ai/hidream-i1-full', label: 'HiDream-I1 (17B)', icon: '/deepseek-color.svg', isNew: true },
-      { value: 'fal-ai/flux-krea-lora/stream', label: 'Flux Krea LoRA Stream', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/qwen-image-edit/image-to-image', label: 'Qwen Image Edit (I2I)', icon: '/deepseek-color.svg', isNew: true },
-      { value: 'fal-ai/wan-25-preview/image-to-image', label: 'Wan 2.5 Image-to-Image', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/nano-banana/edit', label: 'Nano Banana Edit', icon: '/gemini-color.svg' },
-      { value: 'fal-ai/bytedance/seedream/v4/edit', label: 'Seedream 4.0 Edit', icon: '/bytedance-color.svg' },
-      { value: 'fal-ai/dreamomni2/edit', label: 'DreamOmni2 Edit', icon: '/bytedance-color.svg', isNew: true },
-      { value: 'fal-ai/luma-photon/flash/reframe', label: 'Luma Photon Flash Reframe', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/flux-kontext-lora', label: 'Flux Kontext LoRA', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-kontext-lora/text-to-image', label: 'Flux Kontext LoRA T2I', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-kontext-lora/inpaint', label: 'Flux Kontext Inpaint', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-pro/kontext/max/text-to-image', label: 'Flux Pro Kontext Max T2I', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-pro/kontext/text-to-image', label: 'Flux Pro Kontext T2I', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-pro/kontext/max', label: 'Flux Pro Kontext Max', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-pro/kontext/max/multi', label: 'Flux Pro Kontext Max Multi', icon: '/flux.svg', isNew: true },
-      { value: 'fal-ai/flux-pro/kontext/multi', label: 'Flux Pro Kontext Multi', icon: '/flux.svg', isNew: true },
+      { value: 'fal-ai/wan-25-preview/text-to-image', label: 'Wan 2.5 Text-to-Image', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-25-preview/text-to-image'] },
+      { value: 'fal-ai/imagen4/preview', label: 'Imagen 4 (Google)', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/imagen4/preview'] },
+      { value: 'fal-ai/flux-pro/v1.1-ultra', label: 'Flux Pro Ultra', icon: '/flux.svg', description: 'Flux Pro Ultra with enhanced quality and prompt adherence' },
+      { value: 'fal-ai/recraft/v3/text-to-image', label: 'Recraft V3 (SOTA)', icon: '/ideogram.svg', isNew: true, description: modelDescriptions['fal-ai/recraft/v3/text-to-image'] },
+      { value: 'fal-ai/hidream-i1-full', label: 'HiDream-I1 (17B)', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['fal-ai/hidream-i1-full'] },
+      { value: 'fal-ai/flux-krea-lora/stream', label: 'Flux Krea LoRA Stream', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-krea-lora/stream'] },
+      { value: 'fal-ai/qwen-image-edit/image-to-image', label: 'Qwen Image Edit (I2I)', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['fal-ai/qwen-image-edit/image-to-image'] },
+      { value: 'fal-ai/wan-25-preview/image-to-image', label: 'Wan 2.5 Image-to-Image', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-25-preview/image-to-image'] },
+      { value: 'fal-ai/nano-banana/edit', label: 'Nano Banana Edit', icon: '/gemini-color.svg', description: modelDescriptions['fal-ai/nano-banana/edit'] },
+      { value: 'fal-ai/bytedance/seedream/v4/edit', label: 'Seedream 4.0 Edit', icon: '/bytedance-color.svg', description: modelDescriptions['fal-ai/bytedance/seedream/v4/edit'] },
+      { value: 'fal-ai/dreamomni2/edit', label: 'DreamOmni2 Edit', icon: '/bytedance-color.svg', isNew: true, description: modelDescriptions['fal-ai/dreamomni2/edit'] },
+      { value: 'fal-ai/luma-photon/flash/reframe', label: 'Luma Photon Flash Reframe', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-photon/flash/reframe'] },
+      { value: 'fal-ai/flux-kontext-lora', label: 'Flux Kontext LoRA', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-kontext-lora'] },
+      { value: 'fal-ai/flux-kontext-lora/text-to-image', label: 'Flux Kontext LoRA T2I', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-kontext-lora/text-to-image'] },
+      { value: 'fal-ai/flux-kontext-lora/inpaint', label: 'Flux Kontext Inpaint', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-kontext-lora/inpaint'] },
+      { value: 'fal-ai/flux-pro/kontext/max/text-to-image', label: 'Flux Pro Kontext Max T2I', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-pro/kontext/max/text-to-image'] },
+      { value: 'fal-ai/flux-pro/kontext/text-to-image', label: 'Flux Pro Kontext T2I', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-pro/kontext/text-to-image'] },
+      { value: 'fal-ai/flux-pro/kontext/max', label: 'Flux Pro Kontext Max', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-pro/kontext/max'] },
+      { value: 'fal-ai/flux-pro/kontext/max/multi', label: 'Flux Pro Kontext Max Multi', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-pro/kontext/max/multi'] },
+      { value: 'fal-ai/flux-pro/kontext/multi', label: 'Flux Pro Kontext Multi', icon: '/flux.svg', isNew: true, description: modelDescriptions['fal-ai/flux-pro/kontext/multi'] },
     ],
     'text-to-video': [
-      { value: 'fal-ai/wan-25-preview/text-to-video', label: 'Wan 2.5 Text-to-Video', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1', label: 'Veo 3.1', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1/fast', label: 'Veo 3.1 Fast', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/sora-2/text-to-video', label: 'Sora 2 Text-to-Video', icon: '/openai.svg', isNew: true },
-      { value: 'fal-ai/sora-2/text-to-video/pro', label: 'Sora 2 Pro Text-to-Video', icon: '/openai.svg', isNew: true },
-      { value: 'fal-ai/kandinsky5/text-to-video', label: 'Kandinsky 5.0 T2V', icon: '/deepseek-color.svg', isNew: true },
-      { value: 'fal-ai/kandinsky5/text-to-video/distill', label: 'Kandinsky 5.0 Distilled', icon: '/deepseek-color.svg', isNew: true },
-      { value: 'fal-ai/ovi', label: 'Ovi (Audio-Video)', icon: '/Gen4.png', isNew: true },
-      { value: 'fal-ai/luma-dream-machine', label: 'Luma Dream Machine v1.5', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video', label: 'Kling 2.5 Turbo Pro T2V', icon: '/kling-color.svg', isNew: true },
-      { value: 'fal-ai/kling-video/v2.1/master/text-to-video', label: 'Kling 2.1 Master T2V', icon: '/kling-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1/reference-to-video', label: 'Veo 3.1 Reference-to-Video', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/wan-trainer/t2v-14b', label: 'Wan Trainer T2V 14B', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/wan-trainer/t2v', label: 'Wan Trainer T2V', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true },
+      { value: 'fal-ai/wan-alpha', label: 'Wan Alpha (Transparent BG)', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-alpha'] },
+      { value: 'fal-ai/wan-25-preview/text-to-video', label: 'Wan 2.5 Text-to-Video', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-25-preview/text-to-video'] },
+      { value: 'fal-ai/veo3.1', label: 'Veo 3.1', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1'] },
+      { value: 'fal-ai/veo3.1/fast', label: 'Veo 3.1 Fast', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1/fast'] },
+      { value: 'fal-ai/sora-2/text-to-video', label: 'Sora 2 Text-to-Video', icon: '/openai.svg', isNew: true, description: modelDescriptions['fal-ai/sora-2/text-to-video'] },
+      { value: 'fal-ai/sora-2/text-to-video/pro', label: 'Sora 2 Pro Text-to-Video', icon: '/openai.svg', isNew: true, description: modelDescriptions['fal-ai/sora-2/text-to-video/pro'] },
+      { value: 'fal-ai/kandinsky5/text-to-video', label: 'Kandinsky 5.0 T2V', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['fal-ai/kandinsky5/text-to-video'] },
+      { value: 'fal-ai/kandinsky5/text-to-video/distill', label: 'Kandinsky 5.0 Distilled', icon: '/deepseek-color.svg', isNew: true, description: 'Kandinsky 5.0 distilled version for faster generation' },
+      { value: 'fal-ai/ovi', label: 'Ovi (Audio-Video)', icon: '/Gen4.png', isNew: true, description: modelDescriptions['fal-ai/ovi'] },
+      { value: 'fal-ai/luma-dream-machine', label: 'Luma Dream Machine v1.5', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine'] },
+      { value: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video', label: 'Kling 2.5 Turbo Pro T2V', icon: '/kling-color.svg', isNew: true, description: modelDescriptions['fal-ai/kling-video/v2.5-turbo/pro/text-to-video'] },
+      { value: 'fal-ai/kling-video/v2.1/master/text-to-video', label: 'Kling 2.1 Master T2V', icon: '/kling-color.svg', isNew: true, description: modelDescriptions['fal-ai/kling-video/v2.1/master/text-to-video'] },
+      { value: 'fal-ai/veo3.1/reference-to-video', label: 'Veo 3.1 Reference-to-Video', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1/reference-to-video'] },
+      { value: 'fal-ai/wan-trainer/t2v-14b', label: 'Wan Trainer T2V 14B', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-trainer/t2v-14b'] },
+      { value: 'fal-ai/wan-trainer/t2v', label: 'Wan Trainer T2V', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-trainer/t2v'] },
+      { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true, description: modelDescriptions['fal-ai/bytedance/omnihuman'] },
     ],
     'image-to-video': [
-      { value: 'fal-ai/veo3.1/image-to-video', label: 'Veo 3.1 (I2V)', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1/fast/image-to-video', label: 'Veo 3.1 Fast (I2V)', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1/first-last-frame-to-video', label: 'Veo 3.1 First/Last Frame', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/veo3.1/fast/first-last-frame-to-video', label: 'Veo 3.1 Fast First/Last Frame', icon: '/gemini-color.svg', isNew: true },
-      { value: 'fal-ai/sora-2/image-to-video', label: 'Sora 2 (I2V)', icon: '/openai.svg' },
-      { value: 'fal-ai/sora-2/image-to-video/pro', label: 'Sora 2 Pro (I2V)', icon: '/openai.svg' },
-      { value: 'fal-ai/veo3/image-to-video', label: 'Veo 3 (I2V)', icon: '/Gen4.png' },
-      { value: 'fal-ai/kling-video/v2.1/master/image-to-video', label: 'Kling v2.1 Master (I2V)', icon: '/kling-color.svg' },
-      { value: 'fal-ai/kling-video/v2.5-turbo/pro/image-to-video', label: 'Kling V2.5 Turbo Pro (I2V)', icon: '/kling-color.svg' },
-      { value: 'fal-ai/minimax/hailuo-02/standard/image-to-video', label: 'Minimax Hailuo 02 (I2V)', icon: '/minimax-color.svg' },
-      { value: 'fal-ai/hunyuan-video', label: 'Hunyuan Video (I2V)', icon: '/bytedance-color.svg' },
-      { value: 'fal-ai/wan/v2.2-a14b/image-to-video', label: 'Wan v2.2-A14B (I2V)', icon: '/alibaba-color.svg' },
-      { value: 'fal-ai/ovi/image-to-video', label: 'Ovi (I2V with Audio)', icon: '/Gen4.png' },
-      { value: 'fal-ai/luma-dream-machine/ray-2/image-to-video', label: 'Luma Ray 2 (I2V)', icon: '/dreammachine.svg' },
-      { value: 'fal-ai/wan-25-preview/image-to-video', label: 'Wan 2.5 (I2V)', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/image-to-video', label: 'Luma Dream Machine (I2V)', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2', label: 'Luma Ray 2', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2-flash', label: 'Luma Ray 2 Flash', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2-flash/image-to-video', label: 'Luma Ray 2 Flash (I2V)', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/pixverse/v5/image-to-video', label: 'PixVerse V5 (I2V)', icon: '/kling-color.svg', isNew: true },
-      { value: 'fal-ai/ltxv-13b-098-distilled/image-to-video', label: 'LTX Video 0.9.8 13B', icon: '/deepseek-color.svg', isNew: true },
-      { value: 'decart/lucy-14b/image-to-video', label: 'Lucy-14B (Lightning Fast)', icon: '/deepseek-color.svg', isNew: true },
-      { value: 'fal-ai/wan/v2.2-a14b/image-to-video/lora', label: 'Wan 2.2 I2V (LoRA)', icon: '/alibaba-color.svg', isNew: true },
-      { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true },
-      { value: 'fal-ai/kling-video/v1/pro/ai-avatar', label: 'Kling AI Avatar Pro', icon: '/kling-color.svg' },
-      { value: 'fal-ai/sync-lipsync/v2', label: 'Sync Lipsync v2', icon: '/sync.svg', isNew: true },
-      { value: 'veed/lipsync', label: 'VEED Lipsync', icon: '/veed.svg', isNew: true },
-      { value: 'fal-ai/wan-pro/image-to-video', label: 'Wan Pro (I2V) - Disabled', icon: '/alibaba-color.svg', disabled: true },
-      { value: 'fal-ai/wan-trainer/i2v-720p', label: 'Wan Trainer I2V 720p', icon: '/alibaba-color.svg', isNew: true },
+      { value: 'fal-ai/veo3.1/image-to-video', label: 'Veo 3.1 (I2V)', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1/image-to-video'] },
+      { value: 'fal-ai/veo3.1/fast/image-to-video', label: 'Veo 3.1 Fast (I2V)', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1/fast/image-to-video'] },
+      { value: 'fal-ai/veo3.1/first-last-frame-to-video', label: 'Veo 3.1 First/Last Frame', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1/first-last-frame-to-video'] },
+      { value: 'fal-ai/veo3.1/fast/first-last-frame-to-video', label: 'Veo 3.1 Fast First/Last Frame', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/veo3.1/fast/first-last-frame-to-video'] },
+      { value: 'fal-ai/sora-2/image-to-video', label: 'Sora 2 (I2V)', icon: '/openai.svg', description: modelDescriptions['fal-ai/sora-2/image-to-video'] },
+      { value: 'fal-ai/sora-2/image-to-video/pro', label: 'Sora 2 Pro (I2V)', icon: '/openai.svg', description: modelDescriptions['fal-ai/sora-2/image-to-video/pro'] },
+      { value: 'fal-ai/veo3/image-to-video', label: 'Veo 3 (I2V)', icon: '/Gen4.png', description: 'Veo 3 image-to-video generation with advanced capabilities' },
+      { value: 'fal-ai/kling-video/v2.1/master/image-to-video', label: 'Kling v2.1 Master (I2V)', icon: '/kling-color.svg', description: modelDescriptions['fal-ai/kling-video/v2.1/master/image-to-video'] },
+      { value: 'fal-ai/kling-video/v2.5-turbo/pro/image-to-video', label: 'Kling V2.5 Turbo Pro (I2V)', icon: '/kling-color.svg', description: modelDescriptions['fal-ai/kling-video/v2.5-turbo/pro/image-to-video'] },
+      { value: 'fal-ai/minimax/hailuo-02/standard/image-to-video', label: 'Minimax Hailuo 02 (I2V)', icon: '/minimax-color.svg', description: modelDescriptions['fal-ai/minimax/hailuo-02/standard/image-to-video'] },
+      { value: 'endframe/minimax-hailuo-02', label: 'EndFrame (Minimax Hailuo 02)', icon: '/minimax-color.svg', description: modelDescriptions['endframe/minimax-hailuo-02'] },
+      { value: 'fal-ai/hunyuan-video', label: 'Hunyuan Video (I2V)', icon: '/bytedance-color.svg', description: modelDescriptions['fal-ai/hunyuan-video'] },
+      { value: 'fal-ai/wan/v2.2-a14b/image-to-video', label: 'Wan v2.2-A14B (I2V)', icon: '/alibaba-color.svg', description: modelDescriptions['fal-ai/wan/v2.2-a14b/image-to-video'] },
+      { value: 'fal-ai/ovi/image-to-video', label: 'Ovi (I2V with Audio)', icon: '/Gen4.png', description: modelDescriptions['fal-ai/ovi/image-to-video'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2/image-to-video', label: 'Luma Ray 2 (I2V)', icon: '/dreammachine.svg', description: modelDescriptions['fal-ai/luma-dream-machine/ray-2/image-to-video'] },
+      { value: 'fal-ai/wan-25-preview/image-to-video', label: 'Wan 2.5 (I2V)', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-25-preview/image-to-video'] },
+      { value: 'fal-ai/luma-dream-machine/image-to-video', label: 'Luma Dream Machine (I2V)', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/image-to-video'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2', label: 'Luma Ray 2', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash', label: 'Luma Ray 2 Flash', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2-flash'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash/image-to-video', label: 'Luma Ray 2 Flash (I2V)', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2-flash/image-to-video'] },
+      { value: 'fal-ai/pixverse/v5/image-to-video', label: 'PixVerse V5 (I2V)', icon: '/kling-color.svg', isNew: true, description: modelDescriptions['fal-ai/pixverse/v5/image-to-video'] },
+      { value: 'fal-ai/ltxv-13b-098-distilled/image-to-video', label: 'LTX Video 0.9.8 13B', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['fal-ai/ltxv-13b-098-distilled/image-to-video'] },
+      { value: 'decart/lucy-14b/image-to-video', label: 'Lucy-14B (Lightning Fast)', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['decart/lucy-14b/image-to-video'] },
+      { value: 'fal-ai/wan/v2.2-a14b/image-to-video/lora', label: 'Wan 2.2 I2V (LoRA)', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan/v2.2-a14b/image-to-video/lora'] },
+      { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true, description: modelDescriptions['fal-ai/bytedance/omnihuman'] },
+      { value: 'fal-ai/kling-video/v1/pro/ai-avatar', label: 'Kling AI Avatar Pro', icon: '/kling-color.svg', description: modelDescriptions['fal-ai/kling-video/v1/pro/ai-avatar'] },
+      { value: 'fal-ai/sync-lipsync/v2', label: 'Sync Lipsync v2', icon: '/sync.svg', isNew: true, description: modelDescriptions['fal-ai/sync-lipsync/v2'] },
+      { value: 'veed/lipsync', label: 'VEED Lipsync', icon: '/veed.svg', isNew: true, description: modelDescriptions['veed/lipsync'] },
+      { value: 'fal-ai/wan-pro/image-to-video', label: 'Wan Pro (I2V) - Disabled', icon: '/alibaba-color.svg', disabled: true, description: 'Wan Pro image-to-video (currently disabled)' },
+      { value: 'fal-ai/wan-trainer/i2v-720p', label: 'Wan Trainer I2V 720p', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-trainer/i2v-720p'] },
     ],
     'video-to-video': [
-      { value: 'endframe/minimax-hailuo-02', label: 'EndFrame (Minimax)', icon: '/minimax-color.svg' },
-      { value: 'fal-ai/sora-2/video-to-video/remix', label: 'Sora 2 Video Remix', icon: '/openai.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2/modify', label: 'Luma Ray 2 Modify', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2-flash/modify', label: 'Luma Ray 2 Flash Modify', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2/reframe', label: 'Luma Ray 2 Reframe', icon: '/dreammachine.svg', isNew: true },
-      { value: 'fal-ai/luma-dream-machine/ray-2-flash/reframe', label: 'Luma Ray 2 Flash Reframe', icon: '/dreammachine.svg', isNew: true },
+      { value: 'fal-ai/sora-2/video-to-video/remix', label: 'Sora 2 Video Remix', icon: '/openai.svg', isNew: true, description: modelDescriptions['fal-ai/sora-2/video-to-video/remix'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2/modify', label: 'Luma Ray 2 Modify', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2/modify'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash/modify', label: 'Luma Ray 2 Flash Modify', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2-flash/modify'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2/reframe', label: 'Luma Ray 2 Reframe', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2/reframe'] },
+      { value: 'fal-ai/luma-dream-machine/ray-2-flash/reframe', label: 'Luma Ray 2 Flash Reframe', icon: '/dreammachine.svg', isNew: true, description: modelDescriptions['fal-ai/luma-dream-machine/ray-2-flash/reframe'] },
     ],
     'audio': [
-      { value: 'fal-ai/minimax-music/v1.5', label: 'MiniMax Music v1.5', icon: '/minimax-color.svg', isNew: true },
-      { value: 'fal-ai/minimax-music', label: 'MiniMax Music', icon: '/minimax-color.svg', isNew: true },
+      { value: 'fal-ai/minimax-music/v1.5', label: 'MiniMax Music v1.5', icon: '/minimax-color.svg', isNew: true, description: modelDescriptions['fal-ai/minimax-music/v1.5'] },
+      { value: 'fal-ai/minimax-music', label: 'MiniMax Music', icon: '/minimax-color.svg', isNew: true, description: modelDescriptions['fal-ai/minimax-music'] },
     ],
     '3d': [
-      { value: 'fal-ai/meshy/v5/multi-image-to-3d', label: 'Meshy V5 Multi-Image-to-3D', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/meshy/v5/multi-image-to-3d', label: 'Meshy V5 Multi-Image-to-3D', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['fal-ai/meshy/v5/multi-image-to-3d'] },
     ],
     'specialized': [
-      { value: 'fal-ai/moondream3-preview/detect', label: 'MoonDream3 Detect', icon: '/deepseek-color.svg', isNew: true },
+      { value: 'fal-ai/moondream3-preview/detect', label: 'MoonDream3 Detect', icon: '/deepseek-color.svg', isNew: true, description: modelDescriptions['fal-ai/moondream3-preview/detect'] },
     ],
   };
 
@@ -721,16 +796,17 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       const startFrameBase64 = uploadedImages[0].split(',')[1]; // Remove data:image/...;base64, prefix
       const endFrameBase64 = uploadedImages[1].split(',')[1];
 
-      const response = await fetch('/api/endframe', {
+      const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstImage: startFrameBase64,
-          secondImage: endFrameBase64,
+          model: 'endframe/minimax-hailuo-02',
           prompt: userInput.trim(),
-          model: 'MiniMax-Hailuo-02'
+          image_url: uploadedImages[0], // Use first image as the primary image
+          duration: 6, // Minimax only accepts 6 or 10 seconds
+          resolution: '768P'
         }),
       });
 
@@ -1060,9 +1136,16 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       model = preferredVideoModel;
       console.log('🎯 [Chat] Using selected model:', model);
 
+      // Use a simple default prompt if user didn't provide one but has images
+      let finalPrompt = userInput.trim();
+      if (!finalPrompt && (imageToUse || (imagesToUse && imagesToUse.length > 0))) {
+        finalPrompt = 'Animate this image';
+        console.log('📝 [Chat] No prompt provided, using default:', finalPrompt);
+      }
+
       const generationData = {
         model,
-        prompt: userInput.trim(),
+        prompt: finalPrompt,
         image_url: imageToUse,
         image_urls: imagesToUse,
         aspect_ratio: aspectRatio,
@@ -1157,25 +1240,37 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
               images: result?.data?.images
             });
 
-            const contentToStore = {
-              id: `generated-${Date.now()}`,
-              type: (result?.data?.videos?.length > 0 ? 'video' : 'image') as 'image' | 'video',
-              url: result?.data?.videos?.[0]?.url || result?.data?.images?.[0]?.url,
-              title: userInput.substring(0, 50) + (userInput.length > 50 ? '...' : ''),
-              prompt: userInput,
-              timestamp: new Date(),
-                  metadata: {
-                    format: generationData.model,
-                    duration: typeof generationData.duration === 'number' ? generationData.duration : 4,
-                    aspect_ratio: generationData.aspect_ratio,
-                    resolution: generationData.resolution
-                  }
-            };
+            // Get the URL from the result
+            const generatedUrl = result?.data?.videos?.[0]?.url || result?.data?.images?.[0]?.url;
+            
+            // Only add to storage if we have a valid URL
+            if (generatedUrl) {
+              const contentToStore = {
+                id: `generated-${Date.now()}`,
+                type: (result?.data?.videos?.length > 0 ? 'video' : 'image') as 'image' | 'video',
+                url: generatedUrl,
+                title: userInput.substring(0, 50) + (userInput.length > 50 ? '...' : ''),
+                prompt: userInput,
+                timestamp: new Date(),
+                metadata: {
+                  format: generationData.model,
+                  duration: typeof generationData.duration === 'number' ? generationData.duration : 4,
+                  aspect_ratio: generationData.aspect_ratio,
+                  resolution: generationData.resolution
+                }
+              };
 
-            console.log('💾 [Chat] Adding content to gallery storage:', contentToStore);
-            console.log('💾 [Chat] Current gallery items before add:', contentStorage.loadContent().length);
-            contentStorage.addContent(contentToStore);
-            console.log('💾 [Chat] Current gallery items after add:', contentStorage.loadContent().length);
+              console.log('💾 [Chat] Adding content to gallery storage:', contentToStore);
+              console.log('💾 [Chat] Current gallery items before add:', contentStorage.loadContent().length);
+              contentStorage.addContent(contentToStore);
+              console.log('💾 [Chat] Current gallery items after add:', contentStorage.loadContent().length);
+            } else {
+              console.warn('⚠️ [Chat] No valid URL found in result, skipping gallery storage:', {
+                hasVideos: !!result?.data?.videos,
+                hasImages: !!result?.data?.images,
+                result: result
+              });
+            }
             
             // Trigger a custom event to notify GalleryView to refresh
             window.dispatchEvent(new CustomEvent('contentUpdated'));
@@ -1238,27 +1333,35 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
             // Save to gallery storage (fallback generation)
             if (typeof window !== 'undefined') {
               try {
-                const contentToStore = {
-                  id: `generated-fallback-${Date.now()}`,
-                  type: (result?.data?.videos?.length > 0 ? 'video' : 'image') as 'image' | 'video',
-                  url: result?.data?.videos?.[0]?.url || result?.data?.images?.[0]?.url,
-                  title: userInput.substring(0, 50) + (userInput.length > 50 ? '...' : ''),
-                  prompt: userInput,
-                  timestamp: new Date(),
-                  metadata: {
-                    format: fallbackGenerationData.model,
-                    duration: typeof fallbackGenerationData.duration === 'number' ? fallbackGenerationData.duration : 4,
-                    aspect_ratio: fallbackGenerationData.aspect_ratio,
-                    resolution: fallbackGenerationData.resolution,
-                    fallback: true
-                  }
-                };
-
-                console.log('💾 [Chat] Adding fallback content to gallery storage:', contentToStore);
-                contentStorage.addContent(contentToStore);
+                // Get the URL from the fallback result
+                const generatedUrl = result?.data?.videos?.[0]?.url || result?.data?.images?.[0]?.url;
                 
-                // Trigger a custom event to notify GalleryView to refresh
-                window.dispatchEvent(new CustomEvent('contentUpdated'));
+                // Only add to storage if we have a valid URL
+                if (generatedUrl) {
+                  const contentToStore = {
+                    id: `generated-fallback-${Date.now()}`,
+                    type: (result?.data?.videos?.length > 0 ? 'video' : 'image') as 'image' | 'video',
+                    url: generatedUrl,
+                    title: userInput.substring(0, 50) + (userInput.length > 50 ? '...' : ''),
+                    prompt: userInput,
+                    timestamp: new Date(),
+                    metadata: {
+                      format: fallbackGenerationData.model,
+                      duration: typeof fallbackGenerationData.duration === 'number' ? fallbackGenerationData.duration : 4,
+                      aspect_ratio: fallbackGenerationData.aspect_ratio,
+                      resolution: fallbackGenerationData.resolution,
+                      fallback: true
+                    }
+                  };
+
+                  console.log('💾 [Chat] Adding fallback content to gallery storage:', contentToStore);
+                  contentStorage.addContent(contentToStore);
+                  
+                  // Trigger a custom event to notify GalleryView to refresh
+                  window.dispatchEvent(new CustomEvent('contentUpdated'));
+                } else {
+                  console.warn('⚠️ [Chat] No valid URL found in fallback result, skipping gallery storage');
+                }
               } catch (error) {
                 console.error('❌ [Chat] Failed to save fallback content to gallery storage:', error);
               }
@@ -1893,6 +1996,19 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
                     <p className="text-xs text-gray-500">
                       Click to browse models by category
                     </p>
+                    {preferredVideoModel && (() => {
+                      for (const category in modelsByCategory) {
+                        const model = modelsByCategory[category]?.find(m => m.value === preferredVideoModel);
+                        if (model && model.description) {
+                          return (
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                              {model.description}
+                            </p>
+                          );
+                        }
+                      }
+                      return null;
+                    })()}
                   </div>
 
 

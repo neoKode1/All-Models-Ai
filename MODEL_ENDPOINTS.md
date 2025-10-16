@@ -53,21 +53,25 @@
 
 ---
 
-## 🎬 Text-to-Video Models (12 Configured)
+## 🎬 Text-to-Video Models (16 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/wan-25-preview/text-to-video` - Wan 2.5 Text-to-Video (480p-1080p, 5-10s) ✔️
-2. `fal-ai/veo3.1` - Veo 3.1 by Google (with sound, 720p/1080p, 4-8s) ✔️
-3. `fal-ai/veo3.1/fast` - Veo 3.1 Fast (faster & cost effective) ✔️
-4. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
-5. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
-6. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
-7. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
-8. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
-9. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
-10. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
-11. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
-12. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
+1. `fal-ai/wan-alpha` - Wan Alpha (transparent backgrounds) ✔️
+2. `fal-ai/wan-25-preview/text-to-video` - Wan 2.5 Text-to-Video (480p-1080p, 5-10s) ✔️
+3. `fal-ai/veo3.1` - Veo 3.1 by Google (with sound, 720p/1080p, 4-8s) ✔️
+4. `fal-ai/veo3.1/fast` - Veo 3.1 Fast (faster & cost effective) ✔️
+5. `fal-ai/sora-2/text-to-video` - Sora 2 T2V ✔️
+6. `fal-ai/sora-2/text-to-video/pro` - Sora 2 Pro T2V ✔️
+7. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5.0 ✔️
+8. `fal-ai/kandinsky5/text-to-video/distill` - Kandinsky 5.0 Distilled ✔️
+9. `fal-ai/ovi` - Ovi (Audio-Video) ✔️
+10. `fal-ai/luma-dream-machine` - Luma Dream Machine v1.5 ✔️
+11. `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` - Kling 2.5 Turbo Pro ✔️
+12. `fal-ai/kling-video/v2.1/master/text-to-video` - Kling 2.1 Master T2V ✔️
+13. `fal-ai/veo3.1/reference-to-video` - Veo 3.1 Reference-to-Video (multiple images) ✔️
+14. `fal-ai/wan-trainer/t2v-14b` - Wan Trainer T2V 14B ✔️
+15. `fal-ai/wan-trainer/t2v` - Wan Trainer T2V ✔️
+16. `fal-ai/bytedance/omnihuman` - OmniHuman (Avatar) ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/veo3` - Veo 3 by Google (with sound)
@@ -763,10 +767,15 @@
     - **Output**: images[], seed
     - **Use Case**: Multi-context maximum Flux Pro
 
+27. `fal-ai/wan-alpha` - Wan Alpha (Transparent Backgrounds)
+    - **Input**: prompt, num_frames (81), fps (16), num_inference_steps (8), seed, sampler (euler/unipc/dpm++), shift (10.5), resolution (240p-720p), aspect_ratio (16:9/1:1/9:16), enable_prompt_expansion, enable_safety_checker, mask_clamp_lower (0.1), mask_clamp_upper (0.75), binarize_mask, mask_binarization_threshold (0.8), video_output_type (X264/VP9/PRORES4444/GIF), video_quality (low/medium/high/maximum), video_write_mode (fast/balanced/small), sync_mode
+    - **Output**: video, mask, image, prompt, seed
+    - **Use Case**: Generate videos with transparent backgrounds for compositing
+
 ### 📊 Model Summary
-- **Total New Models**: 26
+- **Total New Models**: 27
 - **Text-to-Image**: 8 models
-- **Text-to-Video**: 5 models  
+- **Text-to-Video**: 6 models  
 - **Image-to-Video**: 1 model
 - **Image Editing**: 4 models
 - **Reframe**: 2 models

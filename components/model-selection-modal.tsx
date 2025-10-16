@@ -12,6 +12,7 @@ interface ModelOption {
   icon: string;
   isNew?: boolean;
   disabled?: boolean;
+  description?: string;
 }
 
 interface CategoryInfo {
@@ -44,7 +45,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-purple-50 dark:bg-purple-950',
     borderColor: 'border-purple-300 dark:border-purple-600',
     description: 'Create videos from text prompts',
-    count: 15
+    count: 16
   },
   {
     id: 'image-to-video',
@@ -54,7 +55,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-green-50 dark:bg-green-950',
     borderColor: 'border-green-300 dark:border-green-600',
     description: 'Animate images into videos',
-    count: 26
+    count: 30
   },
   {
     id: 'video-to-video',
@@ -64,7 +65,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-yellow-50 dark:bg-yellow-950',
     borderColor: 'border-yellow-300 dark:border-yellow-600',
     description: 'Transform and edit videos',
-    count: 6
+    count: 5
   },
   {
     id: 'audio',
@@ -258,6 +259,11 @@ export const ModelSelectionModal: React.FC<ModelSelectionModalProps> = ({
                             </Badge>
                           )}
                         </div>
+                        {model.description && (
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                            {model.description}
+                          </p>
+                        )}
                         {model.disabled && (
                           <span className="text-xs text-gray-400 dark:text-gray-500">Disabled</span>
                         )}

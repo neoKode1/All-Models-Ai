@@ -206,8 +206,24 @@ function AIStudioContent() {
         throw new Error('Missing model or endpointId in generation data');
       }
       
-      if (!generationData.prompt && !generationData.image_url) {
-        throw new Error('Missing prompt or image_url in generation data');
+      // Check if we have required inputs
+      const hasImageUrl = generationData.image_url && generationData.image_url.trim() !== '';
+      const hasImageUrls = generationData.image_urls && Array.isArray(generationData.image_urls) && generationData.image_urls.length > 0;
+      
+      // If no prompt is provided but we have images, use a default prompt
+      let finalPrompt = generationData.prompt && generationData.prompt.trim() !== '' 
+        ? generationData.prompt 
+        : '';
+      
+      // Use a simple default prompt if user didn't provide one but has images
+      if (!finalPrompt && (hasImageUrl || hasImageUrls)) {
+        finalPrompt = 'Animate this image';
+        console.log('📝 [AI Studio] No prompt provided, using default:', finalPrompt);
+      }
+      
+      // Validate that we have at least a prompt after applying defaults
+      if (!finalPrompt || finalPrompt.trim() === '') {
+        throw new Error('A prompt is required. Please describe what you want to create.');
       }
       
       // Use the unified generation API for all FAL models
@@ -216,7 +232,7 @@ function AIStudioContent() {
       // Clean up the generation data to ensure it has the required fields
       const cleanGenerationData = {
         model: generationData.model || generationData.endpointId,
-        prompt: generationData.prompt,
+        prompt: finalPrompt,
         image_url: generationData.image_url,
         image_urls: generationData.image_urls,
         aspect_ratio: generationData.aspect_ratio,
@@ -323,7 +339,7 @@ function AIStudioContent() {
         images: result.data?.images || result.images || [],
         videos: result.data?.videos || result.data?.video ? [result.data.video] : result.videos || [],
         timestamp: new Date().toISOString(),
-        prompt: generationData.prompt,
+        prompt: finalPrompt, // Use the final prompt (either user's or default)
         model: cleanGenerationData.model
       };
       
@@ -338,22 +354,41 @@ function AIStudioContent() {
       // Store in localStorage for gallery using contentStorage
       if (typeof window !== 'undefined') {
         const { contentStorage } = await import('@/lib/content-storage');
-        const newContent = {
-          id: `generated-${Date.now()}`,
-          type: (contentToStore.images?.length > 0 ? 'image' : 'video') as 'image' | 'video',
-          url: contentToStore.images?.[0]?.url || contentToStore.videos?.[0]?.url,
-          title: contentToStore.prompt?.substring(0, 50) + '...' || 'Generated Content',
-          prompt: contentToStore.prompt,
-          timestamp: new Date(),
-          metadata: {
-            format: contentToStore.model,
-          }
-        };
         
-        contentStorage.addContent(newContent);
+        // Get the URL from the result
+        const generatedUrl = contentToStore.images?.[0]?.url || contentToStore.videos?.[0]?.url;
         
-        // Trigger a custom event to notify GalleryView to refresh
-        window.dispatchEvent(new CustomEvent('contentUpdated'));
+        // Only add to storage if we have a valid URL
+        if (generatedUrl) {
+          // Generate a title from the prompt or use a default
+          const titleFromPrompt = contentToStore.prompt && contentToStore.prompt.trim() 
+            ? (contentToStore.prompt.substring(0, 50) + (contentToStore.prompt.length > 50 ? '...' : ''))
+            : '';
+          
+          const newContent = {
+            id: `generated-${Date.now()}`,
+            type: (contentToStore.images?.length > 0 ? 'image' : 'video') as 'image' | 'video',
+            url: generatedUrl,
+            title: titleFromPrompt || `Generated ${contentToStore.images?.length > 0 ? 'Image' : 'Video'}`,
+            prompt: contentToStore.prompt || '',
+            timestamp: new Date(),
+            metadata: {
+              format: contentToStore.model,
+            }
+          };
+          
+          console.log('💾 [AI Studio] Adding content to gallery storage:', newContent);
+          contentStorage.addContent(newContent);
+          
+          // Trigger a custom event to notify GalleryView to refresh
+          window.dispatchEvent(new CustomEvent('contentUpdated'));
+        } else {
+          console.warn('⚠️ [AI Studio] No valid URL found in result, skipping gallery storage:', {
+            hasImages: !!contentToStore.images?.length,
+            hasVideos: !!contentToStore.videos?.length,
+            contentToStore
+          });
+        }
       }
       
       console.log('✅ [AI Studio] Generation completed successfully');
