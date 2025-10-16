@@ -44,7 +44,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-purple-50 dark:bg-purple-950',
     borderColor: 'border-purple-300 dark:border-purple-600',
     description: 'Create videos from text prompts',
-    count: 12
+    count: 15
   },
   {
     id: 'image-to-video',
@@ -54,7 +54,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-green-50 dark:bg-green-950',
     borderColor: 'border-green-300 dark:border-green-600',
     description: 'Animate images into videos',
-    count: 25
+    count: 26
   },
   {
     id: 'video-to-video',
@@ -84,6 +84,16 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-indigo-50 dark:bg-indigo-950',
     borderColor: 'border-indigo-300 dark:border-indigo-600',
     description: 'Create 3D assets',
+    count: 1
+  },
+  {
+    id: 'specialized',
+    label: 'Specialized',
+    emoji: '🔬',
+    color: 'text-teal-700 dark:text-teal-400',
+    bgColor: 'bg-teal-50 dark:bg-teal-950',
+    borderColor: 'border-teal-300 dark:border-teal-600',
+    description: 'Detection and analysis tools',
     count: 1
   }
 ];

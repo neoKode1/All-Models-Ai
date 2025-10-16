@@ -122,6 +122,9 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video', label: 'Kling 2.5 Turbo Pro T2V', icon: '/kling-color.svg', isNew: true },
       { value: 'fal-ai/kling-video/v2.1/master/text-to-video', label: 'Kling 2.1 Master T2V', icon: '/kling-color.svg', isNew: true },
       { value: 'fal-ai/veo3.1/reference-to-video', label: 'Veo 3.1 Reference-to-Video', icon: '/gemini-color.svg', isNew: true },
+      { value: 'fal-ai/wan-trainer/t2v-14b', label: 'Wan Trainer T2V 14B', icon: '/alibaba-color.svg', isNew: true },
+      { value: 'fal-ai/wan-trainer/t2v', label: 'Wan Trainer T2V', icon: '/alibaba-color.svg', isNew: true },
+      { value: 'fal-ai/bytedance/omnihuman', label: 'OmniHuman (Avatar)', icon: '/bytedance-color.svg', isNew: true },
     ],
     'image-to-video': [
       { value: 'fal-ai/veo3.1/image-to-video', label: 'Veo 3.1 (I2V)', icon: '/gemini-color.svg', isNew: true },
@@ -152,6 +155,7 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
       { value: 'fal-ai/sync-lipsync/v2', label: 'Sync Lipsync v2', icon: '/sync.svg', isNew: true },
       { value: 'veed/lipsync', label: 'VEED Lipsync', icon: '/veed.svg', isNew: true },
       { value: 'fal-ai/wan-pro/image-to-video', label: 'Wan Pro (I2V) - Disabled', icon: '/alibaba-color.svg', disabled: true },
+      { value: 'fal-ai/wan-trainer/i2v-720p', label: 'Wan Trainer I2V 720p', icon: '/alibaba-color.svg', isNew: true },
     ],
     'video-to-video': [
       { value: 'endframe/minimax-hailuo-02', label: 'EndFrame (Minimax)', icon: '/minimax-color.svg' },
@@ -167,6 +171,9 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
     ],
     '3d': [
       { value: 'fal-ai/meshy/v5/multi-image-to-3d', label: 'Meshy V5 Multi-Image-to-3D', icon: '/deepseek-color.svg', isNew: true },
+    ],
+    'specialized': [
+      { value: 'fal-ai/moondream3-preview/detect', label: 'MoonDream3 Detect', icon: '/deepseek-color.svg', isNew: true },
     ],
   };
 

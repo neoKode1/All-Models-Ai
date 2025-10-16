@@ -622,3 +622,159 @@
 3. Image editing models (Flux Kontext, DreamOmni2)
 4. Avatar/Lipsync models (user engagement)
 
+---
+
+## 🆕 NEW MODELS FROM ALL MODELS.TXT (38 Models)
+
+### 📸 Text-to-Image Models (New)
+1. `fal-ai/imagen4/preview` - Google Imagen 4 (highest quality, 1K/2K resolution)
+   - **Input**: prompt, negative_prompt, aspect_ratio (1:1, 16:9, 9:16, 3:4, 4:3), num_images (1-4), seed, resolution (1K, 2K)
+   - **Output**: images[], seed
+   - **Use Case**: Highest quality image generation with enhanced detail and lighting
+
+2. `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max (advanced context)
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: Advanced Flux Pro with maximum context understanding
+
+3. `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: Flux with Krea LoRA streaming capabilities
+
+4. `fal-ai/recraft/v3/text-to-image` - Recraft V3 Text-to-Image
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: Professional design and illustration generation
+
+5. `fal-ai/hidream-i1-full` - HiDream I1 Full
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: High-detail dream-like image generation
+
+6. `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA Text-to-Image
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: Flux with Kontext LoRA for enhanced context
+
+7. `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext Text-to-Image
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: Flux Pro with context understanding
+
+8. `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi
+   - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+   - **Output**: images[], seed
+   - **Use Case**: Multi-context Flux Pro generation
+
+### 🎬 Text-to-Video Models (New)
+9. `fal-ai/kandinsky5/text-to-video` - Kandinsky 5 Text-to-Video
+   - **Input**: prompt, negative_prompt, aspect_ratio, duration, resolution, seed
+   - **Output**: video, seed
+   - **Use Case**: Kandinsky-style video generation
+
+10. `fal-ai/minimax-music/v1.5` - Minimax Music V1.5
+    - **Input**: prompt, duration, style, seed
+    - **Output**: audio, seed
+    - **Use Case**: AI music generation with style control
+
+11. `fal-ai/minimax-music` - Minimax Music
+    - **Input**: prompt, duration, style, seed
+    - **Output**: audio, seed
+    - **Use Case**: AI music generation
+
+12. `fal-ai/wan-trainer/t2v-14b` - Wan Trainer T2V 14B
+    - **Input**: prompt, aspect_ratio, duration, resolution, seed
+    - **Output**: video, seed
+    - **Use Case**: Text-to-video with 14B parameter model
+
+13. `fal-ai/wan-trainer/t2v` - Wan Trainer T2V
+    - **Input**: prompt, aspect_ratio, duration, resolution, seed
+    - **Output**: video, seed
+    - **Use Case**: Text-to-video training model
+
+### 🖼️ Image-to-Video Models (New)
+14. `fal-ai/wan-trainer/i2v-720p` - Wan Trainer I2V 720p
+    - **Input**: prompt, image_url, aspect_ratio, duration, resolution, seed
+    - **Output**: video, seed
+    - **Use Case**: Image-to-video at 720p resolution
+
+### 🎨 Image Editing Models (New)
+15. `fal-ai/dreamomni2/edit` - DreamOmni2 Edit
+    - **Input**: prompt, image_url, strength, aspect_ratio, seed
+    - **Output**: images[], seed
+    - **Use Case**: Advanced image editing with DreamOmni2
+
+16. `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext LoRA Inpaint
+    - **Input**: prompt, image_url, mask_url, strength, seed
+    - **Output**: images[], seed
+    - **Use Case**: Inpainting with Flux Kontext LoRA
+
+17. `fal-ai/luma-dream-machine/ray-2-flash/modify` - Luma Ray 2 Flash Modify
+    - **Input**: prompt, image_url, strength, aspect_ratio, seed
+    - **Output**: images[], seed
+    - **Use Case**: Fast image modification with Luma Ray 2 Flash
+
+18. `fal-ai/luma-dream-machine/ray-2/modify` - Luma Ray 2 Modify
+    - **Input**: prompt, image_url, strength, aspect_ratio, seed
+    - **Output**: images[], seed
+    - **Use Case**: Image modification with Luma Ray 2
+
+### 🔄 Reframe Models (New)
+19. `fal-ai/luma-dream-machine/ray-2-flash/reframe` - Luma Ray 2 Flash Reframe
+    - **Input**: image_url, aspect_ratio, prompt, seed
+    - **Output**: images[], seed
+    - **Use Case**: Fast image reframing with Luma Ray 2 Flash
+
+20. `fal-ai/luma-dream-machine/ray-2/reframe` - Luma Ray 2 Reframe
+    - **Input**: image_url, aspect_ratio, prompt, seed
+    - **Output**: images[], seed
+    - **Use Case**: Image reframing with Luma Ray 2
+
+### 🎭 Specialized Models (New)
+21. `fal-ai/moondream3-preview/detect` - MoonDream3 Preview Detect
+    - **Input**: image_url, prompt
+    - **Output**: detections[], confidence
+    - **Use Case**: Object detection and analysis
+
+22. `fal-ai/meshy/v5/multi-image-to-3d` - Meshy V5 Multi-Image-to-3D
+    - **Input**: image_urls[], prompt, quality, seed
+    - **Output**: model_url, seed
+    - **Use Case**: 3D model generation from multiple images
+
+23. `fal-ai/bytedance/omnihuman` - ByteDance OmniHuman
+    - **Input**: prompt, aspect_ratio, duration, resolution, seed
+    - **Output**: video, seed
+    - **Use Case**: Human-focused video generation
+
+### 🔧 Advanced Flux Models (New)
+24. `fal-ai/flux-kontext-lora` - Flux Kontext LoRA
+    - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+    - **Output**: images[], seed
+    - **Use Case**: Flux with Kontext LoRA capabilities
+
+25. `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max
+    - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+    - **Output**: images[], seed
+    - **Use Case**: Maximum context Flux Pro
+
+26. `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi
+    - **Input**: prompt, negative_prompt, aspect_ratio, num_images, seed, resolution
+    - **Output**: images[], seed
+    - **Use Case**: Multi-context maximum Flux Pro
+
+### 📊 Model Summary
+- **Total New Models**: 26
+- **Text-to-Image**: 8 models
+- **Text-to-Video**: 5 models  
+- **Image-to-Video**: 1 model
+- **Image Editing**: 4 models
+- **Reframe**: 2 models
+- **Specialized**: 3 models
+- **Advanced Flux**: 3 models
+
+### 🎯 Implementation Priority
+1. **High Priority**: Imagen 4, Kandinsky 5, Minimax Music, DreamOmni2 Edit
+2. **Medium Priority**: Flux Kontext models, Luma reframe models
+3. **Specialized**: MoonDream3, Meshy 3D, OmniHuman
+
