@@ -101,6 +101,13 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
   useEffect(() => {
     if (useLocalStorage) {
       console.log('📂 [GalleryView] Loading items from localStorage');
+      
+      // Clean up ghost entries on startup
+      const cleanedCount = contentStorage.cleanupGhostEntries();
+      if (cleanedCount > 0) {
+        console.log('🧹 [GalleryView] Cleaned up', cleanedCount, 'ghost entries on startup');
+      }
+      
       const savedContent = contentStorage.loadContent();
       
       console.log('📂 [GalleryView] Loaded content from storage:', {

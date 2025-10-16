@@ -149,12 +149,36 @@ export class ContentStorageManager {
         return this.migrateContent(data.content, data.version);
       }
 
-      // Convert timestamps back to Date objects
-      const content = data.content.map((item: any) => ({
-        ...item,
-        timestamp: new Date(item.timestamp),
-        savedAt: new Date(item.savedAt)
-      }));
+      // Convert timestamps back to Date objects and validate content
+      const content = data.content
+        .map((item: any) => ({
+          ...item,
+          timestamp: new Date(item.timestamp),
+          savedAt: new Date(item.savedAt)
+        }))
+        .filter((item: StoredContent) => {
+          // Filter out invalid content (ghost entries)
+          const isValid = this.validateContentItem(item);
+          if (!isValid) {
+            console.warn('🚫 [ContentStorage] Filtering out invalid content item:', {
+              id: item.id,
+              type: item.type,
+              url: item.url,
+              title: item.title
+            });
+          }
+          return isValid;
+        });
+
+      // If we filtered out any invalid items, save the cleaned content
+      if (content.length !== data.content.length) {
+        console.log('🧹 [ContentStorage] Cleaned up invalid content items:', {
+          original: data.content.length,
+          cleaned: content.length,
+          removed: data.content.length - content.length
+        });
+        this.saveContent(content);
+      }
 
       console.log('📂 [ContentStorage] Loaded content from localStorage:', {
         itemCount: content.length,
@@ -170,6 +194,17 @@ export class ContentStorageManager {
 
   // Add new content
   public addContent(content: Omit<StoredContent, 'savedAt' | 'version'>): void {
+    // Validate content before adding
+    if (!this.validateContentItem(content as StoredContent)) {
+      console.error('❌ [ContentStorage] Cannot add invalid content:', {
+        id: content.id,
+        type: content.type,
+        url: content.url,
+        title: content.title
+      });
+      return;
+    }
+
     const existingContent = this.loadContent();
     
     // Check if content already exists (by ID)
@@ -209,6 +244,28 @@ export class ContentStorageManager {
   public clearAllContent(): void {
     this.saveContent([]);
     console.log('🧹 [ContentStorage] Cleared all content');
+  }
+
+  // Clean up ghost entries and invalid content
+  public cleanupGhostEntries(): number {
+    const content = this.loadContent();
+    const originalCount = content.length;
+    
+    // The loadContent method already filters out invalid items and saves cleaned content
+    // This method just returns the count of items that were cleaned up
+    const cleanedContent = this.loadContent();
+    const cleanedCount = cleanedContent.length;
+    const removedCount = originalCount - cleanedCount;
+    
+    if (removedCount > 0) {
+      console.log('🧹 [ContentStorage] Cleaned up ghost entries:', {
+        original: originalCount,
+        cleaned: cleanedCount,
+        removed: removedCount
+      });
+    }
+    
+    return removedCount;
   }
 
   // Save screenplay project
@@ -329,6 +386,42 @@ export class ContentStorageManager {
     } catch {
       return 0;
     }
+  }
+
+  // Validate content item to filter out ghost entries
+  private validateContentItem(item: StoredContent): boolean {
+    // Check if item has required fields
+    if (!item.id || !item.type || !item.title) {
+      return false;
+    }
+
+    // Check if URL is valid (not empty, not just whitespace, not invalid format)
+    if (!item.url || item.url.trim() === '' || item.url === 'undefined' || item.url === 'null') {
+      return false;
+    }
+
+    // Check if URL is a valid format (starts with http/https or data:)
+    if (!item.url.startsWith('http') && !item.url.startsWith('data:')) {
+      return false;
+    }
+
+    // Check if timestamp is valid
+    if (!item.timestamp || isNaN(item.timestamp.getTime())) {
+      return false;
+    }
+
+    // Check if type is valid
+    const validTypes = ['image', 'video', 'audio', 'text', 'screenplay'];
+    if (!validTypes.includes(item.type)) {
+      return false;
+    }
+
+    // For screenplays, check if screenplayData exists
+    if (item.type === 'screenplay' && !item.screenplayData) {
+      return false;
+    }
+
+    return true;
   }
 
   private cleanupOldContent(content: StoredContent[]): StoredContent[] {
