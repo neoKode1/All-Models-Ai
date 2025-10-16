@@ -286,6 +286,83 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
            model.includes('endframe');
   };
 
+  // Helper function to detect user intent from prompt and context
+  const detectUserIntent = (prompt: string, imageCount: number): 'endframe' | 'character-addition' | 'scene-editing' | 'multi-composition' | 'unknown' => {
+    const lowerPrompt = prompt.toLowerCase();
+    
+    // EndFrame transition keywords
+    const endFrameKeywords = [
+      'transition', 'morph', 'transform', 'change from', 'evolve', 'become',
+      'start frame', 'end frame', 'beginning', 'ending', 'before and after',
+      'animate between', 'interpolate', 'blend', 'fade from', 'fade to'
+    ];
+    
+    // Character addition keywords
+    const characterKeywords = [
+      'add character', 'add person', 'add people', 'insert character', 'put character',
+      'add figure', 'add human', 'add person to', 'character in', 'person in scene',
+      'add someone', 'include character', 'place character', 'character walking',
+      'person standing', 'add man', 'add woman', 'add child'
+    ];
+    
+    // Scene editing keywords
+    const sceneEditKeywords = [
+      'edit', 'modify', 'change', 'alter', 'adjust', 'enhance', 'improve',
+      'remove', 'delete', 'replace', 'swap', 'fix', 'correct', 'update',
+      'make it', 'turn into', 'convert to', 'transform to', 'change to'
+    ];
+    
+    // Multi-composition keywords
+    const compositionKeywords = [
+      'combine', 'merge', 'blend', 'mix', 'fuse', 'join', 'unite',
+      'create from', 'make from', 'build from', 'construct from',
+      'elements from', 'parts from', 'pieces from', 'components from'
+    ];
+    
+    // Check for EndFrame intent
+    if (imageCount === 2 && endFrameKeywords.some(keyword => lowerPrompt.includes(keyword))) {
+      return 'endframe';
+    }
+    
+    // Check for character addition intent
+    if (characterKeywords.some(keyword => lowerPrompt.includes(keyword))) {
+      return 'character-addition';
+    }
+    
+    // Check for scene editing intent
+    if (sceneEditKeywords.some(keyword => lowerPrompt.includes(keyword))) {
+      return 'scene-editing';
+    }
+    
+    // Check for multi-composition intent
+    if (imageCount > 1 && compositionKeywords.some(keyword => lowerPrompt.includes(keyword))) {
+      return 'multi-composition';
+    }
+    
+    // Default fallback based on image count
+    if (imageCount === 2) {
+      return 'endframe'; // Default to EndFrame for 2 images
+    }
+    
+    return 'unknown';
+  };
+
+  // Helper function to get recommended model based on intent
+  const getRecommendedModel = (intent: string): string => {
+    switch (intent) {
+      case 'endframe':
+        return 'endframe/minimax-hailuo-02';
+      case 'character-addition':
+        return 'fal-ai/nano-banana/edit';
+      case 'scene-editing':
+        return 'fal-ai/bytedance/seedream/v4/edit';
+      case 'multi-composition':
+        return 'fal-ai/wan-25-preview/image-to-image';
+      default:
+        return 'fal-ai/nano-banana/edit'; // Default fallback
+    }
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -576,18 +653,41 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
     }
   }, [onImageInjected, userInput]);
 
-  // Detect when two images are uploaded for EndFrame mode
+  // Detect when multiple images are uploaded and analyze user intent
   useEffect(() => {
-    if (uploadedImages.length === 2) {
-      setEndFrameMode(true);
+    if (uploadedImages.length >= 2 && userInput.trim()) {
+      const intent = detectUserIntent(userInput, uploadedImages.length);
+      const recommendedModel = getRecommendedModel(intent);
+      
+      // Auto-select the recommended model based on intent
+      setPreferredVideoModel(recommendedModel);
+      
+      // Show intelligent recommendation
+      const intentMessages = {
+        'endframe': '🎬 EndFrame transition detected! Creating video between your start and end frames.',
+        'character-addition': '👤 Character addition detected! Adding characters to your scene.',
+        'scene-editing': '✏️ Scene editing detected! Modifying your image.',
+        'multi-composition': '🎨 Multi-image composition detected! Combining elements from your images.',
+        'unknown': '🤔 Multiple images detected! Choose your preferred model for the best results.'
+      };
+      
       toast({
-        title: "EndFrame Mode Enabled",
-        description: "Two images detected! Describe the transition between your start and end frames.",
+        title: "Intent Detected",
+        description: intentMessages[intent] || intentMessages['unknown'],
+      });
+      
+      setEndFrameMode(intent === 'endframe');
+    } else if (uploadedImages.length >= 2) {
+      // Multiple images but no prompt yet - show general options
+      setEndFrameMode(false);
+      toast({
+        title: "Multiple Images Ready",
+        description: "Describe what you want to do with these images for intelligent model selection.",
       });
     } else {
       setEndFrameMode(false);
     }
-  }, [uploadedImages.length, toast]);
+  }, [uploadedImages.length, userInput, toast]);
 
   // Handle EndFrame generation
   const handleEndFrameGeneration = async () => {
@@ -793,8 +893,8 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
     e.preventDefault();
     if (!userInput.trim() && uploadedImages.length === 0) return;
 
-    // Handle EndFrame generation when EndFrame model is selected or when two images are uploaded
-    if (preferredVideoModel === 'endframe/minimax-hailuo-02' || (endFrameMode && uploadedImages.length === 2)) {
+    // Handle EndFrame generation when EndFrame model is selected or when intent is detected as EndFrame
+    if (preferredVideoModel === 'endframe/minimax-hailuo-02' || endFrameMode) {
       await handleEndFrameGeneration();
       return;
     }
@@ -1500,19 +1600,77 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
           </div>
         )}
 
-        {/* EndFrame Mode Indicator */}
-        {endFrameMode && (
-          <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-              <p className="text-sm font-medium text-purple-800">
-                🎬 EndFrame Mode Active
-              </p>
-            </div>
-            <p className="text-xs text-purple-600 mt-1">
-              Describe the transition between your start frame (first image) and end frame (second image)
-            </p>
-          </div>
+        {/* Intelligent Intent Detection Indicator */}
+        {uploadedImages.length >= 2 && userInput.trim() && (
+          (() => {
+            const intent = detectUserIntent(userInput, uploadedImages.length);
+            const intentConfig = {
+              'endframe': {
+                icon: '🎬',
+                title: 'EndFrame Transition Detected',
+                description: 'Creating video between your start and end frames',
+                bgColor: 'from-purple-50 to-blue-50',
+                borderColor: 'border-purple-200',
+                textColor: 'text-purple-800',
+                dotColor: 'bg-purple-500'
+              },
+              'character-addition': {
+                icon: '👤',
+                title: 'Character Addition Detected',
+                description: 'Adding characters to your scene using Nano Banana',
+                bgColor: 'from-green-50 to-emerald-50',
+                borderColor: 'border-green-200',
+                textColor: 'text-green-800',
+                dotColor: 'bg-green-500'
+              },
+              'scene-editing': {
+                icon: '✏️',
+                title: 'Scene Editing Detected',
+                description: 'Modifying your image using Seedream 4.0',
+                bgColor: 'from-orange-50 to-amber-50',
+                borderColor: 'border-orange-200',
+                textColor: 'text-orange-800',
+                dotColor: 'bg-orange-500'
+              },
+              'multi-composition': {
+                icon: '🎨',
+                title: 'Multi-Image Composition Detected',
+                description: 'Combining elements from your images using Wan 2.5',
+                bgColor: 'from-pink-50 to-rose-50',
+                borderColor: 'border-pink-200',
+                textColor: 'text-pink-800',
+                dotColor: 'bg-pink-500'
+              },
+              'unknown': {
+                icon: '🤔',
+                title: 'Multiple Images Ready',
+                description: 'Choose your preferred model for the best results',
+                bgColor: 'from-gray-50 to-slate-50',
+                borderColor: 'border-gray-200',
+                textColor: 'text-gray-800',
+                dotColor: 'bg-gray-500'
+              }
+            };
+            
+            const config = intentConfig[intent] || intentConfig['unknown'];
+            
+            return (
+              <div className={`mb-4 p-3 bg-gradient-to-r ${config.bgColor} border ${config.borderColor} rounded-lg`}>
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 ${config.dotColor} rounded-full animate-pulse`}></div>
+                  <p className={`text-sm font-medium ${config.textColor}`}>
+                    {config.icon} {config.title}
+                  </p>
+                </div>
+                <p className={`text-xs ${config.textColor.replace('800', '600')} mt-1`}>
+                  {config.description}
+                </p>
+                <p className={`text-xs ${config.textColor.replace('800', '500')} mt-1`}>
+                  Model: {getRecommendedModel(intent)}
+                </p>
+              </div>
+            );
+          })()
         )}
 
         {/* Audio Upload for Kling AI Avatar */}
