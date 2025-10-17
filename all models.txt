@@ -226,7 +226,8 @@ The size of the file in bytes.
 file_data string
 File data
 
-fal-ai/flux-pro/kontext/max/text-to-image
+fal-ai/flux-pro/
+/max/text-to-image
 
 Kontext [max] -- Text to Image
 FLUX.1 Kontext [max] text-to-image is a new premium model brings maximum performance across all aspects – greatly improved prompt adherence.

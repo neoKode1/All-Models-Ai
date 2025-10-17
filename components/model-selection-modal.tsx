@@ -35,7 +35,7 @@ const CATEGORIES: CategoryInfo[] = [
     bgColor: 'bg-blue-50 dark:bg-blue-950',
     borderColor: 'border-blue-300 dark:border-blue-600',
     description: 'Generate images from text descriptions',
-    count: 20
+    count: 23
   },
   {
     id: 'text-to-video',

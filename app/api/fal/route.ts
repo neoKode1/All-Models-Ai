@@ -95,6 +95,19 @@ function sanitizeInput(model: string, input: any) {
     }
   }
 
+  if (model.includes('reve/remix')) {
+    // Reve Remix expects image_urls array (1-4 images)
+    if (sanitized.image_url && !sanitized.image_urls) {
+      // Convert single image_url to image_urls array
+      sanitized.image_urls = [sanitized.image_url];
+      delete sanitized.image_url;
+    }
+    // Ensure output_format defaults to jpeg for compatibility
+    if (!sanitized.output_format) {
+      sanitized.output_format = 'jpeg';
+    }
+  }
+
   return sanitized;
 }
 
@@ -183,6 +196,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       // Standard parameters
       prompt: body.prompt || body.text,
       image_url: body.image_url || body.image,
+      image_urls: body.image_urls, // For multi-image models like reve/remix
       video_url: body.video_url || body.video,
       audio_url: body.audio_url || body.audio,
       
@@ -204,6 +218,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       // Style parameters
       style_strength: body.style_strength,
       subject_strength: body.subject_strength,
+      
+      // Output format
+      output_format: body.output_format,
+      sync_mode: body.sync_mode,
       
       // Additional parameters
       ...body.input,

@@ -2,7 +2,18 @@
 
 ## 🎯 Models That Support Multiple Images
 
-### 1. **Image Editing Models** (Character Addition, Scene Editing)
+### 1. **Image Editing Models** (Character Addition, Scene Editing, Image Remixing)
+- **`fal-ai/reve/remix`** ✨ NEW
+  - **Input**: `image_urls: string[]` (1-4 images required)
+  - **Purpose**: Combine/transform multiple reference images via text prompts
+  - **Parameters**: `prompt` (required), `aspect_ratio` (optional: `16:9`, `9:16`, `3:2`, `2:3`, `4:3`, `3:4`, `1:1`), `output_format` (`png`, `jpeg`, `webp`), `sync_mode` (boolean)
+  - **Constraints**: 
+    - Each image must be less than 1.5 MB
+    - Supports PNG, JPEG, WebP, AVIF, and HEIF formats
+    - Can use XML img tags like `<img>0</img>` to refer to specific images by index
+  - **Use Case**: Remixing multiple images, combining clothing/styles, adding objects, changing backgrounds
+  - **API Route**: `/api/generate/reve-remix`
+
 - **`fal-ai/nano-banana/edit`**
   - **Input**: `image_urls: string[]`
   - **Purpose**: Character addition, scene editing
@@ -84,6 +95,7 @@ interface MultiImageModel {
 
 ### 2. **Update Intent Detection**
 - EndFrame → `fal-ai/veo3.1/first-last-frame-to-video`
+- Image Remix/Combine → `fal-ai/reve/remix` ✨
 - Character Addition → `fal-ai/nano-banana/edit`
 - Scene Editing → `fal-ai/bytedance/seedream/v4/edit`
 - Multi-Composition → `fal-ai/wan-25-preview/image-to-image`

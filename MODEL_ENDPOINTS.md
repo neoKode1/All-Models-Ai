@@ -21,29 +21,32 @@
 
 ---
 
-## 📸 Text-to-Image Models (20 Configured)
+## 📸 Text-to-Image Models (23 Configured)
 
 ### ✅ Already Configured
-1. `fal-ai/wan-25-preview/text-to-image` - Wan 2.5 Text-to-Image (high quality) ✔️
-2. `fal-ai/imagen4/preview` - Google Imagen 4 ✔️
-3. `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
-4. `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️
-5. `fal-ai/hidream-i1-full` - HiDream-I1 ✔️
-6. `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️
-7. `fal-ai/qwen-image-edit/image-to-image` - Qwen Image Edit (superior text editing) ✔️
-8. `fal-ai/wan-25-preview/image-to-image` - Wan 2.5 Image-to-Image (multi-ref fusion) ✔️
-9. `fal-ai/nano-banana/edit` - Nano Banana Edit
-10. `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
-11. `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️
-12. `fal-ai/luma-photon/flash/reframe` - Luma Photon Flash Reframe ✔️
-13. `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️
-14. `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️
-15. `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️
-16. `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️
-17. `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️
-18. `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️
-19. `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️
-20. `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️
+1. `fal-ai/reve/text-to-image` - Reve Text-to-Image (strong aesthetic quality and accurate text rendering) ✔️
+2. `fal-ai/reve/edit` - Reve Edit (transform existing images via text prompts) ✔️
+3. `fal-ai/reve/remix` - Reve Remix (combine multiple reference images) ✔️
+4. `fal-ai/wan-25-preview/text-to-image` - Wan 2.5 Text-to-Image (high quality) ✔️
+5. `fal-ai/imagen4/preview` - Google Imagen 4 ✔️
+6. `fal-ai/flux-pro/v1.1-ultra` - Flux Pro Ultra
+7. `fal-ai/recraft/v3/text-to-image` - Recraft V3 ✔️
+8. `fal-ai/hidream-i1-full` - HiDream-I1 ✔️
+9. `fal-ai/flux-krea-lora/stream` - Flux Krea LoRA Stream ✔️
+10. `fal-ai/qwen-image-edit/image-to-image` - Qwen Image Edit (superior text editing) ✔️
+11. `fal-ai/wan-25-preview/image-to-image` - Wan 2.5 Image-to-Image (multi-ref fusion) ✔️
+12. `fal-ai/nano-banana/edit` - Nano Banana Edit
+13. `fal-ai/bytedance/seedream/v4/edit` - Seedream 4.0 Edit
+14. `fal-ai/dreamomni2/edit` - DreamOmni2 Edit ✔️
+15. `fal-ai/luma-photon/flash/reframe` - Luma Photon Flash Reframe ✔️
+16. `fal-ai/flux-kontext-lora` - Flux Kontext LoRA ✔️
+17. `fal-ai/flux-kontext-lora/text-to-image` - Flux Kontext LoRA T2I ✔️
+18. `fal-ai/flux-kontext-lora/inpaint` - Flux Kontext Inpaint ✔️
+19. `fal-ai/flux-pro/kontext/max/text-to-image` - Flux Pro Kontext Max T2I ✔️
+20. `fal-ai/flux-pro/kontext/text-to-image` - Flux Pro Kontext T2I ✔️
+21. `fal-ai/flux-pro/kontext/max` - Flux Pro Kontext Max ✔️
+22. `fal-ai/flux-pro/kontext/max/multi` - Flux Pro Kontext Max Multi ✔️
+23. `fal-ai/flux-pro/kontext/multi` - Flux Pro Kontext Multi ✔️
 
 ### 🆕 New Models to Add
 - `fal-ai/luma-photon` - Luma Photon (creative, personalizable)
@@ -772,9 +775,24 @@
     - **Output**: video, mask, image, prompt, seed
     - **Use Case**: Generate videos with transparent backgrounds for compositing
 
+28. `fal-ai/reve/text-to-image` - Reve Text-to-Image
+    - **Input**: prompt (string), aspect_ratio (16:9/9:16/3:2/2:3/4:3/3:4/1:1, default: 3:2), output_format (png/jpeg/webp, default: png), sync_mode (boolean)
+    - **Output**: images[] (url, content_type, file_name, file_size, width, height)
+    - **Use Case**: Generate detailed visual output with strong aesthetic quality and accurate text rendering
+
+29. `fal-ai/reve/edit` - Reve Edit (Image-to-Image)
+    - **Input**: prompt (string), image_url (string, required - PNG/JPEG/WebP/AVIF/HEIF formats), output_format (png/jpeg/webp, default: png), sync_mode (boolean)
+    - **Output**: images[] (url, content_type, file_name, file_size, width, height)
+    - **Use Case**: Transform existing images via text prompts with strong aesthetic quality
+
+30. `fal-ai/reve/remix` - Reve Remix (Multi-Image Composition)
+    - **Input**: prompt (string, may include <img>0</img> XML tags), image_urls (list[string], 1-4 images, max 1.5MB each), aspect_ratio (16:9/9:16/3:2/2:3/4:3/3:4/1:1, optional - smartly chosen by model), output_format (png/jpeg/webp, default: png), sync_mode (boolean)
+    - **Output**: images[] (url, content_type, file_name, file_size, width, height)
+    - **Use Case**: Combine multiple reference images with text prompts for complex compositions
+
 ### 📊 Model Summary
-- **Total New Models**: 27
-- **Text-to-Image**: 8 models
+- **Total New Models**: 30
+- **Text-to-Image**: 11 models
 - **Text-to-Video**: 6 models  
 - **Image-to-Video**: 1 model
 - **Image Editing**: 4 models

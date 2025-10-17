@@ -497,6 +497,63 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       console.log('🔧 [FAL Image Proxy] Gemini image_urls[0]:', input.image_urls[0]);
     }
 
+    if (model.includes('reve/remix')) {
+      console.log('🔧 [FAL Image Proxy] Processing Reve Remix model parameters');
+      console.log('🔧 [FAL Image Proxy] Body received:', body);
+      
+      // Reve Remix expects image_urls array (1-4 images)
+      if (body.image_urls && Array.isArray(body.image_urls) && body.image_urls.length > 0) {
+        // Use provided image_urls array
+        input.image_urls = body.image_urls;
+        console.log('🔧 [FAL Image Proxy] Using provided image_urls array for Reve Remix');
+      } else if (body.image_url) {
+        // Convert single image_url to image_urls array
+        input.image_urls = [body.image_url];
+        console.log('🔧 [FAL Image Proxy] Converted single image_url to image_urls array for Reve Remix:', body.image_url);
+      } else if (input.image_url) {
+        // Use the already processed image_url from earlier conversion
+        input.image_urls = [input.image_url];
+        console.log('🔧 [FAL Image Proxy] Using already processed image_url for Reve Remix:', input.image_url);
+        delete input.image_url; // Remove single image_url as Reve Remix expects image_urls
+      }
+      
+      // Validate image_urls
+      if (!input.image_urls || !Array.isArray(input.image_urls) || input.image_urls.length === 0) {
+        console.error('❌ [FAL Image Proxy] Reve Remix requires at least one image');
+        return NextResponse.json({
+          success: false,
+          error: 'Reve Remix requires at least one image'
+        }, { status: 400 });
+      }
+      
+      if (input.image_urls.length > 4) {
+        console.error('❌ [FAL Image Proxy] Reve Remix supports maximum 4 images');
+        return NextResponse.json({
+          success: false,
+          error: 'Reve Remix supports maximum 4 reference images'
+        }, { status: 400 });
+      }
+      
+      // Set output format (default to jpeg per user memory)
+      input.output_format = body.output_format || 'jpeg';
+      
+      // Add aspect ratio if provided
+      if (body.aspect_ratio) {
+        const validAspectRatios = ['16:9', '9:16', '3:2', '2:3', '4:3', '3:4', '1:1'];
+        if (validAspectRatios.includes(body.aspect_ratio)) {
+          input.aspect_ratio = body.aspect_ratio;
+        }
+      }
+      
+      // Add sync_mode if provided
+      if (body.sync_mode !== undefined) {
+        input.sync_mode = body.sync_mode;
+      }
+      
+      console.log('🔧 [FAL Image Proxy] Reve Remix input parameters:', input);
+      console.log('🔧 [FAL Image Proxy] Reve Remix image_urls count:', input.image_urls.length);
+    }
+
     if (model.includes('qwen-image-edit')) {
       console.log('🔧 [FAL Image Proxy] Processing Qwen Image Edit model parameters');
       

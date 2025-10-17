@@ -98,6 +98,9 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
     'fal-ai/moondream3-preview/detect': "Object detection and analysis with MoonDream3's advanced vision capabilities",
     'fal-ai/ovi': "Audio-video generation with synchronized sound and motion",
     'fal-ai/wan-alpha': "Generate videos with transparent backgrounds",
+    'fal-ai/reve/text-to-image': "Reve's text-to-image model with strong aesthetic quality and accurate text rendering",
+    'fal-ai/reve/edit': "Reve's edit model for transforming existing images via text prompts",
+    'fal-ai/reve/remix': "Reve's remix model for combining multiple reference images with text prompts",
     'fal-ai/luma-dream-machine': "Luma's flagship video generation with high-quality motion and detail",
     'fal-ai/wan-25-preview/text-to-image': "Wan 2.5 text-to-image with enhanced quality and artistic styles",
     'fal-ai/wan-25-preview/text-to-video': "Wan 2.5 text-to-video with best visual quality and motion stability",
@@ -162,6 +165,9 @@ export const SimpleChatInterface: React.FC<SimpleChatInterfaceProps> = ({
   // Organize models by category
   const modelsByCategory: Record<string, Array<{value: string; label: string; icon: string; isNew?: boolean; disabled?: boolean; description?: string}>> = {
     'text-to-image': [
+      { value: 'fal-ai/reve/text-to-image', label: 'Reve (Text Rendering)', icon: '/Gen4.png', isNew: true, description: modelDescriptions['fal-ai/reve/text-to-image'] },
+      { value: 'fal-ai/reve/edit', label: 'Reve Edit (I2I)', icon: '/Gen4.png', isNew: true, description: modelDescriptions['fal-ai/reve/edit'] },
+      { value: 'fal-ai/reve/remix', label: 'Reve Remix (Multi-Image)', icon: '/Gen4.png', isNew: true, description: modelDescriptions['fal-ai/reve/remix'] },
       { value: 'fal-ai/wan-25-preview/text-to-image', label: 'Wan 2.5 Text-to-Image', icon: '/alibaba-color.svg', isNew: true, description: modelDescriptions['fal-ai/wan-25-preview/text-to-image'] },
       { value: 'fal-ai/imagen4/preview', label: 'Imagen 4 (Google)', icon: '/gemini-color.svg', isNew: true, description: modelDescriptions['fal-ai/imagen4/preview'] },
       { value: 'fal-ai/flux-pro/v1.1-ultra', label: 'Flux Pro Ultra', icon: '/flux.svg', description: 'Flux Pro Ultra with enhanced quality and prompt adherence' },
