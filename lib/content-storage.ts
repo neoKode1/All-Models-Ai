@@ -248,24 +248,54 @@ export class ContentStorageManager {
 
   // Clean up ghost entries and invalid content
   public cleanupGhostEntries(): number {
-    const content = this.loadContent();
-    const originalCount = content.length;
+    if (typeof window === 'undefined') return 0;
     
-    // The loadContent method already filters out invalid items and saves cleaned content
-    // This method just returns the count of items that were cleaned up
-    const cleanedContent = this.loadContent();
-    const cleanedCount = cleanedContent.length;
-    const removedCount = originalCount - cleanedCount;
-    
-    if (removedCount > 0) {
-      console.log('🧹 [ContentStorage] Cleaned up ghost entries:', {
-        original: originalCount,
-        cleaned: cleanedCount,
-        removed: removedCount
-      });
+    try {
+      const stored = localStorage.getItem(this.storageKey);
+      if (!stored) return 0;
+
+      const data = JSON.parse(stored);
+      const originalCount = data.content?.length || 0;
+      
+      // Force validate all items
+      const validContent = (data.content || [])
+        .map((item: any) => ({
+          ...item,
+          timestamp: new Date(item.timestamp),
+          savedAt: new Date(item.savedAt)
+        }))
+        .filter((item: StoredContent) => this.validateContentItem(item));
+      
+      const removedCount = originalCount - validContent.length;
+      
+      if (removedCount > 0) {
+        console.log('🧹 [ContentStorage] Cleaned up ghost entries:', {
+          original: originalCount,
+          cleaned: validContent.length,
+          removed: removedCount
+        });
+        this.saveContent(validContent);
+      } else {
+        console.log('✅ [ContentStorage] No ghost entries found');
+      }
+      
+      return removedCount;
+    } catch (error) {
+      console.error('❌ [ContentStorage] Failed to cleanup ghost entries:', error);
+      return 0;
     }
+  }
+  
+  // Force clear all content (for troubleshooting)
+  public clearAllContent(): void {
+    if (typeof window === 'undefined') return;
     
-    return removedCount;
+    try {
+      localStorage.removeItem(this.storageKey);
+      console.log('🗑️ [ContentStorage] Cleared all content from localStorage');
+    } catch (error) {
+      console.error('❌ [ContentStorage] Failed to clear content:', error);
+    }
   }
 
   // Save screenplay project

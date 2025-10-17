@@ -69,7 +69,7 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [videoThumbnails, setVideoThumbnails] = useState<Record<string, string>>({});
   const [isDownloading, setIsDownloading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'content' | 'screenplays'>('content');
+  const [activeTab, setActiveTab] = useState<'content'>('content');
 
   // Generate video thumbnails for video items
   const generateVideoThumbnails = useCallback(async (items: GalleryItem[]) => {
@@ -430,13 +430,9 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Filter items based on active tab
-  const filteredItems = activeTab === 'content' 
-    ? localItems.filter(item => item.type !== 'screenplay')
-    : localItems.filter(item => item.type === 'screenplay');
-
-  const contentCount = localItems.filter(item => item.type !== 'screenplay').length;
-  const screenplayCount = localItems.filter(item => item.type === 'screenplay').length;
+  // Filter out screenplay items (feature not available)
+  const filteredItems = localItems.filter(item => item.type !== 'screenplay');
+  const contentCount = filteredItems.length;
 
   return (
     <div className={cn("w-full h-full", className)}>
@@ -446,10 +442,35 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content Gallery</h2>
             <Badge variant="secondary" className="badge-enhanced">
-              {activeTab === 'content' ? contentCount : screenplayCount} {activeTab === 'content' ? 'items' : 'screenplays'}
+              {contentCount} items
             </Badge>
           </div>
           <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="btn-ghost"
+              onClick={() => {
+                const removedCount = contentStorage.cleanupGhostEntries();
+                if (removedCount > 0) {
+                  // Reload the content after cleanup
+                  const savedContent = contentStorage.loadContent();
+                  setLocalItems(savedContent as GalleryItem[]);
+                  toast({
+                    title: "Cleanup Complete",
+                    description: `Removed ${removedCount} invalid item${removedCount !== 1 ? 's' : ''} from gallery`,
+                  });
+                } else {
+                  toast({
+                    title: "Gallery Clean",
+                    description: "No invalid items found",
+                  });
+                }
+              }}
+              title="Clean up invalid entries"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
             <Button variant="ghost" size="sm" className="btn-ghost">
               <Share2 className="w-4 h-4" />
             </Button>
@@ -459,31 +480,6 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
           </div>
         </div>
         
-        {/* Tabs */}
-        <div className="flex gap-1 bg-muted/30 p-1 rounded-lg">
-          <button
-            onClick={() => setActiveTab('content')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'content' 
-                ? 'bg-background text-foreground shadow-sm' 
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <ImageIcon className="w-4 h-4" />
-            Content ({contentCount})
-          </button>
-          <button
-            onClick={() => setActiveTab('screenplays')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'screenplays' 
-                ? 'bg-background text-foreground shadow-sm' 
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <FileText className="w-4 h-4" />
-            Screenplays ({screenplayCount})
-          </button>
-        </div>
       </div>
 
       {/* Gallery Grid */}
@@ -507,13 +503,10 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
             </div>
             <div className="space-y-2">
               <h3 className="text-subheading font-medium">
-                {activeTab === 'content' ? 'No content yet' : 'No screenplays yet'}
+                No content yet
               </h3>
               <p className="text-caption text-muted-foreground max-w-sm">
-                {activeTab === 'content' 
-                  ? 'Generated images, videos, and audio will appear here. Start by describing what you want to create in the chat.'
-                  : 'Complete screenplay projects will appear here. Create a script in ScriptMaker and export it to see it here.'
-                }
+                Generated images, videos, and audio will appear here. Start by describing what you want to create in the chat.
               </p>
             </div>
           </div>

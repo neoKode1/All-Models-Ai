@@ -462,11 +462,11 @@ function AIStudioContent() {
                               className="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-lg"
                             />
                           </ImageSelector>
-                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
-                            <div className="flex space-x-2 pointer-events-auto">
+                          <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                            <div className="flex space-x-2">
                               <button
                                 onClick={() => handleEditImage(image.url)}
-                                className="h-8 px-3 bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm rounded-lg flex items-center space-x-1 transition-all duration-200"
+                                className="h-8 px-3 bg-black/70 text-white hover:bg-black/90 backdrop-blur-sm rounded-lg flex items-center space-x-1 transition-all duration-200"
                                 disabled={isDownloading}
                               >
                                 <Edit className="w-4 h-4" />
@@ -474,7 +474,7 @@ function AIStudioContent() {
                               </button>
                               <button
                                 onClick={() => handleAnimateImage(image.url)}
-                                className="h-8 px-3 bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm rounded-lg flex items-center space-x-1 transition-all duration-200"
+                                className="h-8 px-3 bg-black/70 text-white hover:bg-black/90 backdrop-blur-sm rounded-lg flex items-center space-x-1 transition-all duration-200"
                                 disabled={isDownloading}
                               >
                                 <Video className="w-4 h-4" />
@@ -482,7 +482,7 @@ function AIStudioContent() {
                               </button>
                               <button
                                 onClick={() => handleDownload(image.url, `image-${Date.now()}`, 'image')}
-                                className="h-8 px-3 bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm rounded-lg flex items-center space-x-1 transition-all duration-200"
+                                className="h-8 px-3 bg-black/70 text-white hover:bg-black/90 backdrop-blur-sm rounded-lg flex items-center space-x-1 transition-all duration-200"
                                 disabled={isDownloading}
                               >
                                 <Download className="w-4 h-4" />
