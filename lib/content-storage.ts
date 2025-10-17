@@ -240,12 +240,6 @@ export class ContentStorageManager {
     }
   }
 
-  // Clear all content
-  public clearAllContent(): void {
-    this.saveContent([]);
-    console.log('🧹 [ContentStorage] Cleared all content');
-  }
-
   // Clean up ghost entries and invalid content
   public cleanupGhostEntries(): number {
     if (typeof window === 'undefined') return 0;
