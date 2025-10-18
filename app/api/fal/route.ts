@@ -62,28 +62,34 @@ function sanitizeInput(model: string, input: any) {
     }
   }
 
+  // Models that need duration without "s" suffix (expect plain string numbers like "5", "8")
+  const modelsNeedingPlainDuration = [
+    'minimax',
+    'veo3',
+    'luma-dream-machine',
+    'pixverse',
+    'kling',
+    'hunyuan',
+    'wan',
+    'ovi',
+    'kandinsky',
+    'ltxv',
+    'lucy',
+    'omnihuman'
+  ];
+
+  if (modelsNeedingPlainDuration.some(modelName => model.includes(modelName))) {
+    // Strip "s" suffix from duration for models expecting plain numbers
+    if (sanitized.duration && typeof sanitized.duration === 'string') {
+      sanitized.duration = sanitized.duration.replace('s', '');
+    }
+  }
+
   if (model.includes('minimax')) {
     // Minimax models have specific parameter requirements
     if (sanitized.text && !sanitized.prompt) {
       sanitized.prompt = sanitized.text;
       delete sanitized.text;
-    }
-    if (sanitized.duration && typeof sanitized.duration === 'string') {
-      sanitized.duration = sanitized.duration.replace('s', '');
-    }
-  }
-
-  if (model.includes('veo3')) {
-    // Veo3 specific parameters
-    if (sanitized.duration && typeof sanitized.duration === 'string') {
-      sanitized.duration = sanitized.duration.replace('s', '');
-    }
-  }
-
-  if (model.includes('luma-dream-machine/ray-2') || model.includes('luma-dream-machine/ray-2-flash')) {
-    // Luma Ray 2 models specific parameters
-    if (sanitized.duration && typeof sanitized.duration === 'string') {
-      sanitized.duration = sanitized.duration.replace('s', '');
     }
   }
 
@@ -92,13 +98,6 @@ function sanitizeInput(model: string, input: any) {
     if (sanitized.prompt && !sanitized.text) {
       sanitized.text = sanitized.prompt;
       delete sanitized.prompt;
-    }
-  }
-
-  if (model.includes('pixverse')) {
-    // Pixverse models expect duration as plain string number ("5" or "8"), not "5s"
-    if (sanitized.duration && typeof sanitized.duration === 'string') {
-      sanitized.duration = sanitized.duration.replace('s', '');
     }
   }
 
