@@ -95,6 +95,13 @@ function sanitizeInput(model: string, input: any) {
     }
   }
 
+  if (model.includes('pixverse')) {
+    // Pixverse models expect duration as plain string number ("5" or "8"), not "5s"
+    if (sanitized.duration && typeof sanitized.duration === 'string') {
+      sanitized.duration = sanitized.duration.replace('s', '');
+    }
+  }
+
   if (model.includes('reve/remix')) {
     // Reve Remix expects image_urls array (1-4 images)
     if (sanitized.image_url && !sanitized.image_urls) {
